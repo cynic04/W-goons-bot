@@ -28,6 +28,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Request body model for adding a tag
+# Endpoint expects this structure from the request body when it is received
 class TagRequest(BaseModel):
     tag: str
 
@@ -39,17 +41,6 @@ async def root():
 
 # Supabase test endpoint to check if the database connection is working
 # DOCS: https://supabase.com/docs/reference/python/introduction
-@app.get("/api/test")
-async def test_endpoint():
-    supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
-    db_response = supabase.table("goon_tags").select("*").execute()
-    user_info = supabase.table("goon_users").select("*").eq("id", "1").execute()
-    return {
-        "message": "Test endpoint reached successfully!",
-        "db_response": db_response.data,
-        "user_info": user_info.data
-    }
-
 @app.post("/api/add-tag")
 async def add_tag(request: TagRequest):
     tag = request.tag

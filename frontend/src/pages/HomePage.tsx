@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getRequest } from '../services/FastAPI-backend.ts'
+import { initialGetRequest } from '../services/FastAPI-backend.ts'
 import TagInputForm from '../components/TagInputForm.tsx'
 
 function HomePage() {
@@ -7,7 +7,7 @@ function HomePage() {
 
   // fetchData function handles API call to backend
   async function fetchData() {
-    const response = await getRequest();
+    const response = await initialGetRequest();
     if (!response) {
       console.error('Failed to fetch data from the backend');
       return;
