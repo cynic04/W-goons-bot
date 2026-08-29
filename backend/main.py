@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
+from pydantic import BaseModel
 # Define the origins that are allowed to make requests to the backend
 load_dotenv()  
 origins = [
@@ -27,6 +28,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class TagRequest(BaseModel):
+    tag: str
+
 @app.get("/")
 async def root():
     return {
@@ -46,8 +50,9 @@ async def test_endpoint():
         "user_info": user_info.data
     }
 
-@app.post("/api/add_tag")
-async def add_tag(tag: str = None):
+@app.post("/api/add-tag")
+async def add_tag(request: TagRequest):
+    tag = request.tag
     supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
     get_tags = supabase.table("goon_tags").select("tag_listing").eq("id", "1").execute()
     if get_tags.data:

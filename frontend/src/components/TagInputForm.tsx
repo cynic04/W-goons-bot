@@ -1,4 +1,5 @@
 import type TagsType from '../types/TagsType';
+import { addTag } from '../services/FastAPI-backend';
 import { useState } from 'react';
 
 function TagInputForm() {
@@ -7,10 +8,19 @@ function TagInputForm() {
     });
 
     // when the form is submitted, determine what to do with the input value
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         // handle form submission here
-        console.log('Form submitted with value:', formData.tag);
+        const dataString = JSON.stringify(formData);
+        const apiResponse = await addTag(dataString);
+        
+        if (!apiResponse) {
+            console.error('Failed to submit tag to the backend');
+            return;
+        } else {
+            console.log('Tag submitted successfully:', formData.tag);
+            setFormData({ tag: '' });
+        }
     }
 
     // when a value changes in the form, update the state with the new value
