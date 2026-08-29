@@ -18,7 +18,6 @@ function TagInputForm() {
             console.error('Failed to submit tag to the backend');
             return;
         } else {
-            console.log('Tag submitted successfully:', formData.tag);
             setFormData({ tag: '' });
         }
     }
@@ -26,7 +25,6 @@ function TagInputForm() {
     // when a value changes in the form, update the state with the new value
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
-        console.log('Input changed:', name, value);
         // Takes the original form data and updates only the specified field that changed
         // We only have one field here, but when the form expands, this will handle multiple input fields
         setFormData(prevState => ({
