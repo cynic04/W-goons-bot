@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_BACKEND_API_URL;
+const API_URL = import.meta.env.VITE_BACKEND_API_URL_FRONTEND;
 
 export async function getRequest() {
     try {

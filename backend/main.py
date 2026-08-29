@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 # Define the origins that are allowed to make requests to the backend
 load_dotenv()  
 origins = [
-    os.getenv("FRONTEND_LOCALHOST")
+    os.getenv("FRONTEND_LOCALHOST"),
+    os.getenv("FRONTEND_PRODUCTION")
 ]
 
 app = FastAPI()
