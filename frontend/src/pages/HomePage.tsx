@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getRequest } from '../services/FastAPI-backend.ts'
+import TagInputForm from '../components/TagInputForm.tsx'
 
 function HomePage() {
   const [data, setData] = useState(null)
@@ -30,6 +31,7 @@ function HomePage() {
       <p>
         <b>API Response from backend:</b> {data ? data : 'Loading...'}
       </p>
+      <TagInputForm />
     </>
   )
 }
