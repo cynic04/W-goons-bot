@@ -1,7 +1,6 @@
-const API_URL = import.meta.env.VITE_BACKEND_API_URL_PRODUCTION;
+const API_URL = import.meta.env.VITE_BACKEND_API_URL_LOCALHOST;
 
 export async function getRequest() {
-    console.log('Making GET request to:', API_URL);
     try {
         const response = await fetch(`${API_URL}`, {
             method: 'GET',
