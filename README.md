@@ -11,3 +11,6 @@ Remove the GitHub credential only if it is for the wrong account.
 Run a push again:
 
 Should cause an authentication window to pop up - you can then sign in with a different account
+
+Also, because FastAPI is recommending it, we're using uv instead of pip...
+Installing uv: https://docs.astral.sh/uv/#installation
