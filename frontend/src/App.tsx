@@ -1,37 +1,21 @@
 import './App.css'
-import { useState, useEffect } from 'react'
-import { getRequest } from './services/FastAPI-backend.ts'
+import { Routes, Route } from 'react-router-dom'
+import HomePage from './pages/HomePage.tsx'
+import SelectTagsPage from './pages/SelectTagsPage.tsx'
 
 function App() {
-
-  const [data, setData] = useState(null)
-
-  // fetchData function handles API call to backend
-  async function fetchData() {
-    const response = await getRequest();
-    if (!response) {
-      console.error('Failed to fetch data from the backend');
-      return;
-    }
-    const jsonData = await response.json();
-    const message = jsonData.message;
-    setData(message);
-  }
-
-  // useEffect calls fetchData when the page loads
-  useEffect(() => {
-    fetchData()
-  }, [])
-
   return (
     <>
-      <h1>WELCOME TO W GOONS!!!</h1>
-      <p>
-        I'm going to test API calls below this text watch the FUCK OUT
-      </p>
-      <p>
-        <b>API Response from backend:</b> {data ? data : 'Loading...'}
-      </p>
+      <nav>
+        <a href="/">Home</a>
+        <br/>
+        <a href="/select-tags">Select Tags</a>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/select-tags" element={<SelectTagsPage />} />
+      </Routes>
     </>
   )
 }
