@@ -1,2 +1,2 @@
-# W-goons-bot
-An application that takes your most frequently searched tags and turns them into personalized results.
+# WGoonsBot
+Honestly, we've got quite the project here.
