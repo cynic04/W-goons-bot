@@ -1,7 +1,6 @@
 const API_URL = import.meta.env.VITE_BACKEND_API_URL_PRODUCTION;
 
 export async function getRequest() {
-    console.log('Making GET request to:', API_URL);
     try {
         const response = await fetch(`${API_URL}`, {
             method: 'GET',
@@ -15,3 +14,20 @@ export async function getRequest() {
         return null;
     }
 }
+
+export async function addTag(tagInfo: string) {
+    try {
+        const response = await fetch(`${API_URL}/api/add-tag`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: tagInfo,
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making POST request:', error);
+        return null;
+    }
+}
+
