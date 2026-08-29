@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+
+# React / TypeScript build output
+dist/
+build/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+# Python bytecode and tooling caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.hypothesis/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables and API keys
+.env
+.env.*
+!.env.example
+
+# Local databases and logs
+*.sqlite3
+*.db
+*.log
+
+# Editor and OS files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
