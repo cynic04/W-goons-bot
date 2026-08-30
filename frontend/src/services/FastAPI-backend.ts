@@ -1,6 +1,5 @@
-
-
-const API_URL = import.meta.env.VITE_BACKEND_API_URL_PRODUCTION;
+// File for all API calls to the FastAPI backend
+const API_URL = import.meta.env.VITE_BACKEND_API_URL_LOCALHOST;
 
 export async function initialGetRequest() {
     try {
@@ -29,6 +28,21 @@ export async function addTag(tagInfo: string) {
         return response;
     } catch (error) {
         console.error('Error making POST request:', error);
+        return null;
+    }
+}
+
+export async function getGoons() {
+    try {
+        const response = await fetch(`${API_URL}/api/get-goons`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making GET request to get goons:', error);
         return null;
     }
 }
