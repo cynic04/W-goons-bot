@@ -1,4 +1,4 @@
-import './GoonCards.css';
+import "../../css/GoonCards.css";
 
 function GoonCards({ goons }: { goons: any[] }) {
     return (
