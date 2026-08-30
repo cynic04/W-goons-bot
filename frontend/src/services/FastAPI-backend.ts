@@ -1,5 +1,5 @@
 // File for all API calls to the FastAPI backend
-const API_URL = import.meta.env.VITE_BACKEND_API_URL_LOCALHOST;
+const API_URL = import.meta.env.VITE_BACKEND_API_URL_PRODUCTION;
 
 export async function initialGetRequest() {
     try {
