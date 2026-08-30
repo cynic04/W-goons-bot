@@ -75,7 +75,7 @@ async def get_goons():
        # If there are tags in the list, choose a random tag and make a request to the Rule34 API to get posts with that tag
        if tags:
             random_tag = random.choice(tags)
-            r34_response = requests.get(os.getenv("API_LINK_POSTS_R34") + f"&limit=10&tags={random_tag}")
+            r34_response = requests.get(os.getenv("API_LINK_POSTS_R34") + f"&limit=10&tags={random_tag} -ai_generated")
             data_json = xmltodict.parse(r34_response.text)
 
             return {
