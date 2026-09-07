@@ -40,7 +40,7 @@ class TagRequest(BaseModel):
 @app.get("/")
 async def root():
     return {
-        "message": "THESE ARE THE GOONS, AND THEY ARE HERE TO FUCKING STAYYYYYY!!!"
+        "message": "API response says welcome to the W goons bot!"
     }
 
 # Supabase test endpoint to check if the database connection is working
@@ -80,6 +80,7 @@ async def get_goons():
 
             return {
                 "message": f"Goons with tag {random_tag} retrieved successfully!",
+                "tags": random_tag,
                 "data": data_json
             }
        
