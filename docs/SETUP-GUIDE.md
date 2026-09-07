@@ -59,8 +59,14 @@ You're good to go!
 ```powershell
 npm install
 ```
-3. Once the install is complete, run the following command
+3. While npm install is running, navigate to ```frontend/services/FastAPI-backend.ts```
+
+---> On line 2, you should see ```const API_URL = import.meta.env.VITE_BACKEND_API_URL_PRODUCTION;``` - to get this working locally, switch "PRODUCTION" to "LOCALHOST".
+
+---> This simply changes the environment variable that is being used when backend API calls are being made from the frontend.
+
+4. Once the install is complete, run the following command
 ```powershell
 npm run dev
 ```
-4. Open the localhost link. If it opens and loads some text, you're good to go!
+5. Open the localhost link. If it opens and loads some text, you're good to go!

@@ -16,3 +16,6 @@ Documentation for installation: https://docs.astral.sh/uv/getting-started/instal
 1. Database URL can be found on the homepage of the app
 2. Go to project settings --> API keys --> Legacy anon, service_role API keys
 3. Copy the service_role secret value (I think)
+
+# Git related details:
+1. Reset most recent commit: ```git reset --soft HEAD~1```
