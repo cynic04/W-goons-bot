@@ -22,16 +22,7 @@ function TagInputForm() {
         }
     }
 
-    // when a value changes in the form, update the state with the new value
-    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        const { name, value } = event.target;
-        // Takes the original form data and updates only the specified field that changed
-        // We only have one field here, but when the form expands, this will handle multiple input fields
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    }
+    console.log('Form data:', formData);
 
     return (
         <form onSubmit={handleSubmit}>
@@ -43,7 +34,7 @@ function TagInputForm() {
                 placeholder="Enter a tag here"
                 name="tag"
                 value={formData.tag}
-                onChange={handleChange}
+                onChange={inputEvent => setFormData({ ...formData, tag: inputEvent.target.value })}
             />
             <button type="submit">Submit</button>
         </form>
