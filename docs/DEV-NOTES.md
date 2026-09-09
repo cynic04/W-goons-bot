@@ -19,3 +19,9 @@ Documentation for installation: https://docs.astral.sh/uv/getting-started/instal
 
 # Git related details:
 1. Reset most recent commit: ```git reset --soft HEAD~1```
+
+# uv related details:
+- Use ```uv add [library-name]``` to install a dependency
+- Use ```uv remove [library-name]``` to remove a dependency
+
+Both actions update the pyproject.toml/uv.lock files if changes need to be made 

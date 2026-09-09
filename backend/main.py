@@ -86,6 +86,7 @@ async def get_goons():
        
     return {
         "message": "No tags found in the database.",
-        "tags": []
+        "tags": [],
+        "data": []
     }
             
