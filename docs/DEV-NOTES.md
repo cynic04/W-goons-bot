@@ -9,6 +9,10 @@ Open Windows Credential Manager:
 
 Should cause an authentication window to pop up - you can then sign in with a different account
 
+ENSURE THAT YOU RUN THESE COMMANDS TO AVOID ISSUES AS WELL:
+```git config user.email "firegate0@gmail.com"```
+```git config user.name "cynic04"```
+
 # We are using uv for Python instead of pip, which is claimed to be like 1000x faster than pip in terms of installation
 Documentation for installation: https://docs.astral.sh/uv/getting-started/installation/
 

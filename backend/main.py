@@ -39,8 +39,16 @@ class TagRequest(BaseModel):
 
 @app.get("/")
 async def root():
+    quotes_list = [
+        "yeah... I got nothin.",
+        "add 'ass' as a tag, flawless results.",
+        "femboys, anyone?",
+        "Jane Doe is peak goons and you're lying if you disagree.",
+        "BOOBS!",
+        "the GoonsBot will get u right watch this."
+    ]
     return {
-        "message": "API response says welcome to the W goons bot!"
+        "message": random.choice(quotes_list)
     }
 
 # Supabase test endpoint to check if the database connection is working
@@ -48,6 +56,8 @@ async def root():
 @app.post("/api/add-tag")
 async def add_tag(request: TagRequest):
     tag = request.tag
+    # Ensure the tag is formatted correctly for R34 API requests
+    tag = tag.replace(" ", "_")
     supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
     get_tags = supabase.table("goon_tags").select("tag_listing").eq("id", "1").execute()
     if get_tags.data:
@@ -58,13 +68,15 @@ async def add_tag(request: TagRequest):
             tags.append(tag)
             supabase.table("goon_tags").update({"tag_listing": {"tags": tags}}).eq("id", "1").execute()
             return {
-                    "message": "Tags set successfully!",
+                "message": "Tags set successfully!",
             }
     # If no tag is provided, return an error message
     return {
         "message": "No tag provided.",
     }
 
+# Get 10 recently posted R34 posts with a random tag from the database
+# Returns the JSON formatted response from R34 and the tag that was used to fetch the posts
 @app.get("/api/get-goons")
 async def get_goons():
     supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
@@ -88,5 +100,21 @@ async def get_goons():
         "message": "No tags found in the database.",
         "tags": [],
         "data": []
+    }
+
+# Returns all tags stored in the database under our global user
+@app.get("/api/get-tags")
+async def get_tags():
+    supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
+    get_tags = supabase.table("goon_tags").select("tag_listing").eq("id", "1").execute()
+    if get_tags.data:
+        tags = get_tags.data[0]["tag_listing"]["tags"]
+        return {
+            "message": "Tags retrieved successfully!",
+            "tags": tags
+        }
+    return {
+        "message": "No tags found in the database.",
+        "tags": []
     }
             

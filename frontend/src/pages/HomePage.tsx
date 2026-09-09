@@ -24,13 +24,21 @@ function HomePage() {
 
   return (
     <>
-      <h1>WELCOME TO W GOONS!!!</h1>
-      <p>
-        I'm going to test API calls below this text watch the FUCK OUT
+      <h1>WGoonsBot</h1>
+      <p style={{ transform: 'translateY(-25px)' }}>
+        Probably our best project to date.<br />
       </p>
+
+      <h3 style={{ lineHeight: '2rem' }}>
+        <b>A quote from our lovely GoonsBot backend:</b><br />
+        "{data ? data : 'Loading...'}"
+      </h3>
+
       <p>
-        <b>API Response from backend:</b> {data ? data : 'Loading...'}
+        Enter a tag below - this will be added to a list of tags on the backend. <br />
+        Then, navigate to the "View Goons" page to see the most recent posts with that tag.
       </p>
+
       <TagInputForm />
     </>
   )
