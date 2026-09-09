@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage.tsx'
 import SelectTagsPage from './pages/SelectTagsPage.tsx'
 import ViewGoons from './pages/ViewGoons.tsx'
 import './css/NavBar.css'
+import './css/Buttons.css'
 
 function App() {
   return (

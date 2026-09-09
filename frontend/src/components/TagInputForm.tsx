@@ -1,8 +1,9 @@
 import type TagsType from '../types/TagsType';
 import { addTag } from '../services/FastAPI-backend';
 import { useState } from 'react';
-import '../css/TagInputForm.css';
 import { ToastContainer, toast } from 'react-toastify';
+import '../css/TagInputForm.css';
+import '../css/Buttons.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 function TagInputForm() {
