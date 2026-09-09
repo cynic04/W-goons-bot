@@ -1,10 +1,10 @@
-import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage.tsx'
 import SelectTagsPage from './pages/SelectTagsPage.tsx'
 import ViewGoons from './pages/ViewGoons.tsx'
 import './css/NavBar.css'
 import './css/Buttons.css'
+import './css/App.css'
 
 function App() {
   return (
