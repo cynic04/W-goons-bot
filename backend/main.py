@@ -39,8 +39,16 @@ class TagRequest(BaseModel):
 
 @app.get("/")
 async def root():
+    quotes_list = [
+        "yeah... I got nothin.",
+        "add 'ass' as a tag, flawless results.",
+        "femboys, anyone?",
+        "Jane Doe is peak goons and you're lying if you disagree.",
+        "BOOBS!",
+        "the GoonsBot will get u right watch this."
+    ]
     return {
-        "message": "API response says welcome to the W goons bot!"
+        "message": random.choice(quotes_list)
     }
 
 # Supabase test endpoint to check if the database connection is working

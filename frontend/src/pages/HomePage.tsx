@@ -24,13 +24,16 @@ function HomePage() {
 
   return (
     <>
-      <h1>WELCOME TO W GOONS!!!</h1>
-      <p>
-        I'm going to test API calls below this text watch the FUCK OUT
+      <h1>WGoonsBot</h1>
+      <p style={{ transform: 'translateY(-25px)' }}>
+        An application built by cynic04<br />
       </p>
-      <p>
-        <b>API Response from backend:</b> {data ? data : 'Loading...'}
-      </p>
+
+      <h3>
+        <b>A quote from our lovely GoonsBot backend:</b><br />
+        "{data ? data : 'Loading...'}"
+      </h3>
+
       <TagInputForm />
     </>
   )
