@@ -40,8 +40,6 @@ function TagInputForm() {
         }
     }
 
-    console.log('Form data:', formData);
-
     return (
     <>
         <form className="tag-input-form" onSubmit={handleSubmit}>

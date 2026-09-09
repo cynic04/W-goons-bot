@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { NavLink,Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage.tsx'
 import SelectTagsPage from './pages/SelectTagsPage.tsx'
 import ViewGoons from './pages/ViewGoons.tsx'
@@ -10,17 +10,27 @@ function App() {
   return (
     <>
       <nav className="nav-bar">
-        <a href="/">
-          <button>Home</button>
-        </a>
+        <NavLink
+          to="/"
+          end
+          className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
+        >
+          Home
+        </NavLink>
 
-        <a href="/view-goons">
-          <button>View Goons</button>
-        </a>
+        <NavLink
+          to="/view-goons"
+          className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
+        >
+          View Goons
+        </NavLink>
 
-        <a href="/select-tags">
-          <button>Select Tags</button>
-        </a>
+        <NavLink
+          to="/select-tags"
+          className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
+        >
+          Select Tags
+        </NavLink>
       </nav>
 
       <Routes>
