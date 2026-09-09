@@ -75,6 +75,8 @@ async def add_tag(request: TagRequest):
         "message": "No tag provided.",
     }
 
+# Get 10 recently posted R34 posts with a random tag from the database
+# Returns the JSON formatted response from R34 and the tag that was used to fetch the posts
 @app.get("/api/get-goons")
 async def get_goons():
     supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
@@ -100,6 +102,7 @@ async def get_goons():
         "data": []
     }
 
+# Returns all tags stored in the database under our global user
 @app.get("/api/get-tags")
 async def get_tags():
     supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
