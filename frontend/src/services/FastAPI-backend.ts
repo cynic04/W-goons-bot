@@ -50,3 +50,18 @@ export async function getGoons() {
     }
 }
 
+export async function getTags() {
+    try {
+        const response = await fetch(`${API_URL}/api/get-tags`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making GET request to get tags:', error);
+        return null;
+    }
+}
+
