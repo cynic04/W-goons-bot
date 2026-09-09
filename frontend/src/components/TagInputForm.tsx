@@ -1,6 +1,7 @@
 import type TagsType from '../types/TagsType';
 import { addTag } from '../services/FastAPI-backend';
 import { useState } from 'react';
+import '../css/TagInputForm.css';
 
 function TagInputForm() {
     const [formData, setFormData] = useState<TagsType>({ 
@@ -25,11 +26,11 @@ function TagInputForm() {
     console.log('Form data:', formData);
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="tag-input-form" onSubmit={handleSubmit}>
             <label>
                 Enter a tag here:
             </label>
-            <input 
+            <input
                 type="text"
                 placeholder="Enter a tag here"
                 name="tag"

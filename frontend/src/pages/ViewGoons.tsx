@@ -1,6 +1,6 @@
 import { getGoons } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
-import '../../css/GoonCards.css';
+import '../css/GoonCards.css';
 import GoonCards from '../components/GoonCards.tsx';
 
 function ViewGoons() {
