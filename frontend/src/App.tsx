@@ -3,16 +3,23 @@ import { Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage.tsx'
 import SelectTagsPage from './pages/SelectTagsPage.tsx'
 import ViewGoons from './pages/ViewGoons.tsx'
+import './css/NavBar.css'
 
 function App() {
   return (
     <>
-      <nav>
-        <a href="/">Home</a>
-        <br/>
-        <a href="/select-tags">Select Tags</a>
-        <br/>
-        <a href="/view-goons">View Goons</a>
+      <nav className="nav-bar">
+        <a href="/">
+          <button>Home</button>
+        </a>
+
+        <a href="/view-goons">
+          <button>View Goons</button>
+        </a>
+
+        <a href="/select-tags">
+          <button>Select Tags</button>
+        </a>
       </nav>
 
       <Routes>

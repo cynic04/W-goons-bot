@@ -26,13 +26,18 @@ function HomePage() {
     <>
       <h1>WGoonsBot</h1>
       <p style={{ transform: 'translateY(-25px)' }}>
-        An application built by cynic04<br />
+        Probably our best project to date.<br />
       </p>
 
-      <h3>
+      <h3 style={{ lineHeight: '2rem' }}>
         <b>A quote from our lovely GoonsBot backend:</b><br />
         "{data ? data : 'Loading...'}"
       </h3>
+
+      <p>
+        Enter a tag below - this will be added to a list of tags on the backend. <br />
+        Then, navigate to the "View Goons" page to see the most recent posts with that tag.
+      </p>
 
       <TagInputForm />
     </>

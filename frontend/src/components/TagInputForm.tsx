@@ -27,11 +27,10 @@ function TagInputForm() {
 
     return (
         <form className="tag-input-form" onSubmit={handleSubmit}>
-            <label>
-                Enter a tag here:
-            </label>
-            <input
-                type="text"
+            <textarea
+                style={{ fontSize: '20px', textAlign: 'center' }}
+                rows={1}
+                cols={45}
                 placeholder="Enter a tag here"
                 name="tag"
                 value={formData.tag}
