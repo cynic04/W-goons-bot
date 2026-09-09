@@ -46,7 +46,7 @@ function TagInputForm() {
             <textarea
                 style={{ fontSize: '20px', textAlign: 'center' }}
                 rows={1}
-                cols={45}
+                cols={25}
                 placeholder="Enter a tag here"
                 name="tag"
                 value={formData.tag}
