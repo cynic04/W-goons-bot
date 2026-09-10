@@ -1,7 +1,7 @@
 # FastAPI backend
 # Will be used to handle API requests from the frontend and interact with the database
 
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
@@ -53,7 +53,7 @@ async def root():
 
 # Supabase test endpoint to check if the database connection is working
 # DOCS: https://supabase.com/docs/reference/python/introduction
-@app.post("/api/add-tag")
+@app.post("/api/add-tag", status_code=status.HTTP_201_CREATED)
 async def add_tag(request: TagRequest):
     tag = request.tag
     # Ensure the tag is formatted correctly for R34 API requests
@@ -77,7 +77,7 @@ async def add_tag(request: TagRequest):
 
 # Get 10 recently posted R34 posts with a random tag from the database
 # Returns the JSON formatted response from R34 and the tag that was used to fetch the posts
-@app.get("/api/get-goons")
+@app.get("/api/get-goons", status_code=status.HTTP_200_OK)
 async def get_goons():
     supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
     get_tags = supabase.table("goon_tags").select("tag_listing").eq("id", "1").execute()
@@ -103,7 +103,7 @@ async def get_goons():
     }
 
 # Returns all tags stored in the database under our global user
-@app.get("/api/get-tags")
+@app.get("/api/get-tags", status_code=status.HTTP_200_OK)
 async def get_tags():
     supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
     get_tags = supabase.table("goon_tags").select("tag_listing").eq("id", "1").execute()
