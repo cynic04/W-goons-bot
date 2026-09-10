@@ -10,6 +10,7 @@ function ViewGoons() {
     const [tagSelected, setTagSelected] = useState<string>('');
     const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
     const [loadFailed, setLoadFailed] = useState<boolean>(false);
+    const [noGoonsFound, setNoGoonsFound] = useState<boolean>(false);
 
     async function fetchGoons() {
         const response = await getGoons();
@@ -19,6 +20,10 @@ function ViewGoons() {
             return;
         }
         const jsonData = await response.json();
+        if (jsonData.data.posts === undefined) {
+            setNoGoonsFound(true);
+            return;
+        }
         const goons = jsonData.data.posts.post;
         setGoonsData(goons);
         setTagSelected(jsonData.tags);
@@ -50,11 +55,13 @@ function ViewGoons() {
                 {goonsData.length > 0 ? (
                     <>  
                         <h2>Displaying most recent R34 posts with the tag: <b>{tagSelected}</b></h2>
-                        <h3>Current listing of tags in the database: {tagsInDatabase.length > 0 ? tagsInDatabase.join(', ') : 'No tags in database'}</h3>
+                        <h3>Current listing of tags in the database: {tagsInDatabase.join(', ')}</h3>
                         <GoonCards goons={goonsData} />
                     </>
                 ) : loadFailed ? (
                     <p style={{ color: 'red' }}>Failed to load goons. Please try again later.</p>
+                ) : noGoonsFound ? (
+                    <p>No goons found.</p>
                 ) : (
                     <p>Loading goons...</p>
                 )}
