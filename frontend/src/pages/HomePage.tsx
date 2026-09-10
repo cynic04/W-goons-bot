@@ -4,12 +4,14 @@ import TagInputForm from '../components/TagInputForm.tsx'
 
 function HomePage() {
   const [data, setData] = useState(null)
+  const [loadFailed, setLoadFailed] = useState(false);
 
   // fetchData function handles API call to backend
   async function fetchData() {
     const response = await initialGetRequest();
     if (!response) {
       console.error('Failed to fetch data from the backend');
+      setLoadFailed(true);
       return;
     }
     const jsonData = await response.json();
@@ -31,7 +33,8 @@ function HomePage() {
 
       <h3 style={{ lineHeight: '2rem' }}>
         <b>A quote from our lovely GoonsBot backend:</b><br />
-        "{data ? data : 'Loading...'}"
+        "{loadFailed ? 'Quote failed to load D:' 
+          : data ? data : 'Loading...'}"
       </h3>
 
       <p>
