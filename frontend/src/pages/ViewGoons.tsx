@@ -9,11 +9,13 @@ function ViewGoons() {
     const [goonsData, setGoonsData] = useState<any[]>([]);
     const [tagSelected, setTagSelected] = useState<string>('');
     const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
+    const [loadFailed, setLoadFailed] = useState<boolean>(false);
 
     async function fetchGoons() {
         const response = await getGoons();
         if (!response) {
             console.error('Failed to fetch goons from the backend');
+            setLoadFailed(true);
             return;
         }
         const jsonData = await response.json();
@@ -51,6 +53,8 @@ function ViewGoons() {
                         <h3>Current listing of tags in the database: {tagsInDatabase.length > 0 ? tagsInDatabase.join(', ') : 'No tags in database'}</h3>
                         <GoonCards goons={goonsData} />
                     </>
+                ) : loadFailed ? (
+                    <p style={{ color: 'red' }}>Failed to load goons. Please try again later.</p>
                 ) : (
                     <p>Loading goons...</p>
                 )}
