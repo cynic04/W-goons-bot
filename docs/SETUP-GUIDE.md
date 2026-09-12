@@ -70,3 +70,11 @@ npm install
 npm run dev
 ```
 5. Open the localhost link. If it opens and loads some text, you're good to go!
+
+# After setting everything up
+
+Now that your entire development environment is set up, you can use the following Powershell script to start up both services from here on out:
+```powershell
+.\Start-GoonsBot.ps1
+```
+You may also use ```.\Start-GoonsBot.ps1 -Stop``` to kill all services once you're finished developing.
