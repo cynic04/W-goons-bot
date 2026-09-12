@@ -2,8 +2,6 @@
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 1rem;
-	justify-items: center;
-	margin: 0 auto;
 }
 
 .goon-card img {
