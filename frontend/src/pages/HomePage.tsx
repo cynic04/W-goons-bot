@@ -1,3 +1,6 @@
+import Paper from '@mui/material/Paper';
+import '../css/PaperCustomCss.css'
+import Container from '@mui/material/Container';
 import { useState, useEffect } from 'react'
 import { initialGetRequest } from '../services/FastAPI-backend.ts'
 import TagInputForm from '../components/TagInputForm.tsx'
@@ -27,11 +30,13 @@ function HomePage() {
 
   return (
     <>
-      <div className="center-items">
-        <h1>WGoonsBot</h1>
-        <p style={{ transform: 'translateY(-25px)' }}>
-          Probably our best project to date.<br />
-        </p>
+      <Container className="center-items" maxWidth="md"> 
+        <Paper elevation={12} className="headers">
+          <h1>WGoonsBot</h1>
+          <p>
+            Probably our best project to date.
+          </p>
+        </Paper>
 
         <h3 style={{ lineHeight: '2rem' }}>
           <b>A quote from our lovely GoonsBot backend:</b><br />
@@ -45,7 +50,7 @@ function HomePage() {
         </p>
 
         <TagInputForm />
-      </div>
+      </Container>
     </>
   )
 }

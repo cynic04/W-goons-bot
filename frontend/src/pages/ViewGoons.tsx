@@ -1,3 +1,4 @@
+import Paper from '@mui/material/Paper';
 import { getGoons, getTags } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
 import '../css/GoonCards.css';
@@ -52,7 +53,9 @@ function ViewGoons() {
     return (
         <>
             <div className="center-items">
-                <h1>View Goons</h1>
+                <Paper elevation={12} className="headers">
+                    <h1>View Goons</h1>
+                </Paper>
                 {goonsData.length > 0 ? (
                     <>  
                         <h2>Displaying 15 random posts with the tag: <b>{tagSelected}</b></h2>
