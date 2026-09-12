@@ -1,6 +1,8 @@
-import Paper from '@mui/material/Paper';
-import Container from '@mui/material/Container';
-import CircularProgress from '@mui/material/CircularProgress';
+import {
+    Paper,
+    Container,
+    CircularProgress,
+} from '@mui/material'; 
 import { getGoons, getTags } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
 import '../css/GoonCards.css';

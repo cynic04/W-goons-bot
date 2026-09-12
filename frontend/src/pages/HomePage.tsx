@@ -1,6 +1,5 @@
-import Paper from '@mui/material/Paper';
+import { Paper, Container } from '@mui/material';
 import '../css/PaperCustomCss.css'
-import Container from '@mui/material/Container';
 import { useState, useEffect } from 'react'
 import { initialGetRequest } from '../services/FastAPI-backend.ts'
 import TagInputForm from '../components/TagInputForm.tsx'
