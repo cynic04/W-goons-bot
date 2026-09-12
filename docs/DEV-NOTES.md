@@ -23,6 +23,8 @@ Documentation for installation: https://docs.astral.sh/uv/getting-started/instal
 
 # Git related details:
 1. Reset most recent commit: ```git reset --soft HEAD~1```
+2. ENSURE THAT YOUR USERNAME AND PASSWORD ARE SET PROPERLY
+---> ```git config user.name``` and ```git config user.email``` to confirm this information
 
 # uv related details:
 - Use ```uv add [library-name]``` to install a dependency
