@@ -29,5 +29,6 @@ Documentation for installation: https://docs.astral.sh/uv/getting-started/instal
 # uv related details:
 - Use ```uv add [library-name]``` to install a dependency
 - Use ```uv remove [library-name]``` to remove a dependency
+- ```./.venv/Scripts/Activate``` to activate your virtual environment
 
 Both actions update the pyproject.toml/uv.lock files if changes need to be made 
