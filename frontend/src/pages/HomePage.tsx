@@ -43,7 +43,7 @@ function HomePage() {
             : data ? data : 'Loading...'}"
         </h3>
 
-        <p>
+        <p style={{ lineHeight: '2rem' }}>
           Enter a tag below - this will be added to a list of tags on the backend. <br />
           Then, navigate to the "View Goons" page to see the most recent posts with that tag.
         </p>

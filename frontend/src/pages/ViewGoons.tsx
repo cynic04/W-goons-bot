@@ -68,10 +68,13 @@ function ViewGoons() {
                         <h3>Current listing of tags in the database: {tagsInDatabase.join(', ')}</h3>
                         <GoonCards goons={goonsData} />
                     </>
+
                 ) : loadFailed ? (
                     <p style={{ color: 'red' }}>Failed to load goons. Please try again later.</p>
+
                 ) : noGoonsFound ? (
                     <p>No goons found.</p>
+                    
                 ) : (
                     <>
                         <p>Loading goons...</p>

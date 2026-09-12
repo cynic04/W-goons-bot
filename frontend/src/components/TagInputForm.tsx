@@ -1,10 +1,12 @@
 import type TagsType from '../types/TagsType';
 import { addTag } from '../services/FastAPI-backend';
 import { useState } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import Button from '@mui/material/Button';
 import '../css/TagInputForm.css';
 import '../css/Buttons.css';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 function TagInputForm() {
     const [formData, setFormData] = useState<TagsType>({ 
@@ -44,7 +46,7 @@ function TagInputForm() {
     <>
         <form className="tag-input-form" onSubmit={handleSubmit}>
             <textarea
-                style={{ fontSize: '20px', textAlign: 'center' }}
+                style={{ fontSize: '20px', textAlign: 'center', fontFamily: 'Inter, sans-serif' }}
                 rows={1}
                 cols={25}
                 placeholder="Enter a tag here"
@@ -60,7 +62,13 @@ function TagInputForm() {
                     }
                 }}
             />
-            <button type="submit" disabled={isSubmitting}>{buttonText}</button>
+            <Button
+                type="submit"
+                disabled={isSubmitting} 
+                variant="contained" 
+                sx={{ backgroundColor: '#000000', color: 'white', textTransform: 'none' }}
+                >{buttonText}
+            </Button>
         </form>
         <ToastContainer 
             position="bottom-center" 
