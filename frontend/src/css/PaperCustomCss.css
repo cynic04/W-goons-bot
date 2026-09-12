@@ -1,0 +1,15 @@
+.headers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    padding: 16px;
+    margin: 16px;
+}
+
+/* Remove default margins that push h1 and p apart */
+.headers h1,
+.headers p {
+    margin: 0.5rem;
+}
