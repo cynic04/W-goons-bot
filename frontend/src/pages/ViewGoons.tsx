@@ -1,4 +1,6 @@
 import Paper from '@mui/material/Paper';
+import Container from '@mui/material/Container';
+import CircularProgress from '@mui/material/CircularProgress';
 import { getGoons, getTags } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
 import '../css/GoonCards.css';
@@ -53,9 +55,11 @@ function ViewGoons() {
     return (
         <>
             <div className="center-items">
-                <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
-                    <h1>View Goons</h1>
-                </Paper>
+                <Container maxWidth="md">
+                    <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
+                        <h1>View Goons</h1>
+                    </Paper>
+                </Container>
                 {goonsData.length > 0 ? (
                     <>  
                         <h2>Displaying 15 random posts with the tag: <b>{tagSelected}</b></h2>
@@ -67,7 +71,10 @@ function ViewGoons() {
                 ) : noGoonsFound ? (
                     <p>No goons found.</p>
                 ) : (
-                    <p>Loading goons...</p>
+                    <>
+                        <p>Loading goons...</p>
+                        <CircularProgress sx={{ color: 'white'}} aria-label="Loading goons" />
+                    </>
                 )}
             </div>
         </>
