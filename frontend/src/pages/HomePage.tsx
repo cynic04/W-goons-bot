@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { initialGetRequest } from '../services/FastAPI-backend.ts'
 import TagInputForm from '../components/TagInputForm.tsx'
+import '../css/CenterItems.css'
 
 function HomePage() {
   const [data, setData] = useState(null)
@@ -26,23 +27,25 @@ function HomePage() {
 
   return (
     <>
-      <h1>WGoonsBot</h1>
-      <p style={{ transform: 'translateY(-25px)' }}>
-        Probably our best project to date.<br />
-      </p>
+      <div className="center-items">
+        <h1>WGoonsBot</h1>
+        <p style={{ transform: 'translateY(-25px)' }}>
+          Probably our best project to date.<br />
+        </p>
 
-      <h3 style={{ lineHeight: '2rem' }}>
-        <b>A quote from our lovely GoonsBot backend:</b><br />
-        "{loadFailed ? 'Quote failed to load D:' 
-          : data ? data : 'Loading...'}"
-      </h3>
+        <h3 style={{ lineHeight: '2rem' }}>
+          <b>A quote from our lovely GoonsBot backend:</b><br />
+          "{loadFailed ? 'Quote failed to load D:' 
+            : data ? data : 'Loading...'}"
+        </h3>
 
-      <p>
-        Enter a tag below - this will be added to a list of tags on the backend. <br />
-        Then, navigate to the "View Goons" page to see the most recent posts with that tag.
-      </p>
+        <p>
+          Enter a tag below - this will be added to a list of tags on the backend. <br />
+          Then, navigate to the "View Goons" page to see the most recent posts with that tag.
+        </p>
 
-      <TagInputForm />
+        <TagInputForm />
+      </div>
     </>
   )
 }

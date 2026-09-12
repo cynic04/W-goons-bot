@@ -1,20 +1,18 @@
 .nav-bar {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
     margin: 0 auto;
     height: 60px;
     width: 100%;
-    border: 3px solid #ccc;
 }
 
 /* Copied style from the button global */
 .nav-button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: 1.2em;
   margin-right: 1em;
-  font-size: 1em;
+  font-size: 0.8em;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;

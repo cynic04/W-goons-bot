@@ -1,6 +1,7 @@
 import { getGoons, getTags } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
 import '../css/GoonCards.css';
+import '../css/CenterItems.css';
 import GoonCards from '../components/GoonCards.tsx';
 
 function ViewGoons() {
@@ -50,7 +51,7 @@ function ViewGoons() {
     
     return (
         <>
-            <div>
+            <div className="center-items">
                 <h1>View Goons</h1>
                 {goonsData.length > 0 ? (
                     <>  
