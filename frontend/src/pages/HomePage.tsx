@@ -1,4 +1,4 @@
-import { Paper, Container } from '@mui/material';
+import { Paper, Container, CircularProgress } from '@mui/material';
 import '../css/PaperCustomCss.css'
 import { useState, useEffect } from 'react'
 import { initialGetRequest } from '../services/FastAPI-backend.ts'
@@ -6,7 +6,7 @@ import TagInputForm from '../components/TagInputForm.tsx'
 import '../css/CenterItems.css'
 
 function HomePage() {
-  const [data, setData] = useState(null)
+  const [quote, setQuote] = useState(null)
   const [loadFailed, setLoadFailed] = useState(false);
 
   // fetchData function handles API call to backend
@@ -19,7 +19,7 @@ function HomePage() {
     }
     const jsonData = await response.json();
     const message = jsonData.message;
-    setData(message);
+    setQuote(message);
   }
 
   // useEffect calls fetchData when the page loads
@@ -40,7 +40,12 @@ function HomePage() {
         <h3 style={{ lineHeight: '2rem' }}>
           <b>A quote from our lovely GoonsBot backend:</b><br />
           "{loadFailed ? 'Quote failed to load D:' 
-            : data ? data : 'Loading...'}"
+            : quote ? quote : 
+            <>
+              <p>Loading...</p>
+              <CircularProgress size={20} />
+            </>
+            }"
         </h3>
 
         <p style={{ lineHeight: '2rem' }}>
