@@ -35,6 +35,7 @@ ENV/
 *.sqlite3
 *.db
 *.log
+.goons-bot.pid
 
 # Editor and OS files
 .vscode/*
