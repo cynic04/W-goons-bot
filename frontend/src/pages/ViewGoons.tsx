@@ -55,7 +55,7 @@ function ViewGoons() {
                 <h1>View Goons</h1>
                 {goonsData.length > 0 ? (
                     <>  
-                        <h2>Displaying most recent R34 posts with the tag: <b>{tagSelected}</b></h2>
+                        <h2>Displaying 15 random posts with the tag: <b>{tagSelected}</b></h2>
                         <h3>Current listing of tags in the database: {tagsInDatabase.join(', ')}</h3>
                         <GoonCards goons={goonsData} />
                     </>
