@@ -53,7 +53,7 @@ function ViewGoons() {
     return (
         <>
             <div className="center-items">
-                <Paper elevation={12} className="headers">
+                <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
                     <h1>View Goons</h1>
                 </Paper>
                 {goonsData.length > 0 ? (
