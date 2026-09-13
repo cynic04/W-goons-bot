@@ -20,7 +20,6 @@ function DeleteTagsPage() {
         if (response) {
             const data = await response.json();
             setTags(data.tags);
-            console.log(data.tags);
         }
     }
 
