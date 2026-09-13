@@ -5,33 +5,49 @@ import {
     TableContainer, 
     TableHead, 
     TableRow, 
-    Paper 
+    Paper,
+    CircularProgress
 } from '@mui/material';
+import '../css/CenterItems.css'
 
-function DeleteTagsTable(props: {tags: string[], setTags: React.Dispatch<React.SetStateAction<string[]>> }) {
+function DeleteTagsTable(props: {tags: string[], handleDeleteTag: (tag: string) => Promise<void> }) {
     return (
-        <TableContainer component={Paper} sx={{ backgroundColor: '#313030', color: 'white' }}>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="center" sx={{ color: 'white' }}>Tag</TableCell>
-                        <TableCell align="center" sx={{ color: 'white' }}>Action</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {props.tags.map((tag, index) => (
-                        <TableRow key={index}>
-                            <TableCell align="center" sx={{ color: 'white' }}>{tag}</TableCell>
-                            <TableCell align="center" sx={{ color: 'white' }}>
-                                <button onClick={() => {
-                                    props.setTags(props.tags.filter((_, i) => i !== index));
-                                }}>Delete</button>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <>
+        { /* If the tags have not yet been returned from the API call, show a loading indicator */ }
+            {props.tags.length === 0 ? (
+                <>
+                    <div className="center-items">
+                        <p>Loading tags...</p>
+                        <CircularProgress sx={{ color: 'inherit' }} />     
+                    </div>
+                </>
+            ) : (
+                <TableContainer component={Paper} sx={{ backgroundColor: '#313030', color: 'white' }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align="center" sx={{ color: 'white' }}>Tag</TableCell>
+                                <TableCell align="center" sx={{ color: 'white' }}>Action</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {props.tags.map((tag, index) => (
+                                <TableRow key={index}>
+                                    <TableCell align="center" sx={{ color: 'white' }}>{tag}</TableCell>
+                                    <TableCell align="center" sx={{ color: 'white' }}>
+                                        <button 
+                                            onClick={() => {
+                                            props.handleDeleteTag(tag)
+                                        }} 
+                                        >Delete</button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
+        </>
     );
 }
 
