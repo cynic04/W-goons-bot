@@ -51,21 +51,20 @@ async def root():
         "message": random.choice(quotes_list)
     }
 
-# Supabase test endpoint to check if the database connection is working
-# DOCS: https://supabase.com/docs/reference/python/introduction
-@app.post("/api/add-tag", status_code=status.HTTP_201_CREATED)
-async def add_tag(request: TagRequest):
-    tag = request.tag
-    # Ensure the tag is formatted correctly for R34 API requests
-    tag = tag.replace(" ", "_")
+# Returns all tags stored in the database under our global user
+@app.get("/api/get-tags", status_code=status.HTTP_200_OK)
+async def get_tags():
     get_tags = get_tags_from_db()
     if get_tags.data:
-        # get the listing of tags from this row, append the new tag, and update the database
         tags = get_tags.data[0]["tag_listing"]["tags"]
-        tags.append(tag)
-        add_tag_to_db({"tag_listing": {"tags": tags}})
         return {
-            "message": "Tags set successfully!",
+            "message": "Tags retrieved successfully!",
+            "tags": tags
+        }
+    else:
+        return {
+            "message": "No tags found in the database.",
+            "tags": []
         }
 
 # Get 10 recently posted R34 posts with a random tag from the database
@@ -98,22 +97,25 @@ async def get_goons(tag_combo: bool = False):
                 "tags": [],
                 "data": []
             }
-    
 
-# Returns all tags stored in the database under our global user
-@app.get("/api/get-tags", status_code=status.HTTP_200_OK)
-async def get_tags():
+# Add a new tag to the database under our global user
+@app.post("/api/add-tag", status_code=status.HTTP_201_CREATED)
+async def add_tag(request: TagRequest):
+    tag = request.tag
+    # Ensure the tag is formatted correctly for R34 API requests
+    tag = tag.replace(" ", "_")
     get_tags = get_tags_from_db()
     if get_tags.data:
+        # get the listing of tags from this row, append the new tag, and update the database
         tags = get_tags.data[0]["tag_listing"]["tags"]
+        tags.append(tag)
+        add_tag_to_db({"tag_listing": {"tags": tags}})
         return {
-            "message": "Tags retrieved successfully!",
-            "tags": tags
+            "message": "Tags set successfully!",
         }
     else:
         return {
-            "message": "No tags found in the database.",
-            "tags": []
+            "message": "Failed to add tag to the database.",
         }
 
 # Delete a single tag from the database under our global user
