@@ -9,7 +9,7 @@ DATABASE_KEY = os.getenv("DATABASE_KEY")
 def add_tag_to_db(tag_info: dict):
     supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
     try:
-        response = supabase.table('goon_tags').insert(tag_info).execute()
+        response = supabase.table('goon_tags').update(tag_info).eq('id', '1').execute()
         return response
     except Exception as e:
         print(f"Error adding tag to database: {e}")

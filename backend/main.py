@@ -120,5 +120,6 @@ async def delete_tag(request: TagRequest):
     add_tag_to_db({"tag_listing": {"tags": tags}})
     return {
         "message": f"Tag '{tag}' deleted successfully!",
+        "tags": tags
     }
                 
