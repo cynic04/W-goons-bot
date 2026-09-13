@@ -17,8 +17,8 @@ function GoonCards({ goons }: { goons: any[] }) {
             {/* Easiest way to read this: for each goon in the returned goons array, create a figure element with an image and caption */}
             {/* "goon: any[]" is each individual goon in the goons array, and index is the iterator (which position in the array are we at rn) */}
                 {goons.map((goon: any, index: number) => (
-                    <Grid key={index} size={{ xs: 6, sm: 6, md: 3 }}>
-                        <Card className="goon-card" sx={{ backgroundColor: '#313030', maxHeight: '400px' }}>
+                    <Grid key={index} size={{ xs: 6, sm: 4, md: 2 }}>
+                        <Card className="goon-card" sx={{ backgroundColor: '#313030' }}>
                             <CardActionArea>
                                 <CardContent>
                                     <a href={goon["@file_url"]}>
