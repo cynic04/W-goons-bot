@@ -110,6 +110,7 @@ async def get_tags():
             "tags": []
         }
 
+# Delete a single tag from the database under our global user
 @app.delete("/api/delete-tag", status_code=status.HTTP_200_OK)
 async def delete_tag(request: TagRequest):
     tag = request.tag
