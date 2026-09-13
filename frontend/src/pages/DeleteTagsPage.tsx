@@ -19,7 +19,11 @@ function DeleteTagsPage() {
         const response = await getTags();
         if (response) {
             const data = await response.json();
-            setTags(data.tags);
+            if (data.tags && data.tags.length > 0) {
+                setTags(data.tags);
+            } else {
+                setTags(['None']);
+            }
         }
     }
 
@@ -29,7 +33,11 @@ function DeleteTagsPage() {
         const response = await deleteTag(JSON.stringify(tagInfo));
         if (response) {
             const data = await response.json();
-            setTags(data.tags);
+             if (data.tags && data.tags.length > 0) {
+                setTags(data.tags);
+            } else {
+                setTags(['None']);
+            }
             toast.success(`Tag "${tag}" deleted successfully!`);
         }
     }
@@ -42,7 +50,7 @@ function DeleteTagsPage() {
     return (
         <>
             <div className="center-items">
-                <Container maxWidth="md">
+                <Container maxWidth="md" sx={{ marginBottom: '4rem' }}>
                     <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
                         <h1>Delete Tags</h1>
                     </Paper>
