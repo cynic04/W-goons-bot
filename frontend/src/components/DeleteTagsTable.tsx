@@ -6,7 +6,8 @@ import {
     TableHead, 
     TableRow, 
     Paper,
-    CircularProgress
+    CircularProgress,
+    Container
 } from '@mui/material';
 import '../css/CenterItems.css'
 import { useState } from 'react';
@@ -24,6 +25,7 @@ function DeleteTagsTable(props: {tags: string[], handleDeleteTag: (tag: string) 
                     </div>
                 </>
             ) : (
+            <Container maxWidth="md">
                 <TableContainer component={Paper} sx={{ backgroundColor: '#313030', color: 'white' }}>
                     <Table>
                         <TableHead>
@@ -55,6 +57,7 @@ function DeleteTagsTable(props: {tags: string[], handleDeleteTag: (tag: string) 
                         </TableBody>
                     </Table>
                 </TableContainer>
+            </Container>
             )}
         </>
     );
