@@ -20,7 +20,7 @@ if ($Stop) {
         Remove-Item $PidFile -Force -ErrorAction SilentlyContinue
         Write-Host "All services stopped." -ForegroundColor Green
     } else {
-        Write-Host "No active PID file found ($PidFile). Services may not be running." -ForegroundColor Yellow
+        Write-Host "No active PID file found ($PidFile). Services may not be running." -ForegroundColor Red
     }
     return
 }
@@ -35,8 +35,8 @@ if (Test-Path $PidFile) {
         }
     }
     if ($runningPids.Count -gt 0) {
-        Write-Host "Services are already running (PIDs: $($runningPids -join ', '))." -ForegroundColor Yellow
-        Write-Host "Run '.\Start-GoonsBot.ps1 -Stop' to stop them first." -ForegroundColor Yellow
+        Write-Host "Services are already running (PIDs: $($runningPids -join ', '))." -ForegroundColor Red
+        Write-Host "Run '.\Start-GoonsBot.ps1 -Stop' if you'd like to stop them." -ForegroundColor Red
         return
     }
 }
