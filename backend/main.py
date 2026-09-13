@@ -71,14 +71,19 @@ async def add_tag(request: TagRequest):
 # Get 10 recently posted R34 posts with a random tag from the database
 # Returns the JSON formatted response from R34 and the tag that was used to fetch the posts
 @app.get("/api/get-goons", status_code=status.HTTP_200_OK)
-async def get_goons():
+async def get_goons(tag_combo: bool = False):
     get_tags = get_tags_from_db()
     # If data is returned from the database, get the list of tags
     if get_tags.data:
         tags = get_tags.data[0]["tag_listing"]["tags"]
-        # If there are tags in the list, choose a random tag and make a request to the Rule34 API to get posts with that tag
+        # Check the tag_combo flag - if false, return one random tag
+        # If true, check to make sure there are at least 2 tags, and then determine how many of those tags to combo
         if tags:
-            random_tag = random.choice(tags)
+            if tag_combo and len(tags) > 1:
+                num_tags_to_combo = random.randint(2, len(tags))
+                random_tag = " ".join(random.sample(tags, num_tags_to_combo))
+            else:
+                random_tag = random.choice(tags)
             r34_response = requests.get(os.getenv("API_LINK_POSTS_R34") + f"&limit=15&tags={random_tag} -ai_generated -video sort:random")
             data_json = xmltodict.parse(r34_response.text)
             return {
