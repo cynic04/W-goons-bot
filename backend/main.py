@@ -109,4 +109,15 @@ async def get_tags():
             "message": "No tags found in the database.",
             "tags": []
         }
+
+@app.delete("/api/delete-tag", status_code=status.HTTP_200_OK)
+async def delete_tag(request: TagRequest):
+    tag = request.tag
+    get_tags = get_tags_from_db()
+    tags = get_tags.data[0]["tag_listing"]["tags"]
+    tags.remove(tag)
+    add_tag_to_db({"tag_listing": {"tags": tags}})
+    return {
+        "message": f"Tag '{tag}' deleted successfully!",
+    }
                 
