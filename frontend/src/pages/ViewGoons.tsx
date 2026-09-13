@@ -74,7 +74,7 @@ function ViewGoons() {
                         <h1>View Goons</h1>
                     </Paper>
                 </Container>
-                {tagsInDatabase.length > 2 && !loading ? (
+                {tagsInDatabase.length > 2 ? (
                     <FormControlLabel
                     control={
                         <Checkbox

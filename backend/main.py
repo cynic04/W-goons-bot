@@ -83,14 +83,23 @@ async def get_goons(tag_combo: bool = False):
                 random_tag = " ".join(random.sample(tags, num_tags_to_combo))
             else:
                 random_tag = random.choice(tags)
+
             r34_response = requests.get(os.getenv("API_LINK_POSTS_R34") + f"&limit=15&tags={random_tag} -ai_generated -video sort:random")
             data_json = xmltodict.parse(r34_response.text)
             random_tag = random_tag.split(" ")
-            return {
-                "message": f"Goons with tag {random_tag} retrieved successfully!",
-                "tags": random_tag,
-                "data": data_json
-            }
+            if data_json["posts"]["@count"] == "0":
+                return {
+                    "message": "No goons found.",
+                    "tags": random_tag,
+                    "data": []
+                }
+            else:
+                return {
+                    "message": f"Goons with tag {random_tag} retrieved successfully!",
+                    "tags": random_tag,
+                    "data": data_json
+                }
+        # If no tags are found in the database, return this reponse
         else:
             return {
                 "message": "No goons found.",
