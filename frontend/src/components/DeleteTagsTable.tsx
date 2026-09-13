@@ -9,15 +9,17 @@ import {
     CircularProgress
 } from '@mui/material';
 import '../css/CenterItems.css'
+import { useState } from 'react';
 
 function DeleteTagsTable(props: {tags: string[], handleDeleteTag: (tag: string) => Promise<void> }) {
+    const [deletingTag, setDeletingTag] = useState<string | null>(null);
     return (
         <>
         { /* If the tags have not yet been returned from the API call, show a loading indicator */ }
             {props.tags.length === 0 ? (
                 <>
                     <div className="center-items">
-                        <p>Loading tags...</p>
+                        <p>Loading tags to delete...</p>
                         <CircularProgress sx={{ color: 'inherit' }} />     
                     </div>
                 </>
@@ -37,9 +39,16 @@ function DeleteTagsTable(props: {tags: string[], handleDeleteTag: (tag: string) 
                                     <TableCell align="center" sx={{ color: 'white' }}>
                                         <button 
                                             onClick={() => {
-                                            props.handleDeleteTag(tag)
-                                        }} 
-                                        >Delete</button>
+                                                setDeletingTag(tag);
+                                                props.handleDeleteTag(tag).finally(() => {
+                                                    setDeletingTag(null);
+                                                });
+                                            }} 
+                                            disabled={deletingTag !== null}
+                                        >   
+                                            { /* Show 'Deleting...' if this tag is being deleted, otherwise show 'Delete' */ }
+                                            {deletingTag === tag ? 'Deleting...' : 'Delete'}
+                                        </button>
                                     </TableCell>
                                 </TableRow>
                             ))}

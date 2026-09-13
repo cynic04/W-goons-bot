@@ -8,6 +8,8 @@ import type TagsType from '../types/TagsType'
 import { getTags, deleteTag } from '../services/FastAPI-backend'
 import { useState, useEffect } from 'react'
 import DeleteTagsTable from '../components/DeleteTagsTable'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 function DeleteTagsPage() {
     const [tags, setTags] = useState<string[]>([]);
@@ -29,6 +31,7 @@ function DeleteTagsPage() {
         if (response) {
             const data = await response.json();
             setTags(data.tags);
+            toast.success(`Tag "${tag}" deleted successfully!`);
         }
     }
 
@@ -46,6 +49,10 @@ function DeleteTagsPage() {
                     </Paper>
                 </Container>
                 <DeleteTagsTable tags={tags} handleDeleteTag={handleDeleteTag} />
+                <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                />
             </div>
         </>
     );
