@@ -50,6 +50,7 @@ export async function getGoons() {
     }
 }
 
+// Gets a listing of all tags currently stored in the database
 export async function getTags() {
     try {
         const response = await fetch(`${API_URL}/api/get-tags`, {
@@ -61,6 +62,23 @@ export async function getTags() {
         return response;
     } catch (error) {
         console.error('Error making GET request to get tags:', error);
+        return null;
+    }
+}
+
+// Deletes a single tag from the database based on the provided tag
+export async function deleteTag(tagInfo: string) {
+    try {
+        const response = await fetch(`${API_URL}/api/delete-tag`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: tagInfo,
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making DELETE request:', error);
         return null;
     }
 }
