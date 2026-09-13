@@ -3,7 +3,8 @@ import {
     Container,
     CircularProgress,
     FormControlLabel,
-    Checkbox
+    Checkbox,
+    Button
 } from '@mui/material'; 
 import { getGoons, getTags } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
@@ -90,6 +91,17 @@ function ViewGoons() {
                     label="Enable Randomized Tag Combination"
                 />
                 ) : null}
+                <br />
+                <Button
+                    variant="contained"
+                    size="large"
+                    onClick={fetchGoons}
+                    disabled={loading}
+                    sx={{ backgroundColor: '#313030', marginLeft: '1rem', textTransform: 'none' }}
+                    style={{ color: 'white'}}
+                >
+                    Reload Goons
+                </Button>
                 {goonsData.length > 0 && !loading ? (
                     <>  
                         <h2>Displaying 15 random posts with the tag{tagCombo ? `s: ${tagSelected.join(', ')}` : `: ${tagSelected[0]}`}</h2>
