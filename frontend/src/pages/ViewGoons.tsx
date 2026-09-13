@@ -63,6 +63,7 @@ function ViewGoons() {
     }, []);
 
     useEffect(() => {
+        if (loadFailed) setLoadFailed(false);
         fetchGoons();
     }, [tagCombo]);
     
