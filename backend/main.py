@@ -86,6 +86,7 @@ async def get_goons(tag_combo: bool = False):
                 random_tag = random.choice(tags)
             r34_response = requests.get(os.getenv("API_LINK_POSTS_R34") + f"&limit=15&tags={random_tag} -ai_generated -video sort:random")
             data_json = xmltodict.parse(r34_response.text)
+            random_tag = random_tag.split(" ")
             return {
                 "message": f"Goons with tag {random_tag} retrieved successfully!",
                 "tags": random_tag,
