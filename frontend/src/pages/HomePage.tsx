@@ -45,10 +45,10 @@ function HomePage() {
             }"
         </h3>
 
-        <p style={{ lineHeight: '2rem' }}>
+        <h4 style={{ lineHeight: '2rem' }}>
           Enter a tag below - this will be added to a list of tags on the backend. <br />
-          Then, navigate to the "View Goons" page to see the most recent posts with that tag.
-        </p>
+          Then, navigate to the "View Goons" page to see 15 random posts with the tags you've entered.
+        </h4>
 
         <TagInputForm />
       </Container>
