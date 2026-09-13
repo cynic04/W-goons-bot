@@ -21,7 +21,7 @@ function GoonCards({ goons }: { goons: any[] }) {
                         <Card className="goon-card" sx={{ backgroundColor: '#313030' }}>
                             <CardActionArea>
                                 <CardContent>
-                                    <a href={goon["@file_url"]}>
+                                    <a href={goon["@file_url"]} target="_blank" rel="noopener noreferrer">
                                         <img src={goon["@file_url"]} alt={`Goon ${index + 1}`} />
                                     </a>
                                 </CardContent>
