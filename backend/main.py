@@ -3,9 +3,9 @@
 
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
+from db_operations import get_tags_from_db, add_tag_to_db
 import os
 from dotenv import load_dotenv
-from supabase import create_client, Client
 from pydantic import BaseModel
 import random
 import json
@@ -45,7 +45,7 @@ async def root():
         "femboys, anyone?",
         "Jane Doe is peak goons and you're lying if you disagree.",
         "BOOBS!",
-        "the GoonsBot will get u right watch this."
+        "I'm shitting bricks rn gng"
     ]
     return {
         "message": random.choice(quotes_list)
@@ -58,63 +58,55 @@ async def add_tag(request: TagRequest):
     tag = request.tag
     # Ensure the tag is formatted correctly for R34 API requests
     tag = tag.replace(" ", "_")
-    supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
-    get_tags = supabase.table("goon_tags").select("tag_listing").eq("id", "1").execute()
+    get_tags = get_tags_from_db()
     if get_tags.data:
-        # get the listing of tags from this row and append it
+        # get the listing of tags from this row, append the new tag, and update the database
         tags = get_tags.data[0]["tag_listing"]["tags"]
-        # If there's a tag provided by the query params, append it to the list of tags and update the database
-        if tag:
-            tags.append(tag)
-            supabase.table("goon_tags").update({"tag_listing": {"tags": tags}}).eq("id", "1").execute()
-            return {
-                "message": "Tags set successfully!",
-            }
-    # If no tag is provided, return an error message
-    return {
-        "message": "No tag provided.",
-    }
+        tags.append(tag)
+        add_tag_to_db({"tag_listing": {"tags": tags}})
+        return {
+            "message": "Tags set successfully!",
+        }
 
 # Get 10 recently posted R34 posts with a random tag from the database
 # Returns the JSON formatted response from R34 and the tag that was used to fetch the posts
 @app.get("/api/get-goons", status_code=status.HTTP_200_OK)
 async def get_goons():
-    supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
-    get_tags = supabase.table("goon_tags").select("tag_listing").eq("id", "1").execute()
+    get_tags = get_tags_from_db()
     # If data is returned from the database, get the list of tags
     if get_tags.data:
-       tags = get_tags.data[0]["tag_listing"]["tags"]
-       # If there are tags in the list, choose a random tag and make a request to the Rule34 API to get posts with that tag
-       if tags:
+        tags = get_tags.data[0]["tag_listing"]["tags"]
+        # If there are tags in the list, choose a random tag and make a request to the Rule34 API to get posts with that tag
+        if tags:
             random_tag = random.choice(tags)
             r34_response = requests.get(os.getenv("API_LINK_POSTS_R34") + f"&limit=15&tags={random_tag} -ai_generated -video sort:random")
             data_json = xmltodict.parse(r34_response.text)
-
             return {
                 "message": f"Goons with tag {random_tag} retrieved successfully!",
                 "tags": random_tag,
                 "data": data_json
             }
-       
-    return {
-        "message": "No goons found.",
-        "tags": [],
-        "data": []
-    }
+        else:
+            return {
+                "message": "No goons found.",
+                "tags": [],
+                "data": []
+            }
+    
 
 # Returns all tags stored in the database under our global user
 @app.get("/api/get-tags", status_code=status.HTTP_200_OK)
 async def get_tags():
-    supabase: Client = create_client(DATABASE_URL, DATABASE_KEY)
-    get_tags = supabase.table("goon_tags").select("tag_listing").eq("id", "1").execute()
+    get_tags = get_tags_from_db()
     if get_tags.data:
         tags = get_tags.data[0]["tag_listing"]["tags"]
         return {
             "message": "Tags retrieved successfully!",
             "tags": tags
         }
-    return {
-        "message": "No tags found in the database.",
-        "tags": []
-    }
-            
+    else:
+        return {
+            "message": "No tags found in the database.",
+            "tags": []
+        }
+                
