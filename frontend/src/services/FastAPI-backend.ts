@@ -35,9 +35,9 @@ export async function addTag(tagInfo: string) {
 }
 
 // Grabs 10 random goons based on a single randomly selected tag from the database
-export async function getGoons() {
+export async function getGoons(tagCombo: boolean) {
     try {
-        const response = await fetch(`${API_URL}/api/get-goons`, {
+        const response = await fetch(`${API_URL}/api/get-goons?tag_combo=${tagCombo}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

@@ -2,6 +2,9 @@ import {
     Paper,
     Container,
     CircularProgress,
+    FormControlLabel,
+    Checkbox,
+    Button
 } from '@mui/material'; 
 import { getGoons, getTags } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
@@ -13,26 +16,32 @@ function ViewGoons() {
     // Same pattern as HomePage, but this time we fetch data from the get_goons endpoint
     // Eventually this will display images, I just need it to be a JSON for now
     const [goonsData, setGoonsData] = useState<any[]>([]);
-    const [tagSelected, setTagSelected] = useState<string>('');
+    const [tagSelected, setTagSelected] = useState<string[]>([]);
     const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
     const [loadFailed, setLoadFailed] = useState<boolean>(false);
     const [noGoonsFound, setNoGoonsFound] = useState<boolean>(false);
+    const [tagCombo, setTagCombo] = useState<boolean>(false);
 
     async function fetchGoons() {
-        const response = await getGoons();
+        setLoading(true);
+        const response = await getGoons(tagCombo);
         if (!response) {
             console.error('Failed to fetch goons from the backend');
             setLoadFailed(true);
+            setLoading(false);
             return;
         }
         const jsonData = await response.json();
         if (jsonData.data.posts === undefined) {
             setNoGoonsFound(true);
+            setLoading(false);
             return;
         }
         const goons = jsonData.data.posts.post;
         setGoonsData(goons);
         setTagSelected(jsonData.tags);
+        setLoading(false);
     }
 
     async function fetchTags() {
@@ -48,11 +57,16 @@ function ViewGoons() {
         }
     }
 
-    // Call the API handler function when the page loads
+    // Fetch goons and fetch tags both happen on component mount
+    // Fetch goons is set to trigger whenever the tag combo flag is changed
     useEffect(() => {
         fetchTags();
-        fetchGoons();
     }, []);
+
+    useEffect(() => {
+        if (loadFailed) setLoadFailed(false);
+        fetchGoons();
+    }, [tagCombo]);
     
     return (
         <>
@@ -62,9 +76,35 @@ function ViewGoons() {
                         <h1>View Goons</h1>
                     </Paper>
                 </Container>
-                {goonsData.length > 0 ? (
+                {tagsInDatabase.length > 2 ? (
+                    <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={tagCombo}
+                            onChange={(e) => setTagCombo(e.target.checked)}
+                            color="primary"
+                            size="large"
+                            sx={{ color: 'white' }}
+                        />
+                    }
+                    sx={{ color: 'white' }}
+                    label="Enable Randomized Tag Combination"
+                />
+                ) : null}
+                <br />
+                <Button
+                    variant="contained"
+                    size="large"
+                    onClick={fetchGoons}
+                    disabled={loading}
+                    sx={{ backgroundColor: '#313030', marginLeft: '1rem', textTransform: 'none' }}
+                    style={{ color: 'white'}}
+                >
+                    Reload Goons
+                </Button>
+                {goonsData.length > 0 && !loading ? (
                     <>  
-                        <h2>Displaying 15 random posts with the tag: <b>{tagSelected}</b></h2>
+                        <h2>Displaying 15 random posts with the tag{tagCombo ? `s: ${tagSelected.join(', ')}` : `: ${tagSelected[0]}`}</h2>
                         <h3>Current listing of tags in the database: {tagsInDatabase.join(', ')}</h3>
                         <GoonCards goons={goonsData} />
                     </>
@@ -75,11 +115,13 @@ function ViewGoons() {
                 ) : noGoonsFound ? (
                     <p>No goons found.</p>
                     
-                ) : (
+                ) : loading ? (
                     <>
                         <p>Loading goons...</p>
                         <CircularProgress sx={{ color: 'white'}} aria-label="Loading goons" />
                     </>
+                ) : (
+                    <p>No goons to display.</p>
                 )}
             </div>
         </>

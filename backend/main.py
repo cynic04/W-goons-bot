@@ -51,49 +51,6 @@ async def root():
         "message": random.choice(quotes_list)
     }
 
-# Supabase test endpoint to check if the database connection is working
-# DOCS: https://supabase.com/docs/reference/python/introduction
-@app.post("/api/add-tag", status_code=status.HTTP_201_CREATED)
-async def add_tag(request: TagRequest):
-    tag = request.tag
-    # Ensure the tag is formatted correctly for R34 API requests
-    tag = tag.replace(" ", "_")
-    get_tags = get_tags_from_db()
-    if get_tags.data:
-        # get the listing of tags from this row, append the new tag, and update the database
-        tags = get_tags.data[0]["tag_listing"]["tags"]
-        tags.append(tag)
-        add_tag_to_db({"tag_listing": {"tags": tags}})
-        return {
-            "message": "Tags set successfully!",
-        }
-
-# Get 10 recently posted R34 posts with a random tag from the database
-# Returns the JSON formatted response from R34 and the tag that was used to fetch the posts
-@app.get("/api/get-goons", status_code=status.HTTP_200_OK)
-async def get_goons():
-    get_tags = get_tags_from_db()
-    # If data is returned from the database, get the list of tags
-    if get_tags.data:
-        tags = get_tags.data[0]["tag_listing"]["tags"]
-        # If there are tags in the list, choose a random tag and make a request to the Rule34 API to get posts with that tag
-        if tags:
-            random_tag = random.choice(tags)
-            r34_response = requests.get(os.getenv("API_LINK_POSTS_R34") + f"&limit=15&tags={random_tag} -ai_generated -video sort:random")
-            data_json = xmltodict.parse(r34_response.text)
-            return {
-                "message": f"Goons with tag {random_tag} retrieved successfully!",
-                "tags": random_tag,
-                "data": data_json
-            }
-        else:
-            return {
-                "message": "No goons found.",
-                "tags": [],
-                "data": []
-            }
-    
-
 # Returns all tags stored in the database under our global user
 @app.get("/api/get-tags", status_code=status.HTTP_200_OK)
 async def get_tags():
@@ -108,6 +65,66 @@ async def get_tags():
         return {
             "message": "No tags found in the database.",
             "tags": []
+        }
+
+# Get 10 recently posted R34 posts with a random tag from the database
+# Returns the JSON formatted response from R34 and the tag that was used to fetch the posts
+@app.get("/api/get-goons", status_code=status.HTTP_200_OK)
+async def get_goons(tag_combo: bool = False):
+    get_tags = get_tags_from_db()
+    # If data is returned from the database, get the list of tags
+    if get_tags.data:
+        tags = get_tags.data[0]["tag_listing"]["tags"]
+        # Check the tag_combo flag - if false, return one random tag
+        # If true, check to make sure there are at least 2 tags, and then determine how many of those tags to combo
+        if tags:
+            if tag_combo and len(tags) > 1:
+                num_tags_to_combo = random.randint(2, len(tags))
+                random_tag = " ".join(random.sample(tags, num_tags_to_combo))
+            else:
+                random_tag = random.choice(tags)
+
+            r34_response = requests.get(os.getenv("API_LINK_POSTS_R34") + f"&limit=15&tags={random_tag} -ai_generated -video sort:random")
+            data_json = xmltodict.parse(r34_response.text)
+            random_tag = random_tag.split(" ")
+            if data_json["posts"]["@count"] == "0":
+                return {
+                    "message": "No goons found.",
+                    "tags": random_tag,
+                    "data": []
+                }
+            else:
+                return {
+                    "message": f"Goons with tag {random_tag} retrieved successfully!",
+                    "tags": random_tag,
+                    "data": data_json
+                }
+        # If no tags are found in the database, return this reponse
+        else:
+            return {
+                "message": "No goons found.",
+                "tags": [],
+                "data": []
+            }
+
+# Add a new tag to the database under our global user
+@app.post("/api/add-tag", status_code=status.HTTP_201_CREATED)
+async def add_tag(request: TagRequest):
+    tag = request.tag
+    # Ensure the tag is formatted correctly for R34 API requests
+    tag = tag.replace(" ", "_")
+    get_tags = get_tags_from_db()
+    if get_tags.data:
+        # get the listing of tags from this row, append the new tag, and update the database
+        tags = get_tags.data[0]["tag_listing"]["tags"]
+        tags.append(tag)
+        add_tag_to_db({"tag_listing": {"tags": tags}})
+        return {
+            "message": "Tags set successfully!",
+        }
+    else:
+        return {
+            "message": "Failed to add tag to the database.",
         }
 
 # Delete a single tag from the database under our global user

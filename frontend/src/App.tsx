@@ -5,39 +5,35 @@ import DeleteTagsPage from './pages/DeleteTagsPage.tsx'
 import ViewGoons from './pages/ViewGoons.tsx'
 import './css/NavBar.css'
 import './css/Buttons.css'
+import { Button } from '@mui/material'
 
 function App() {
+  const buttonText: string[] = ["Home", "View Goons", "Select Tags", "Delete Tags"];
   return (
     <>
       <nav className="nav-bar">
-        <NavLink
-          to="/"
-          end
-          className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
-        >
-          Home
-        </NavLink>
-
-        <NavLink
-          to="/view-goons"
-          className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
-        >
-          View Goons
-        </NavLink>
-
-        <NavLink
-          to="/select-tags"
-          className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
-        >
-          Select Tags
-        </NavLink>
-
-        <NavLink
-          to="/delete-tags"
-          className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
-        >
-          Delete Tags
-        </NavLink>
+        {buttonText.map((currentText, index) => {
+          // Determine path for the text based on its value
+          // Home maps to '/', other pages map to their lowercase, hyphenated names
+          // i.e. "View Goons".toLowercase() = "view goons", then replace(" ", "-") = "view-goons"
+          const path = currentText === "Home" ? '/' : `/${currentText.toLowerCase().replace(" ", "-")}`;
+          return (
+            <NavLink
+              key={index}
+              to={path}
+              end={currentText === "Home"}
+              className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
+            >
+              <Button
+                variant="contained"
+                sx={{ backgroundColor: '#000000', color: 'white', textTransform: 'none' }}
+                style={{ color: "white" }}
+              >
+                {currentText}
+              </Button>
+            </NavLink>
+          );
+        })}
       </nav>
 
       <Routes>

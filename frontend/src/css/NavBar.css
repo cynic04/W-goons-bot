@@ -1,30 +1,9 @@
 .nav-bar {
     display: flex;
     align-items: flex-start;
-    margin: 0 auto;
+  gap: 1rem;
     height: 60px;
     width: 100%;
-}
-
-/* Copied style from the button global */
-.nav-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 1.2em;
-  margin-right: 1em;
-  font-size: 0.8em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-  transition: background-color 0.25s;
-}
-
-.nav-button:hover {
-  border-color: #646cff;
-  background-color: #646cff;
-  color: #000000;
 }
 
 /* Whichever page is active inherits the nav-button styling and adds a border around it*/

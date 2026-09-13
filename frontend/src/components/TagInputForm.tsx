@@ -67,6 +67,7 @@ function TagInputForm() {
                 disabled={isSubmitting} 
                 variant="contained" 
                 sx={{ backgroundColor: '#000000', color: 'white', textTransform: 'none' }}
+                style={{ color: "white" }}
                 >{buttonText}
             </Button>
         </form>
