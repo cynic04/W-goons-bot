@@ -24,9 +24,9 @@ function App() {
         </Button>
       </div>
       <Drawer 
+        anchor="top"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        sx={{ width: '250px' }}
        >
         {buttonText.map((currentText, index) => (
           <NavLink
@@ -35,12 +35,13 @@ function App() {
             // Home maps to '/', other pages map to their lowercase, hyphenated names
             to={currentText === "Home" ? '/' : `/${currentText.toLowerCase().replace(" ", "-")}`}
             className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
+            style={{ textAlign: 'center' }}
           >
             <p>{currentText}</p>
           </NavLink>
         ))}
       </Drawer>
-      
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/select-tags" element={<SelectTagsPage />} />

@@ -1,5 +1,12 @@
+.nav-button {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+}
+
 /* Whichever page is active inherits the nav-button styling and adds a border around it*/
 .nav-button.active-page {
   border: 2px solid;
-  border-color: #646cff;
+  border-color: black;
 }
