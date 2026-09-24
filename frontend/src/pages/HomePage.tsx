@@ -40,11 +40,10 @@ function HomePage() {
         <h3 style={{ lineHeight: '2rem' }}>
           <b>A quote from our lovely GoonsBot backend:</b><br />
           "{loadFailed ? 'Quote failed to load D:' 
-            : quote ? quote : 
-              <>
-                <p>Loading... </p>
-                <CircularProgress size={20} />
-              </> 
+            : quote ? quote :
+            <>
+              Loading...  <CircularProgress size={20} />
+            </>
             }"
         </h3>
 

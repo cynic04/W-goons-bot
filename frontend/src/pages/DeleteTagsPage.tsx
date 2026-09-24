@@ -52,7 +52,7 @@ function DeleteTagsPage() {
             <div className="center-items">
                 <Container maxWidth="md" sx={{ marginBottom: '4rem' }}>
                     <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
-                        <h1>Delete Tags</h1>
+                        <h1>View/Delete Tags</h1>
                     </Paper>
                 </Container>
                 <DeleteTagsTable tags={tags} handleDeleteTag={handleDeleteTag} />
