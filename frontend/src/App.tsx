@@ -9,7 +9,7 @@ import './css/Buttons.css'
 import { Button, Drawer } from '@mui/material'
 
 function App() {
-  const buttonText: string[] = ["Home", "View Goons", "Select Tags", "Delete Tags"];
+  const buttonText: string[] = ["Home", "View Goons", "Select Tags", "View and Delete Tags"];
   const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <>
@@ -33,7 +33,9 @@ function App() {
             key={index}
             // Determine the path for the current navigation link based on its text
             // Home maps to '/', other pages map to their lowercase, hyphenated names
-            to={currentText === "Home" ? '/' : `/${currentText.toLowerCase().replace(" ", "-")}`}
+            // Regex expression: / to enclose the expression, \s is the space character, + means "one or more occurrences of this regex"
+            // g is the global flag - this means "find all matches in the string"
+            to={currentText === "Home" ? '/' : currentText.toLowerCase().replace(/\s+/g, "-")}
             className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
             style={{ textAlign: 'center' }}
           >
@@ -46,7 +48,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/select-tags" element={<SelectTagsPage />} />
         <Route path="/view-goons" element={<ViewGoons />} />
-        <Route path="/delete-tags" element={<DeleteTagsPage />} />
+        <Route path="/view-and-delete-tags" element={<DeleteTagsPage />} />
       </Routes>
     </>
   )

@@ -4,13 +4,17 @@ import {
     CircularProgress,
     FormControlLabel,
     Checkbox,
-    Button
+    Button,
+    Stack,
+    Chip
 } from '@mui/material'; 
 import { getGoons, getTags } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
 import '../css/GoonCards.css';
 import '../css/CenterItems.css';
 import GoonCards from '../components/GoonCards.tsx';
+import { NavLink } from 'react-router-dom';
+
 
 function ViewGoons() {
     // Same pattern as HomePage, but this time we fetch data from the get_goons endpoint
@@ -76,39 +80,64 @@ function ViewGoons() {
                         <h1>View Goons</h1>
                     </Paper>
                 </Container>
-                {tagsInDatabase.length >= 2 ? (
-                    <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={tagCombo}
-                            onChange={(e) => setTagCombo(e.target.checked)}
-                            color="primary"
-                            size="large"
-                            sx={{ color: 'white' }}
-                        />
-                    }
-                    sx={{ color: 'white' }}
-                    label="Enable Randomized Tag Combination"
-                />
-                ) : null}
-                <br />
-                <Button
-                    variant="contained"
-                    size="large"
-                    onClick={fetchGoons}
-                    disabled={loading}
-                    sx={{ backgroundColor: '#313030', marginLeft: '1rem', textTransform: 'none' }}
-                    style={{ color: 'white'}}
-                >
-                    Reload Goons
-                </Button>
+                {/* If goons load properly, display:
+                - 15 random posts
+                - The tags used to retrieve those posts
+                - The images of those posts
+                - Options to reload the posts, view/delete tags in the database, and enable tag randomization (if 2 or more tags are in the database)
+                */}
                 {goonsData.length > 0 && !loading ? (
                     <>  
-                        <h2>Displaying 15 random posts with the tag{tagCombo ? `s: ${tagSelected.join(', ')}` : `: ${tagSelected[0]}`}</h2>
-                        <h3>Current listing of tags in the database: {tagsInDatabase.join(', ')}</h3>
+                    <div style={{ lineHeight: "40px" }}>
+                        <h2>Displaying 15 random posts with the following tag(s) selected</h2>
+                        <Stack 
+                            direction="row" 
+                            spacing={2}
+                            sx={{ justifyContent: 'center', 
+                                '& .MuiChip-label': {
+                                    fontSize: '22px'
+                                }
+                            }} >
+                        {tagSelected.map((tag) => (
+                            <Chip label={tag} key={tag} color="primary" variant="outlined" />
+                        ))}
+                        </Stack>
+                        {tagsInDatabase.length >= 2 ? (
+                            <FormControlLabel
+                            sx={{ color: 'white', margin: '20px' }}
+                            label="Enable Randomized Tag Combination"
+                            control={
+                                <Checkbox
+                                    checked={tagCombo}
+                                    onChange={(e) => setTagCombo(e.target.checked)}
+                                    color="primary"
+                                    size="large"
+                                    sx={{ color: 'white' }} />
+                            } />
+                        ) : null}
+                        <br />
+                        <Button
+                            variant="contained"
+                            size="large"
+                            onClick={fetchGoons}
+                            disabled={loading}
+                            sx={{ backgroundColor: '#313030', textTransform: 'none', marginBottom: '20px' }}
+                            style={{ color: 'white'}}>
+                            Reload Goons
+                        </Button>
+                        <br />
+                        <NavLink
+                            to='/view-and-delete-tags'
+                            style={{ color: 'white', textDecoration: 'none' }}
+                        >
+                            <Button variant='contained' sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
+                                View/Delete Tags In Database
+                            </Button>
+                        </NavLink>
                         <GoonCards goons={goonsData} />
+                    </div>
                     </>
-
+                // Error handling - if the load fails, if there are no goons, and if loading is in progress, display something
                 ) : loadFailed ? (
                     <p style={{ color: 'red' }}>Failed to load goons. Please try again later.</p>
 
@@ -121,7 +150,18 @@ function ViewGoons() {
                         <CircularProgress sx={{ color: 'white'}} aria-label="Loading goons" />
                     </>
                 ) : (
+                    <>
                     <p>No goons to display.</p>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            onClick={fetchGoons}
+                            disabled={loading}
+                            sx={{ backgroundColor: '#313030', textTransform: 'none', marginBottom: '20px' }}
+                            style={{ color: 'white'}}>
+                            Reload Goons
+                        </Button>
+                    </>
                 )}
             </div>
         </>
