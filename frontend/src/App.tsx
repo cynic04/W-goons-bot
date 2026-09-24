@@ -13,30 +13,34 @@ function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <>
-      <nav className="nav-bar">
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Button
+          variant="contained"
           onClick={() => setDrawerOpen(true)}
-          style={{color: 'white', textTransform: 'none', fontSize: '25px' }}
+          sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '35px' }}
+          style={{ color: 'white' }}
         >
           Menu
         </Button>
-       <Drawer 
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
-        >
-          {buttonText.map((currentText, index) => (
-            <NavLink
-              key={index}
-              // Determine the path for the current navigation link based on its text
-              // Home maps to '/', other pages map to their lowercase, hyphenated names
-              to={currentText === "Home" ? '/' : `/${currentText.toLowerCase().replace(" ", "-")}`}
-            >
-              <p>{currentText}</p>
-            </NavLink>
-          ))}
-        </Drawer>
-      </nav>
-
+      </div>
+      <Drawer 
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        sx={{ width: '250px' }}
+       >
+        {buttonText.map((currentText, index) => (
+          <NavLink
+            key={index}
+            // Determine the path for the current navigation link based on its text
+            // Home maps to '/', other pages map to their lowercase, hyphenated names
+            to={currentText === "Home" ? '/' : `/${currentText.toLowerCase().replace(" ", "-")}`}
+            className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
+          >
+            <p>{currentText}</p>
+          </NavLink>
+        ))}
+      </Drawer>
+      
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/select-tags" element={<SelectTagsPage />} />
