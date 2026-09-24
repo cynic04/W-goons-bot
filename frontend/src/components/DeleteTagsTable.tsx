@@ -20,13 +20,13 @@ function DeleteTagsTable(props: {tags: string[], handleDeleteTag: (tag: string) 
             {props.tags.length === 0 ? (
                 <>
                     <div className="center-items">
-                        <p>Loading tags to delete...</p>
+                        <p>Loading tags...</p>
                         <CircularProgress sx={{ color: 'inherit' }} />     
                     </div>
                 </>
             ) : props.tags[0] === 'None' ? (
                 <div className="center-items">
-                    <p>No tags available to delete.</p>
+                    <p>No tags available. <a href='/'>Go add some!</a></p>
                 </div>
                 
             ) : (
