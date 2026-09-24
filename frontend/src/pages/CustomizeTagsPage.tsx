@@ -11,7 +11,7 @@ import DeleteTagsTable from '../components/DeleteTagsTable'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 
-function DeleteTagsPage() {
+function CustomizeTagsPage() {
     const [tags, setTags] = useState<string[]>([]);
 
     // Function that fetches the tags from the backend API and updates the state
@@ -52,8 +52,9 @@ function DeleteTagsPage() {
             <div className="center-items">
                 <Container maxWidth="md" sx={{ marginBottom: '4rem' }}>
                     <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
-                        <h1>View/Delete Tags</h1>
+                        <h1>Customize Tags</h1>
                     </Paper>
+                <p>For now, all you can do is delete tags from here... future features TBD!</p>
                 </Container>
                 <DeleteTagsTable tags={tags} handleDeleteTag={handleDeleteTag} />
                 <ToastContainer
@@ -65,4 +66,4 @@ function DeleteTagsPage() {
     );
 }
 
-export default DeleteTagsPage;
+export default CustomizeTagsPage;

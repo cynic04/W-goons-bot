@@ -127,11 +127,11 @@ function ViewGoons() {
                         </Button>
                         <br />
                         <NavLink
-                            to='/view-and-delete-tags'
+                            to='/customize-tags'
                             style={{ color: 'white', textDecoration: 'none' }}
                         >
                             <Button variant='contained' sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
-                                View/Delete Tags In Database
+                                View/Customize Tags
                             </Button>
                         </NavLink>
                         <GoonCards goons={goonsData} />
