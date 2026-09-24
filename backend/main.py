@@ -21,7 +21,12 @@ origins = [
 DATABASE_URL = os.getenv("DATABASE_URL")
 DATABASE_KEY = os.getenv("DATABASE_KEY")
 
-app = FastAPI()
+# Initialize FastAPI app, provide a description for API docs reasons
+app = FastAPI(
+    title="W-goons API",
+    description="API for managing and retrieving R34 goons and tags",
+    version="1.0.0"
+)
 
 # Add CORS middleware to allow requests from the frontend
 app.add_middleware(
@@ -37,7 +42,29 @@ app.add_middleware(
 class TagRequest(BaseModel):
     tag: str
 
-@app.get("/")
+class MessageOnlyResponse(BaseModel):
+    message: str
+
+class TagsResponse(BaseModel):
+    message: str
+    tags: list
+
+class GoonsResponse(BaseModel):
+    message: str
+    tags: list
+    data: dict | list
+    
+class MessageWithTagsResponse(BaseModel):
+    message: str
+    tags: list
+
+@app.get(
+    "/",
+    status_code=status.HTTP_200_OK,
+    description="Root endpoint, acts as a visual health check.",
+    response_description="Returns a random quote from the server.",
+    response_model=MessageOnlyResponse
+)
 async def root():
     quotes_list = [
         "yeah... I got nothin.",
@@ -51,8 +78,13 @@ async def root():
         "message": random.choice(quotes_list)
     }
 
-# Returns all tags stored in the database under our global user
-@app.get("/api/get-tags", status_code=status.HTTP_200_OK)
+@app.get(
+    "/api/get-tags", 
+    status_code=status.HTTP_200_OK,
+    description="Retrieve all tags stored in the database under the global user.",
+    response_description="Returns a list of tags.",
+    response_model=TagsResponse
+)
 async def get_tags():
     get_tags = get_tags_from_db()
     if get_tags.data:
@@ -67,9 +99,13 @@ async def get_tags():
             "tags": []
         }
 
-# Get 10 recently posted R34 posts with a random tag from the database
-# Returns the JSON formatted response from R34 and the tag that was used to fetch the posts
-@app.get("/api/get-goons", status_code=status.HTTP_200_OK)
+@app.get(
+    "/api/get-goons",
+    status_code=status.HTTP_200_OK,
+    description="Get 15 random R34 posts with a tag/combo of tags from the database.",
+    response_description="Returns the JSON formatted response from R34 and the tag(s) that was used to fetch the posts.",
+    response_model=GoonsResponse
+)
 async def get_goons(tag_combo: bool = False):
     get_tags = get_tags_from_db()
     # If data is returned from the database, get the list of tags
@@ -107,8 +143,13 @@ async def get_goons(tag_combo: bool = False):
                 "data": []
             }
 
-# Add a new tag to the database under our global user
-@app.post("/api/add-tag", status_code=status.HTTP_201_CREATED)
+@app.post(
+    "/api/add-tag",
+    status_code=status.HTTP_201_CREATED,
+    description="Add a new tag to the database under the global user.",
+    response_description="Returns a message indicating whether the tag was added successfully.",
+    response_model=MessageOnlyResponse
+)
 async def add_tag(request: TagRequest):
     tag = request.tag
     # Ensure the tag is formatted correctly for R34 API requests
@@ -127,8 +168,13 @@ async def add_tag(request: TagRequest):
             "message": "Failed to add tag to the database.",
         }
 
-# Delete a single tag from the database under our global user
-@app.delete("/api/delete-tag", status_code=status.HTTP_200_OK)
+@app.delete(
+    "/api/delete-tag",
+    status_code=status.HTTP_200_OK,
+    description="Delete a single tag from the database under the global user.",
+    response_description="Returns a message indicating whether the tag was deleted successfully + the remaining tags in the database.",
+    response_model=MessageWithTagsResponse
+)
 async def delete_tag(request: TagRequest):
     tag = request.tag
     get_tags = get_tags_from_db()
