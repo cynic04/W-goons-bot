@@ -1,39 +1,40 @@
 import { NavLink,Routes, Route } from 'react-router-dom'
+import { useState } from 'react'
 import HomePage from './pages/HomePage.tsx'
 import SelectTagsPage from './pages/SelectTagsPage.tsx'
 import DeleteTagsPage from './pages/DeleteTagsPage.tsx'
 import ViewGoons from './pages/ViewGoons.tsx'
 import './css/NavBar.css'
 import './css/Buttons.css'
-import { Button } from '@mui/material'
+import { Button, Drawer } from '@mui/material'
 
 function App() {
   const buttonText: string[] = ["Home", "View Goons", "Select Tags", "Delete Tags"];
+  const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <>
       <nav className="nav-bar">
-        {buttonText.map((currentText, index) => {
-          // Determine path for the text based on its value
-          // Home maps to '/', other pages map to their lowercase, hyphenated names
-          // i.e. "View Goons".toLowercase() = "view goons", then replace(" ", "-") = "view-goons"
-          const path = currentText === "Home" ? '/' : `/${currentText.toLowerCase().replace(" ", "-")}`;
-          return (
+        <Button
+          onClick={() => setDrawerOpen(true)}
+          style={{color: 'white', textTransform: 'none', fontSize: '25px' }}
+        >
+          Menu
+        </Button>
+       <Drawer 
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+        >
+          {buttonText.map((currentText, index) => (
             <NavLink
               key={index}
-              to={path}
-              end={currentText === "Home"}
-              className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
+              // Determine the path for the current navigation link based on its text
+              // Home maps to '/', other pages map to their lowercase, hyphenated names
+              to={currentText === "Home" ? '/' : `/${currentText.toLowerCase().replace(" ", "-")}`}
             >
-              <Button
-                variant="contained"
-                sx={{ backgroundColor: '#000000', color: 'white', textTransform: 'none' }}
-                style={{ color: "white" }}
-              >
-                {currentText}
-              </Button>
+              <p>{currentText}</p>
             </NavLink>
-          );
-        })}
+          ))}
+        </Drawer>
       </nav>
 
       <Routes>
