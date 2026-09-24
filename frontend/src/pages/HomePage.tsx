@@ -41,7 +41,10 @@ function HomePage() {
           <b>A quote from our lovely GoonsBot backend:</b><br />
           "{loadFailed ? 'Quote failed to load D:' 
             : quote ? quote : 
-              <CircularProgress size={20} />
+              <>
+                <p>Loading... </p>
+                <CircularProgress size={20} />
+              </> 
             }"
         </h3>
 
