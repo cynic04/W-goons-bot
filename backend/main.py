@@ -39,6 +39,7 @@ app.add_middleware(
 
 # Request body model for adding a tag
 # Endpoint expects this structure from the request body when it is received
+# Frontend also expects this from the response body when the response is returned
 class TagRequest(BaseModel):
     tag: str
 
@@ -107,6 +108,7 @@ async def get_tags():
     response_model=GoonsResponse
 )
 async def get_goons(tag_combo: bool = False):
+    API_URL = os.getenv("API_LINK_POSTS_R34") 
     get_tags = get_tags_from_db()
     # If data is returned from the database, get the list of tags
     if get_tags.data:
@@ -119,17 +121,28 @@ async def get_goons(tag_combo: bool = False):
                 random_tag = " ".join(random.sample(tags, num_tags_to_combo))
             else:
                 random_tag = random.choice(tags)
-
-            r34_response = requests.get(os.getenv("API_LINK_POSTS_R34") + f"&limit=15&tags={random_tag} -ai_generated -video sort:random")
-            data_json = xmltodict.parse(r34_response.text)
+            r34_response = requests.get(API_URL + f"&limit=15&tags={random_tag} -ai_generated -video sort:random")
+            data_json = json.loads(r34_response.text)
             random_tag = random_tag.split(" ")
-            if data_json["posts"]["@count"] == "0":
+            if len(data_json) <= 0:
                 return {
                     "message": "No goons found.",
                     "tags": random_tag,
                     "data": []
                 }
             else:
+                # filter the tag_info listing returned by the API so that it only returns artists to the frontend
+                # TODO: add functionality that takes this entire tag_info listing and does something with it
+                # The above will be the basis for our algorithmic tag parsing
+                index = 0
+                for item in data_json:
+                    new_tag_info_list = []
+                    tag_info = item["tag_info"]
+                    for tag in tag_info:
+                        if tag["type"] == 'artist':
+                            new_tag_info_list.append(tag)
+                    data_json[index]["tag_info"] = new_tag_info_list
+                    index += 1
                 return {
                     "message": f"Goons with tag {random_tag} retrieved successfully!",
                     "tags": random_tag,
