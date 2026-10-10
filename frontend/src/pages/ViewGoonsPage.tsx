@@ -102,7 +102,7 @@ function ViewGoons() {
                             <Chip label={tag} key={tag} color="primary" variant="outlined" />
                         ))}
                         </Stack>
-                        <h2>Click on a card to enlarge the image.</h2>
+                        <h2>Click on a card to enlarge the image and see who the artist is.</h2>
                         {tagsInDatabase.length >= 2 ? (
                             <FormControlLabel
                             sx={{ color: 'white', margin: '20px' }}
