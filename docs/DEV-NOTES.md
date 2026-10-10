@@ -32,3 +32,12 @@ Documentation for installation: https://docs.astral.sh/uv/getting-started/instal
 - ```./.venv/Scripts/Activate``` to activate your virtual environment
 
 Both actions update the pyproject.toml/uv.lock files if changes need to be made 
+
+# Goons related details
+### r34/e621/api docs
+- https://api.rule34.xxx/ --> API docs for r34
+- https://rule34.xxx/index.php?page=help&topic=cheatsheet --> cheatsheet, helps with filtering API calls on the backend
+- https://e621.net/help/api --> API docs for e621
+
+### Deployed app
+- https://w-goons-bot.vercel.app/
