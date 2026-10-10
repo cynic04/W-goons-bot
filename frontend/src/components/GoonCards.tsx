@@ -3,8 +3,10 @@ import {
     CardActionArea,
     CardContent,
     Dialog,
+    DialogActions,
     DialogContent,
-    DialogTitle
+    DialogTitle,
+    Button
 } from '@mui/material';
 import { useState } from 'react'
 import Grid from '@mui/material/Grid';
@@ -19,7 +21,6 @@ function GoonCards({ goons }: { goons: any[] }) {
     const [open, setOpen] = useState(false);
     const [indexSelected, setIndexSelected] = useState(-1)
     const [goonInformation, setGoonInformation] = useState({"@file_url": "not set yet"})
-
     return (
         <>
         <Grid container spacing={2}>
@@ -36,9 +37,6 @@ function GoonCards({ goons }: { goons: any[] }) {
                                 >
                                 <CardContent>
                                     <img src={goon["@file_url"]} alt={`Goon ${index + 1}`} />
-                                    {/* <a href={goon["@file_url"]} target="_blank" rel="noopener noreferrer">
-                                        <img src={goon["@file_url"]} alt={`Goon ${index + 1}`} />
-                                    </a> */}
                                 </CardContent>
                             </CardActionArea>
                         </Card>
@@ -51,9 +49,31 @@ function GoonCards({ goons }: { goons: any[] }) {
                 </DialogTitle>
                 <DialogContent style={{ overflow: 'hidden' }}>
                     <a href={goonInformation["@file_url"]} target="_blank" rel="noopener noreferrer">
-                        <img style={{ objectFit: 'contain', width: '100%', height: '100%' }} src={goonInformation["@file_url"]} alt={`Goon ${indexSelected + 1}`} />
+                        <img className="goon-modal-img" src={goonInformation["@file_url"]} alt={`Goon ${indexSelected + 1}`} />
                     </a>
                 </DialogContent>
+                    <DialogActions>
+                        <Button
+                            variant='contained'
+                            sx={{ backgroundColor: '#313030', marginBottom: '20px' }}
+                            style={{ color: 'white'}}
+                            disabled={indexSelected <= 0}
+                            onClick={() => {
+                                setIndexSelected(indexSelected - 1);
+                                setGoonInformation(goons[indexSelected - 1]);
+                                }}
+                            >Previous Goon</Button>
+                        <Button
+                            variant='contained'
+                            sx={{ backgroundColor: '#313030', marginBottom: '20px' }}
+                            style={{ color: 'white'}}
+                            disabled={indexSelected >= 14}
+                            onClick={() => {
+                                setIndexSelected(indexSelected + 1);
+                                setGoonInformation(goons[indexSelected + 1]);
+                                }}
+                            >Next Goon</Button>
+                    </DialogActions>
             </Dialog>
         </>
     );
