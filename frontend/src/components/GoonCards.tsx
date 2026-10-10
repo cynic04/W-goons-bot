@@ -20,7 +20,7 @@ function GoonCards({ goons }: { goons: any[] }) {
     // md: medium screens
     const [open, setOpen] = useState(false);
     const [indexSelected, setIndexSelected] = useState(-1)
-    const [goonInformation, setGoonInformation] = useState({"@file_url": "not set yet"})
+    const [goonInformation, setGoonInformation] = useState({"file_url": "not set yet"})
     return (
         <>
         <Grid container spacing={2}>
@@ -36,7 +36,7 @@ function GoonCards({ goons }: { goons: any[] }) {
                                     setGoonInformation(goons[index])}}
                                 >
                                 <CardContent>
-                                    <img src={goon["@file_url"]} alt={`Goon ${index + 1}`} />
+                                    <img src={goon["file_url"]} alt={`Goon ${index + 1}`} />
                                 </CardContent>
                             </CardActionArea>
                         </Card>
@@ -48,8 +48,8 @@ function GoonCards({ goons }: { goons: any[] }) {
                     {`Goon ${indexSelected + 1}`}
                 </DialogTitle>
                 <DialogContent style={{ overflow: 'hidden' }}>
-                    <a href={goonInformation["@file_url"]} target="_blank" rel="noopener noreferrer">
-                        <img className="goon-modal-img" src={goonInformation["@file_url"]} alt={`Goon ${indexSelected + 1}`} />
+                    <a href={goonInformation["file_url"]} target="_blank" rel="noopener noreferrer">
+                        <img className="goon-modal-img" src={goonInformation["file_url"]} alt={`Goon ${indexSelected + 1}`} />
                     </a>
                 </DialogContent>
                     <DialogActions>

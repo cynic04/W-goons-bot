@@ -37,12 +37,12 @@ function ViewGoons() {
             return;
         }
         const jsonData = await response.json();
-        if (jsonData.data.posts === undefined) {
+        if (jsonData.data.length <= 0) {
             setNoGoonsFound(true);
             setLoading(false);
             return;
         }
-        const goons = jsonData.data.posts.post;
+        const goons = jsonData.data;
         setGoonsData(goons);
         setTagSelected(jsonData.tags);
         setLoading(false);
