@@ -89,7 +89,7 @@ function ViewGoons() {
                 {goonsData.length > 0 && !loading ? (
                     <>  
                     <div style={{ lineHeight: "40px" }}>
-                        <h2>Displaying 15 random posts with the following tag(s) selected</h2>
+                        <h2>Displaying 15 random posts with the following tag(s) selected:</h2>
                         <Stack 
                             direction="row" 
                             spacing={2}
@@ -102,6 +102,7 @@ function ViewGoons() {
                             <Chip label={tag} key={tag} color="primary" variant="outlined" />
                         ))}
                         </Stack>
+                        <h2>Click on a card to enlarge the image.</h2>
                         {tagsInDatabase.length >= 2 ? (
                             <FormControlLabel
                             sx={{ color: 'white', margin: '20px' }}
