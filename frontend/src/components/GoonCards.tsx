@@ -20,7 +20,7 @@ function GoonCards({ goons }: { goons: any[] }) {
     // md: medium screens
     const [open, setOpen] = useState(false);
     const [indexSelected, setIndexSelected] = useState(-1)
-    const [goonInformation, setGoonInformation] = useState({"file_url": "not set yet"})
+    const [goonInformation, setGoonInformation] = useState({"file_url": "not set yet", "tag_info": [{"tag": "not set yet"}]})
     return (
         <>
         <Grid container spacing={2}>
@@ -44,8 +44,8 @@ function GoonCards({ goons }: { goons: any[] }) {
                 ))}
             </Grid>
             <Dialog open={open} onClose={() => {setOpen(false)}}>
-                <DialogTitle style={{ textAlign: 'center' }}>
-                    {`Goon ${indexSelected + 1}`}
+                <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold'  }}>
+                    {`Artist: ${goonInformation["tag_info"].length > 0 ? goonInformation["tag_info"][0]["tag"] : "no artist attached to post"}`}
                 </DialogTitle>
                 <DialogContent style={{ overflow: 'hidden' }}>
                     <a href={goonInformation["file_url"]} target="_blank" rel="noopener noreferrer">

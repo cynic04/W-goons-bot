@@ -131,6 +131,18 @@ async def get_goons(tag_combo: bool = False):
                     "data": []
                 }
             else:
+                # filter the tag_info listing returned by the API so that it only returns artists to the frontend
+                # TODO: add functionality that takes this entire tag_info listing and does something with it
+                # The above will be the basis for our algorithmic tag parsing
+                index = 0
+                for item in data_json:
+                    new_tag_info_list = []
+                    tag_info = item["tag_info"]
+                    for tag in tag_info:
+                        if tag["type"] == 'artist':
+                            new_tag_info_list.append(tag)
+                    data_json[index]["tag_info"] = new_tag_info_list
+                    index += 1
                 return {
                     "message": f"Goons with tag {random_tag} retrieved successfully!",
                     "tags": random_tag,
