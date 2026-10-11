@@ -18,7 +18,6 @@ __pycache__/
 .ruff_cache/
 .pyre/
 .hypothesis/
-backend/request_testing.py
 
 # Python virtual environments
 .venv/

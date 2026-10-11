@@ -44,7 +44,7 @@ This API is frustratingly undocumented.
 The [Tags API](https://api.rule34.xxx/) states that there are only two parameters to add to the API; &id={}, and &limit={}. This is a flat out lie.
 
 You can also add these parameters:
-- &pid=[insert number]: the page ID, allows you to iterate down the list of tags using API calls
+- &pid=[insert number]: the page ID, allows you to iterate down the list of tags using API calls (based on trial and error, this goes up to ~615743?)
 - &order=[count, maybe others?]: sorts by count
 - &direction=[asc, desc, maybe others?]: returns in ascending or descending order
 
