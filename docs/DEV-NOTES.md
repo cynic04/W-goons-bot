@@ -39,5 +39,16 @@ Both actions update the pyproject.toml/uv.lock files if changes need to be made
 - https://rule34.xxx/index.php?page=help&topic=cheatsheet --> cheatsheet, helps with filtering API calls on the backend
 - https://e621.net/help/api --> API docs for e621
 
+### More about the r34 API
+This API is frustratingly undocumented.
+The [Tags API](https://api.rule34.xxx/) states that there are only two parameters to add to the API; &id={}, and &limit={}. This is a flat out lie.
+
+You can also add these parameters:
+- &pid=[insert number]: the page ID, allows you to iterate down the list of tags using API calls
+- &order=[count, maybe others?]: sorts by count
+- &orderby=[asc, desc, maybe others?]: returns in ascending or descending order
+
+These are pretty important operations that should be documented, kinda sucks that they're not
+
 ### Deployed app
 - https://w-goons-bot.vercel.app/
