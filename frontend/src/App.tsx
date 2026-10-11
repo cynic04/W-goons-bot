@@ -6,9 +6,10 @@ import ViewGoons from './pages/ViewGoonsPage.tsx'
 import './css/NavBar.css'
 import './css/Buttons.css'
 import { Button, Drawer, createTheme, ThemeProvider } from '@mui/material'
+import NewSelectTagsPage from './pages/NewSelectTagsPage.tsx'
 
 function App() {
-  const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags"];
+  const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags", "New Select Tags Page"];
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Creates a color theme that can be used in the ThemeProvider wrapper for the app
@@ -59,6 +60,7 @@ function App() {
           <Route path="/" element={<SelectTagsPage />} />
           <Route path="/view-goons" element={<ViewGoons />} />
           <Route path="/customize-tags" element={<DeleteTagsPage />} />
+          <Route path="/new-select-tags-page" element={<NewSelectTagsPage />} />
         </Routes>
       </ThemeProvider>
     </>
