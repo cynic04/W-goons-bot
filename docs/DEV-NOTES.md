@@ -46,7 +46,7 @@ The [Tags API](https://api.rule34.xxx/) states that there are only two parameter
 You can also add these parameters:
 - &pid=[insert number]: the page ID, allows you to iterate down the list of tags using API calls
 - &order=[count, maybe others?]: sorts by count
-- &orderby=[asc, desc, maybe others?]: returns in ascending or descending order
+- &direction=[asc, desc, maybe others?]: returns in ascending or descending order
 
 These are pretty important operations that should be documented, kinda sucks that they're not
 
