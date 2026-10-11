@@ -43,6 +43,7 @@ function GoonCards(props: { goons: any[] }) {
                     </Grid>
                 ))}
             </Grid>
+            {/* Goon card modal - opens when a card is clicked on the page */}
             <Dialog open={open} onClose={() => {setOpen(false)}}>
                 <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold'  }}>
                     {`Artist: ${goonInformation["tag_info"].length > 0 ? goonInformation["tag_info"][0]["tag"] : "no artist attached to post"}`}
