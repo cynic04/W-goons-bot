@@ -1,36 +1,30 @@
-import { useState } from "react";
-import tags from "../tags.json";
+import { Container, Paper } from "@mui/material";
+import "../css/CenterItems.css";
+import "../css/FlexContainer.css";
 
 function NewSelectTagsPage() {
-    const tagsFromJson: any[] = tags;
-    const [randomNumbers, setRandomNumbers] = useState<number[]>([]);
-    const [numbersGenerated, setNumbersGenerated] = useState(false);
-    
-    function twentyRandomNumbers() {
-        let iteration = 0
-        for (iteration; iteration <= 20; iteration++) {
-            let randomNumber = Math.floor(Math.random() * (100 - 0) + 0)
-            randomNumbers.push(randomNumber)
-            setRandomNumbers(randomNumbers);
-        }
-        setNumbersGenerated(true);
-        console.log(randomNumbers);
-    }
 
     return (
         <>
-            <div>
-                <h1>Select Tags</h1>
-                <button onClick={twentyRandomNumbers}>Generate Random Numbers</button>
-                {numbersGenerated && randomNumbers.map((number, index) => (
-                    <div key={index}>
-                        <h2>Tag {number}</h2>
-                        <p>{JSON.stringify(tagsFromJson[number])}</p>
-                    </div>
-                ))}
+            <Container className="center-items">
+                <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
+                    <h1 style={{ fontSize: '4rem' }}>WGoonsBot</h1>
+                    <p>We'll start loading the quote here instead.</p>
+                </Paper>
+            </Container>
+
+            <div className="flex-container">
+                <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
+                    <h2>Select Your Tags</h2>
+                    
+                </Paper>
+                <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
+                    <h2>Tags Selected</h2>
+                </Paper>
             </div>
         </>
-    );
+    )
 }
+
 
 export default NewSelectTagsPage;

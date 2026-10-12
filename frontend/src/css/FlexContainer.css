@@ -1,0 +1,27 @@
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 10px;
+    width: 100%;
+    max-width: 80rem;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.row {
+    /* Flex properties used here: grow=1, shrink=1, basis=0
+    Grow=1: the item can grow to use extra space
+    Shrink=1: the item can shrink if necessary
+    Basis=0: the initial size of the item before growing or shrinking
+    */
+    flex: 1 1 0;
+    display: flex;
+    justify-content: center;
+    overflow-wrap: anywhere;
+    align-items: center;
+    box-sizing: border-box;
+    border-radius: 15px;
+    min-width: 0;
+    padding: 10px;
+}
