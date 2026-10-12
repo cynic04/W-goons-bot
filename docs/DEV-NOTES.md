@@ -52,3 +52,26 @@ These are pretty important operations that should be documented, kinda sucks tha
 
 ### Deployed app
 - https://w-goons-bot.vercel.app/
+
+# CSS related details
+This language sucks ass to learn I can't lie
+
+### Some good notes to keep in mind as you chug forward with this
+Page formatting is a demon, but use FlexContainer.css as reference moving forward.
+
+```overflow-map: anywhere``` - wraps text in the CSS element you've defined
+
+Combining ```width: 100%``` with ```max-width: 80rem``` - width should expand to the entire screen, but the max width contains it so that it doesn't expand too far left or right
+
+```margin: 0 auto``` - zero top/bottom margins, automatic left/right margins. with the max-width limit described above, this definition ensures that the left-right margins keep the defined element centered properly
+
+### Understanding display: flex and its combination with justify-content + align-items
+First things first, Flexbox is a CSS layout system, which controls arrangement of items on the page (direction, spacing, alignment, how they should grow/shrink)
+
+In our FlexContainer.css file, we define the display as flex, so it now becomes a flex contianer. 
+
+```justify-content: center``` - center flex items along the main axis. If you define ```flex-direction: row```, that main axis becomes the horizontal axis.
+
+```align-items: center``` - center flex items along the cross axis, which would be the vertical axis assuming ```flex-direction: row```. The roles are switched (main axis=vertical, cross axis=horizontal) if you choose ```flex-direction: column```
+
+So, combining ```align-items: center``` and ```justify-content: center``` effectively centers flex children in both directions.
