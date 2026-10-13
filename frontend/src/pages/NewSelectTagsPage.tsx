@@ -3,7 +3,7 @@ import TagInputForm from "../components/TagInputForm.tsx";
 import "../css/CenterItems.css";
 import "../css/FlexContainer.css";
 
-function NewSelectTagsPage(props: { tagsInDatabase: string[] }) {
+function NewSelectTagsPage(props: { tagsInDatabase: string[], quote: string | null, loadFailed: boolean }) {
 
     return (
         <>
@@ -20,7 +20,10 @@ function NewSelectTagsPage(props: { tagsInDatabase: string[] }) {
                     <TagInputForm />
                 </Paper>
                 <Paper className="row" style={{ maxWidth: '15rem' }} elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
-                    <h2>Tags Selected</h2>
+                    <h2>Current Tags Selected</h2>
+                    {props.tagsInDatabase.map((tag, index) => (
+                        <p key={index}>{tag}</p>
+                    ))}
                 </Paper>
             </div>
         </>

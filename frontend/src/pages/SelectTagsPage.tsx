@@ -1,7 +1,5 @@
 import { Paper, Container, CircularProgress } from '@mui/material';
 import '../css/PaperCustomCss.css'
-import { useState, useEffect } from 'react'
-import { initialGetRequest } from '../services/FastAPI-backend.ts'
 import TagInputForm from '../components/TagInputForm.tsx'
 import '../css/CenterItems.css'
 

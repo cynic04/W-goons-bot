@@ -5,8 +5,8 @@ import {
 import '../css/CenterItems.css'
 import '../css/PaperCustomCss.css'
 import type TagsType from '../types/TagsType'
-import { getTags, deleteTag } from '../services/FastAPI-backend'
-import { useState, useEffect } from 'react'
+import { deleteTag } from '../services/FastAPI-backend'
+import { useState } from 'react'
 import DeleteTagsTable from '../components/DeleteTagsTable'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';

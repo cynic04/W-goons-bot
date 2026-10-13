@@ -102,7 +102,7 @@ function App() {
           <Route path="/" element={<SelectTagsPage quote={quote} loadFailed={loadFailed} />} />
           <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} />} />
           <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} />} />
-          <Route path="/new-select-tags-page" element={<NewSelectTagsPage tagsInDatabase={tagsInDatabase} />} />
+          <Route path="/new-select-tags-page" element={<NewSelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} />} />
         </Routes>
       </ThemeProvider>
     </>
