@@ -7,7 +7,6 @@ import { getTags, initialGetRequest } from './services/FastAPI-backend.ts';
 import './css/NavBar.css'
 import './css/Buttons.css'
 import { Button, Drawer, createTheme, ThemeProvider } from '@mui/material'
-import NewSelectTagsPage from './pages/NewSelectTagsPage.tsx'
 
 function App() {
   const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
@@ -102,10 +101,9 @@ function App() {
         </Drawer>
 
         <Routes>
-          <Route path="/" element={<SelectTagsPage quote={quote} loadFailed={loadFailed} />} />
+          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} />} />
           <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase}  />} />
           <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} />} />
-          <Route path="/new-select-tags-page" element={<NewSelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} />} />
         </Routes>
       </ThemeProvider>
     </>
