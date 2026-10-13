@@ -53,11 +53,11 @@ function GoonCards(props: { goons: any[] }) {
                         <img className="goon-modal-img" src={goonInformation["file_url"]} alt={`Goon ${indexSelected + 1}`} />
                     </a>
                 </DialogContent>
-                    <DialogActions>
+                    <DialogActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Button
                             variant='contained'
-                            sx={{ backgroundColor: '#313030', marginBottom: '20px' }}
-                            style={{ color: 'white'}}
+                            sx={{  backgroundColor: '#313030', marginBottom: '20px' }}
+                            style={{ color: 'white' }}
                             disabled={indexSelected <= 0}
                             onClick={() => {
                                 setIndexSelected(indexSelected - 1);
@@ -67,7 +67,7 @@ function GoonCards(props: { goons: any[] }) {
                         <Button
                             variant='contained'
                             sx={{ backgroundColor: '#313030', marginBottom: '20px' }}
-                            style={{ color: 'white'}}
+                            style={{ color: 'white' }}
                             disabled={indexSelected >= 14}
                             onClick={() => {
                                 setIndexSelected(indexSelected + 1);

@@ -75,3 +75,5 @@ In our FlexContainer.css file, we define the display as flex, so it now becomes 
 ```align-items: center``` - center flex items along the cross axis, which would be the vertical axis assuming ```flex-direction: row```. The roles are switched (main axis=vertical, cross axis=horizontal) if you choose ```flex-direction: column```
 
 So, combining ```align-items: center``` and ```justify-content: center``` effectively centers flex children in both directions.
+
+```justify-content: space-between``` is your go-to option if you need to place buttons on both ends of your current element. If your placement needs to be more specific, use ```margin-left: auto```, ```margin-right: auto```, etc.
