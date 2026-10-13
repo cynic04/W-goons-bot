@@ -10,7 +10,7 @@ import { Button, Drawer, createTheme, ThemeProvider } from '@mui/material'
 
 function App() {
   const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
-  const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags", "New Select Tags Page"];
+  const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags"];
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [quote, setQuote] = useState(null)
   const [loadFailed, setLoadFailed] = useState(false);
