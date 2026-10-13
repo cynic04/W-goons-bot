@@ -1,4 +1,5 @@
 import { Container, Paper } from "@mui/material";
+import TagInputForm from "../components/TagInputForm.tsx";
 import "../css/CenterItems.css";
 import "../css/FlexContainer.css";
 
@@ -15,8 +16,8 @@ function NewSelectTagsPage() {
 
             <div className="flex-container">
                 <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
-                    <h2>Select Your Tags</h2>
-                    
+                    <h2 style={{ display: 'block', margin: '16px auto' }}>Select Your Tags</h2>
+                    <TagInputForm />
                 </Paper>
                 <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
                     <h2>Tags Selected</h2>

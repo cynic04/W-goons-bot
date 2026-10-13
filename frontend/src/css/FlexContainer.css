@@ -17,9 +17,12 @@
     */
     flex: 1 1 0;
     display: flex;
+    /* Add a flex-direction: column here since we need the items in this element to display vertically */
+    flex-direction: column;
     justify-content: center;
     overflow-wrap: anywhere;
     align-items: center;
+    text-align: center;
     border-radius: 15px;
     min-width: 0;
     padding: 10px;
