@@ -5,27 +5,7 @@ import { initialGetRequest } from '../services/FastAPI-backend.ts'
 import TagInputForm from '../components/TagInputForm.tsx'
 import '../css/CenterItems.css'
 
-function SelectTagsPage() {
-  const [quote, setQuote] = useState(null)
-  const [loadFailed, setLoadFailed] = useState(false);
-
-  // fetchData function handles API call to backend
-  async function fetchData() {
-    const response = await initialGetRequest();
-    if (!response) {
-      console.error('Failed to fetch data from the backend');
-      setLoadFailed(true);
-      return;
-    }
-    const jsonData = await response.json();
-    const message = jsonData.message;
-    setQuote(message);
-  }
-
-  // useEffect calls fetchData when the page loads
-  useEffect(() => {
-    fetchData()
-  }, [])
+function SelectTagsPage(props: {quote: string | null, loadFailed: boolean}) {
 
   return (
     <>
@@ -42,8 +22,8 @@ function SelectTagsPage() {
         </h1>
         <h3 style={{ lineHeight: '2rem' }}>
           <b>A quote from our lovely GoonsBot backend:</b><br />
-          "{loadFailed ? 'Quote failed to load D:' 
-            : quote ? quote :
+          "{props.loadFailed ? 'Quote failed to load D:' 
+            : props.quote ? props.quote :
             <>
               Loading...  <CircularProgress size={20} />
             </>
