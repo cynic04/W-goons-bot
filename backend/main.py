@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 import random
 import json
-import xmltodict
 import requests
 # Define the origins that are allowed to make requests to the backend
 load_dotenv()  

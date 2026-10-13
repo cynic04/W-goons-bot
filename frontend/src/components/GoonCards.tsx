@@ -13,7 +13,7 @@ import Grid from '@mui/material/Grid';
 import '../css/GoonCards.css';
 import '../css/CenterItems.css';
 
-function GoonCards({ goons }: { goons: any[] }) {
+function GoonCards(props: { goons: any[] }) {
     // Uses Material UIs Grid and Card components to display cards in a responsive layout (xs, s and md control what happens at certain screen sizes)
     // xs: extra small screens
     // sm: small screens
@@ -26,14 +26,14 @@ function GoonCards({ goons }: { goons: any[] }) {
         <Grid container spacing={2}>
             {/* Easiest way to read this: for each goon in the returned goons array, create a figure element with an image and caption */}
             {/* "goon: any[]" is each individual goon in the goons array, and index is the iterator (which position in the array are we at rn) */}
-                {goons.map((goon: any, index: number) => (
+                {props.goons.map((goon: any, index: number) => (
                     <Grid key={index} size={{ xs: 6, sm: 4, md: 2 }}>
                         <Card className="goon-card" sx={{ backgroundColor: '#313030' }}>
                             <CardActionArea 
                                 onClick={() => {
                                     setOpen(true);
                                     setIndexSelected(index)
-                                    setGoonInformation(goons[index])}}
+                                    setGoonInformation(props.goons[index])}}
                                 >
                                 <CardContent>
                                     <img src={goon["file_url"]} alt={`Goon ${index + 1}`} />
@@ -43,6 +43,7 @@ function GoonCards({ goons }: { goons: any[] }) {
                     </Grid>
                 ))}
             </Grid>
+            {/* Goon card modal - opens when a card is clicked on the page */}
             <Dialog open={open} onClose={() => {setOpen(false)}}>
                 <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold'  }}>
                     {`Artist: ${goonInformation["tag_info"].length > 0 ? goonInformation["tag_info"][0]["tag"] : "no artist attached to post"}`}
@@ -52,25 +53,25 @@ function GoonCards({ goons }: { goons: any[] }) {
                         <img className="goon-modal-img" src={goonInformation["file_url"]} alt={`Goon ${indexSelected + 1}`} />
                     </a>
                 </DialogContent>
-                    <DialogActions>
+                    <DialogActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Button
                             variant='contained'
-                            sx={{ backgroundColor: '#313030', marginBottom: '20px' }}
-                            style={{ color: 'white'}}
+                            sx={{  backgroundColor: '#313030', marginBottom: '20px' }}
+                            style={{ color: 'white' }}
                             disabled={indexSelected <= 0}
                             onClick={() => {
                                 setIndexSelected(indexSelected - 1);
-                                setGoonInformation(goons[indexSelected - 1]);
+                                setGoonInformation(props.goons[indexSelected - 1]);
                                 }}
                             >Previous Goon</Button>
                         <Button
                             variant='contained'
                             sx={{ backgroundColor: '#313030', marginBottom: '20px' }}
-                            style={{ color: 'white'}}
+                            style={{ color: 'white' }}
                             disabled={indexSelected >= 14}
                             onClick={() => {
                                 setIndexSelected(indexSelected + 1);
-                                setGoonInformation(goons[indexSelected + 1]);
+                                setGoonInformation(props.goons[indexSelected + 1]);
                                 }}
                             >Next Goon</Button>
                     </DialogActions>

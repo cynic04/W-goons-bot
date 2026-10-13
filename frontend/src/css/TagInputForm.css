@@ -5,3 +5,9 @@
     gap: 12px;
     margin-top: 20px;
 }
+
+/* Style the textarea to take full width of its container, and size itself alongsize the size of the container */
+.tag-input-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+}

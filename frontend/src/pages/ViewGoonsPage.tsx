@@ -8,7 +8,7 @@ import {
     Stack,
     Chip
 } from '@mui/material'; 
-import { getGoons, getTags } from '../services/FastAPI-backend.ts';
+import { getGoons } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
 import '../css/GoonCards.css';
 import '../css/CenterItems.css';
@@ -16,12 +16,11 @@ import GoonCards from '../components/GoonCards.tsx';
 import { NavLink } from 'react-router-dom';
 
 
-function ViewGoons() {
+function ViewGoons(props: { tagsInDatabase: string[] }) {
     // Same pattern as HomePage, but this time we fetch data from the get_goons endpoint
     // Eventually this will display images, I just need it to be a JSON for now
     const [goonsData, setGoonsData] = useState<any[]>([]);
     const [tagSelected, setTagSelected] = useState<string[]>([]);
-    const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [loadFailed, setLoadFailed] = useState<boolean>(false);
     const [noGoonsFound, setNoGoonsFound] = useState<boolean>(false);
@@ -47,25 +46,6 @@ function ViewGoons() {
         setTagSelected(jsonData.tags);
         setLoading(false);
     }
-
-    async function fetchTags() {
-        const response = await getTags();
-        if (!response) {
-            console.error('Failed to fetch tags from the backend');
-            return;
-        }
-        const jsonData = await response.json();
-        const tags = jsonData.tags;
-        if (tags.length > 0) {
-            setTagsInDatabase(tags);
-        }
-    }
-
-    // Fetch goons and fetch tags both happen on component mount
-    // Fetch goons is set to trigger whenever the tag combo flag is changed
-    useEffect(() => {
-        fetchTags();
-    }, []);
 
     useEffect(() => {
         if (loadFailed) setLoadFailed(false);
@@ -103,7 +83,7 @@ function ViewGoons() {
                         ))}
                         </Stack>
                         <h2>Click on a card to enlarge the image and see who the artist is.</h2>
-                        {tagsInDatabase.length >= 2 ? (
+                        {props.tagsInDatabase.length >= 2 ? (
                             <FormControlLabel
                             sx={{ color: 'white', margin: '20px' }}
                             label="Enable Randomized Tag Combination"

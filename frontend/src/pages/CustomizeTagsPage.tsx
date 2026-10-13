@@ -5,27 +5,14 @@ import {
 import '../css/CenterItems.css'
 import '../css/PaperCustomCss.css'
 import type TagsType from '../types/TagsType'
-import { getTags, deleteTag } from '../services/FastAPI-backend'
-import { useState, useEffect } from 'react'
+import { deleteTag } from '../services/FastAPI-backend'
+import { useState } from 'react'
 import DeleteTagsTable from '../components/DeleteTagsTable'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 
-function CustomizeTagsPage() {
-    const [tags, setTags] = useState<string[]>([]);
-
-    // Function that fetches the tags from the backend API and updates the state
-    async function fetchTags() {
-        const response = await getTags();
-        if (response) {
-            const data = await response.json();
-            if (data.tags && data.tags.length > 0) {
-                setTags(data.tags);
-            } else {
-                setTags(['None']);
-            }
-        }
-    }
+function CustomizeTagsPage(props: { tagsInDatabase: string[], reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
+    const [tags, setTags] = useState<string[]>(props.tagsInDatabase);
 
     // Function that handles the deletion of a tag and updates the state
     async function handleDeleteTag(tag: string) {
@@ -41,11 +28,6 @@ function CustomizeTagsPage() {
             toast.success(`Tag "${tag}" deleted successfully!`);
         }
     }
-
-    // Fetch tags from the database when the component mounts
-    useEffect(() => {
-        fetchTags();
-    }, []);
 
     return (
         <>
