@@ -8,7 +8,7 @@ import '../css/TagInputForm.css';
 import '../css/Buttons.css';
 
 
-function TagInputForm() {
+function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
     const [formData, setFormData] = useState<TagsType>({ 
         tag: '' 
     });
@@ -39,6 +39,7 @@ function TagInputForm() {
         } else {
             toast.success(`Tag "${formData.tag}" submitted successfully.`);
             setFormData({ tag: '' });
+            props.setReportChange(true);
         }
     }
 

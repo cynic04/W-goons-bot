@@ -15,18 +15,21 @@ function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [quote, setQuote] = useState(null)
   const [loadFailed, setLoadFailed] = useState(false);
+  const [reportChange, setReportChange] = useState(false);
 
   // Grab tags from the database when the app loads - avoids having to fetch them repeatedly in individual components
   async function fetchTags() {
       const response = await getTags();
       if (!response) {
           console.error('Failed to fetch tags from the backend');
+          setReportChange(false);
           return;
       }
       const jsonData = await response.json();
       const tags = jsonData.tags;
       if (tags.length > 0) {
           setTagsInDatabase(tags);
+          setReportChange(false);
       }
   }
 
@@ -48,11 +51,11 @@ function App() {
     fetchData()
   }, [])
 
-  // Fetch goons and fetch tags both happen on component mount
-  // Fetch goons is set to trigger whenever the tag combo flag is changed
+  // Fetch tags also triggers when page loads
+  // Also triggers when reportChange is updated, refreshes tag list on all components that depend on it
   useEffect(() => {
       fetchTags();
-  }, []);
+  }, [reportChange]);
 
   // Creates a color theme that can be used in the ThemeProvider wrapper for the app
   const theme = createTheme({
@@ -100,9 +103,9 @@ function App() {
 
         <Routes>
           <Route path="/" element={<SelectTagsPage quote={quote} loadFailed={loadFailed} />} />
-          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} />} />
-          <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} />} />
-          <Route path="/new-select-tags-page" element={<NewSelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} />} />
+          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase}  />} />
+          <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} />} />
+          <Route path="/new-select-tags-page" element={<NewSelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} />} />
         </Routes>
       </ThemeProvider>
     </>

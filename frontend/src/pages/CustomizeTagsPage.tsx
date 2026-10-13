@@ -11,7 +11,7 @@ import DeleteTagsTable from '../components/DeleteTagsTable'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 
-function CustomizeTagsPage(props: { tagsInDatabase: string[] }) {
+function CustomizeTagsPage(props: { tagsInDatabase: string[], reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
     const [tags, setTags] = useState<string[]>(props.tagsInDatabase);
 
     // Function that handles the deletion of a tag and updates the state

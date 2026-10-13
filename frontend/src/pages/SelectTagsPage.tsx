@@ -1,10 +1,11 @@
 import { Paper, Container, CircularProgress } from '@mui/material';
+import { useState } from 'react';
 import '../css/PaperCustomCss.css'
 import TagInputForm from '../components/TagInputForm.tsx'
 import '../css/CenterItems.css'
 
 function SelectTagsPage(props: {quote: string | null, loadFailed: boolean}) {
-
+  const [reportChange, setReportChange] = useState(false);
   return (
     <>
       <Container className="center-items" maxWidth="md"> 
@@ -33,7 +34,7 @@ function SelectTagsPage(props: {quote: string | null, loadFailed: boolean}) {
           Then, navigate to the <a href='/view-goons'>View Goons</a> page to see 15 random posts with the tags you've entered.
         </h4>
 
-        <TagInputForm />
+        <TagInputForm reportChange={reportChange} setReportChange={setReportChange} />
       </Container>
     </>
   )
