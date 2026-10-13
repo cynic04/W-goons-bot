@@ -6,13 +6,11 @@ import '../css/CenterItems.css'
 import '../css/PaperCustomCss.css'
 import type TagsType from '../types/TagsType'
 import { deleteTag } from '../services/FastAPI-backend'
-import { useState } from 'react'
 import DeleteTagsTable from '../components/DeleteTagsTable'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 
 function CustomizeTagsPage(props: { tagsInDatabase: string[], reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
-    const [tags, setTags] = useState<string[]>(props.tagsInDatabase);
 
     // Function that handles the deletion of a tag and updates the state
     async function handleDeleteTag(tag: string) {
@@ -21,11 +19,12 @@ function CustomizeTagsPage(props: { tagsInDatabase: string[], reportChange: bool
         if (response) {
             const data = await response.json();
              if (data.tags && data.tags.length > 0) {
-                setTags(data.tags);
+                props.tagsInDatabase = data.tags;
             } else {
-                setTags(['None']);
+                props.tagsInDatabase = ['None'];
             }
             toast.success(`Tag "${tag}" deleted successfully!`);
+            props.setReportChange(true);
         }
     }
 
@@ -38,7 +37,7 @@ function CustomizeTagsPage(props: { tagsInDatabase: string[], reportChange: bool
                     </Paper>
                 <p>For now, all you can do is delete tags from here... future features TBD!</p>
                 </Container>
-                <DeleteTagsTable tags={tags} handleDeleteTag={handleDeleteTag} />
+                <DeleteTagsTable tags={props.tagsInDatabase} handleDeleteTag={handleDeleteTag} />
                 <ToastContainer
                     position="top-right"
                     autoClose={5000}
