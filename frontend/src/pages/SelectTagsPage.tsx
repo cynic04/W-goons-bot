@@ -9,7 +9,7 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
         <>
             <Container className="center-items">
                 <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
-                    <h1 style={{ fontSize: '4rem' }}>WGoonsBot</h1>
+                    <h1 style={{ fontSize: '3.5rem' }}>WGoonsBot</h1>
                     <p style={{ fontWeight: 'bold' }}>
                         "{props.loadFailed ? 'Quote failed to load D:' 
                         : props.quote ? props.quote :
@@ -28,7 +28,7 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
 
             <div className="flex-container">
                 <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
-                    <h2 style={{ display: 'block', margin: '16px auto' }}>Enter a Tag</h2>
+                    <h2 style={{ display: 'block', margin: '16px auto' }}>Submit Tags</h2>
                     <TagInputForm reportChange={props.reportChange} setReportChange={props.setReportChange} />
                 </Paper>
                 <Paper className="row" style={{ maxWidth: '15rem' }} elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
