@@ -65,6 +65,10 @@ Combining ```width: 100%``` with ```max-width: 80rem``` - width should expand to
 
 ```margin: 0 auto``` - zero top/bottom margins, automatic left/right margins. with the max-width limit described above, this definition ensures that the left-right margins keep the defined element centered properly
 
+```margin: 8px 0 4px``` - this is using the margin shorthand definition, which reads "8px top, 0 left/right, 4px bottom
+
+```margin: 2px 0``` - another margin shorthand, but with two values (first value is top/bottom, second value is left/right)
+
 ### Understanding display: flex and its combination with justify-content + align-items
 First things first, Flexbox is a CSS layout system, which controls arrangement of items on the page (direction, spacing, alignment, how they should grow/shrink)
 
