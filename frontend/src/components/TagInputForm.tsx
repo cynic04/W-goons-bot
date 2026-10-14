@@ -8,7 +8,6 @@ import '../css/TagInputForm.css';
 import '../css/Buttons.css';
 import tagsData from '../tags.json';
 import type TagJson from '../types/TagJson';
-import { truncateTags } from '../services/truncateTags';
 
 
 function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
@@ -51,7 +50,8 @@ function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dis
     // tags.json is too large for it to interpret the type of the tags.json file
     function filterTags(inputTag: string) {
         const lowerCaseInput = inputTag.toLowerCase();
-        const newTagsList = tagsData.filter((tag: TagJson) => tag.name.toLowerCase().startsWith(lowerCaseInput));
+        const newLowerCaseInput = lowerCaseInput.replace(/\s+/g, "_");
+        const newTagsList = tagsData.filter((tag: TagJson) => tag.name.toLowerCase().startsWith(newLowerCaseInput));
         return newTagsList;
     }
 
@@ -98,16 +98,16 @@ function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dis
                     direction="column"
                     sx={{ display: 'flex', justifyContent: 'center', padding: '1rem', 
                         '& .MuiChip-label': {
-                        fontSize: '15px'
+                        fontSize: '20px'
                     } }}>
-                    <Chip 
+                    <Chip
                         color="primary"
                         onClick={() => {
                             setFormData({ ...formData, tag: tag.name });
                         }} 
                         variant="filled"
-                        sx={{ width: '20rem', height: '3rem', textAlign: 'center', fontSize: '20px' }}
-                        label={`${tag.name} (${tag.count})`}
+                        sx={{ height: '3rem' }}
+                        label={`${tag.name}`}
                     />
                 </Stack>
                 </>
