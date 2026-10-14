@@ -107,7 +107,7 @@ function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dis
                         }} 
                         variant="filled"
                         sx={{ height: '3rem' }}
-                        label={`${tag.name}`}
+                        label={`${tag.name} (${tag.count})`}
                     />
                 </Stack>
                 </>

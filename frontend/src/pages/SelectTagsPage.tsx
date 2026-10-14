@@ -29,8 +29,10 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
                 <h2 style={{ margin: '16px 0 16px' }}>
                     Submit Tags
                 </h2>
-                <p style={{ margin: '10px 0', color: '#D3D3D3' }}>Type in the box below to get relevant tag results</p>
-                <p style={{ margin: '2px 0', color: '#D3D3D3' }}>Click on a tag suggestion to have it automatically fill the text box.</p>
+                <p style={{ margin: '10px 0', color: '#D3D3D3' }}>Type in the box below to see some relevant tag results.</p>
+                <p style={{ margin: '10px 0', color: '#D3D3D3' }}>Please note that these results only display the top 40,020 tags on Rule 34.</p>
+                <p style={{ margin: '2px 0', color: '#D3D3D3', fontSize: "12px" }}>{"which took 1,001 API calls to gather..."}</p>
+                <p style={{ margin: '10px 0', color: '#D3D3D3' }}>Click on a tag suggestion to have it automatically fill the text box.</p>
                 <TagInputForm reportChange={props.reportChange} setReportChange={props.setReportChange} />
             </Paper>
             <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
