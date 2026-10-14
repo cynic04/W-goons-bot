@@ -1,4 +1,4 @@
-.flex-container {
+/* .flex-container {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -6,7 +6,7 @@
     width: 100%;
     max-width: 80rem;
     margin: 0 auto;
-}
+} */
 
 .row {
     /* Flex properties used here: grow=1, shrink=1, basis=0
@@ -22,6 +22,8 @@
     overflow-wrap: anywhere;
     text-align: center;
     border-radius: 15px;
-    min-width: 0;
+    margin: 0 auto;
     padding: 10px;
+    margin-bottom: 2rem;
+    max-width: 80rem;
 }
