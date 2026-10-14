@@ -3,6 +3,7 @@ import TagInputForm from "../components/TagInputForm.tsx";
 import "../css/CenterItems.css";
 import "../css/FlexContainer.css";
 import { truncateTags } from "../services/truncateTags.ts";
+import '../css/TagPills.css'
 
 function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null, loadFailed: boolean, reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
      return (
@@ -36,7 +37,7 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
             </Paper>
             <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
                 <h2>Current Tags Stored</h2>
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                <div className="tag-pills">
                 {props.tagsInDatabase.length === 0 && !props.loadFailed ? (
                     <CircularProgress size={20} />
                 ) : (
