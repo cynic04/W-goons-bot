@@ -29,6 +29,8 @@ function App() {
       if (tags.length > 0) {
           setTagsInDatabase(tags);
           setReportChange(false);
+      } else {
+          setTagsInDatabase(['None'])
       }
   }
 
