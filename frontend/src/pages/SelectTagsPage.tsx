@@ -22,8 +22,7 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
             </Container>
 
             <h4 style={{ lineHeight: '2rem', textAlign: 'center' }}>
-                Enter a tag below - this will be added to your list of tags below the "Submit Tags" section. <br />
-                Then, navigate to the <a href='/view-goons'>View Goons</a> page to see 15 random posts with the tags you've entered.
+                Finished adding tags? Navigate to the <a href='/view-goons'>View Goons</a> page to see 15 random posts with the tags you've entered!
             </h4>
             <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
                 <h2 style={{ margin: '16px 0 16px' }}>
