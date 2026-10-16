@@ -6,12 +6,14 @@ import ViewGoons from './pages/ViewGoonsPage.tsx'
 import { getTags, initialGetRequest } from './services/FastAPI-backend.ts';
 import './css/NavBar.css'
 import './css/Buttons.css'
-import { Button, Drawer, createTheme, ThemeProvider } from '@mui/material'
+import { Button, Drawer, createTheme, ThemeProvider, DialogContent, Dialog } from '@mui/material'
 
 function App() {
   const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
   const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags"];
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(0);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
   const [quote, setQuote] = useState(null)
   const [loadFailed, setLoadFailed] = useState(false);
   const [reportChange, setReportChange] = useState(false);
@@ -71,14 +73,22 @@ function App() {
     <>
      {/* Wrap theme provider over the app to apply the theme to every Material UI component*/}
       <ThemeProvider theme={theme}>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', margin: "0 auto", gap: "40px", maxWidth: "20rem" }}>
           <Button
             variant="contained"
             onClick={() => setDrawerOpen(true)}
-            sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '35px' }}
+            sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
             style={{ color: 'white' }}
           >
             Menu
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => setOpenUserMenu(true)}
+            sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
+            style={{ color: 'white' }}
+          >
+            Select User (temporary)
           </Button>
         </div>
         <Drawer 
@@ -101,6 +111,33 @@ function App() {
             </NavLink>
           ))}
         </Drawer>
+        
+        <Dialog 
+          open={openUserMenu} 
+          onClose={() => setOpenUserMenu(false)}
+          >
+          <DialogContent style={{ overflow: 'hidden' }}>
+            <p>Each person has their own DB entries associated w/ them</p>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Button
+                  variant="contained"
+                  onClick={() => {setSelectedUser(1); setOpenUserMenu(false)}}
+                  sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
+                  style={{ color: 'white' }}
+                >
+                  Gray
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {setSelectedUser(2); setOpenUserMenu(false)}}
+                  sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
+                  style={{ color: 'white' }}
+                >
+                  Tyler
+                </Button>
+              </div>
+          </DialogContent>
+        </Dialog>
 
         <Routes>
           <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} />} />
