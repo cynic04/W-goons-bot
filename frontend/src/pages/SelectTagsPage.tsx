@@ -21,7 +21,6 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
                     </p>
                 </Paper>
             </Container>
-
             <h4 style={{ lineHeight: '2rem', textAlign: 'center' }}>
                 Finished adding tags? Navigate to the <a href='/view-goons'>View Goons</a> page to see 15 random posts with the tags you've entered!
             </h4>

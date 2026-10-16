@@ -9,6 +9,11 @@ import './css/Buttons.css'
 import { Button, Drawer, createTheme, ThemeProvider, DialogContent, Dialog } from '@mui/material'
 
 function App() {
+  const users: { [key: number]: string } = {
+    0: 'None (default user)',
+    1: 'Gray',
+    2: 'Tyler',
+  }
   const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
   const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags"];
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -91,6 +96,7 @@ function App() {
             Select User (temporary)
           </Button>
         </div>
+        <p style={{ textAlign: 'center', fontSize: '18px' }}>Gooner selected: <b>{users[selectedUser]}</b></p>
         <Drawer 
           anchor="top"
           open={drawerOpen}
@@ -117,8 +123,8 @@ function App() {
           onClose={() => setOpenUserMenu(false)}
           >
           <DialogContent style={{ overflow: 'hidden' }}>
-            <p>Each person has their own DB entries associated w/ them</p>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <p style={{ textAlign: 'center'}}>Each person has their own database entries.</p>
+              <div style={{ display: 'flex', justifyContent: 'center', margin: '0 auto', gap: '20px' }}>
                 <Button
                   variant="contained"
                   onClick={() => {setSelectedUser(1); setOpenUserMenu(false)}}
