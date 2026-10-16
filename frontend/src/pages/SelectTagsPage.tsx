@@ -4,6 +4,7 @@ import "../css/CenterItems.css";
 import "../css/FlexContainer.css";
 import { truncateTags } from "../services/truncateTags.ts";
 import '../css/TagPills.css'
+import { NavLink } from "react-router-dom";
 
 function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null, loadFailed: boolean, reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
      return (
@@ -22,7 +23,7 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
                 </Paper>
             </Container>
             <h4 style={{ lineHeight: '2rem', textAlign: 'center' }}>
-                Finished adding tags? Navigate to the <a href='/view-goons'>View Goons</a> page to see 15 random posts with the tags you've entered!
+                Finished adding tags? Navigate to the <NavLink to='/view-goons'>View Goons</NavLink> page to see 15 random posts with the tags you've entered!
             </h4>
             <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
                 <h2 style={{ margin: '16px 0 16px' }}>

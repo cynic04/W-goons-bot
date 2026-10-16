@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import '../css/CenterItems.css'
 import { useState } from 'react';
+import { NavLink } from "react-router-dom";
 
 function DeleteTagsTable(props: {tags: string[], handleDeleteTag: (tag: string) => Promise<void> }) {
     const [deletingTag, setDeletingTag] = useState<string | null>(null);
@@ -26,7 +27,7 @@ function DeleteTagsTable(props: {tags: string[], handleDeleteTag: (tag: string) 
                 </>
             ) : props.tags[0] === 'None' ? (
                 <div className="center-items">
-                    <p>No tags available. <a href='/'>Go add some!</a></p>
+                    <p>No tags available. <NavLink to='/'>Go add some!</NavLink></p>
                 </div>
                 
             ) : (
