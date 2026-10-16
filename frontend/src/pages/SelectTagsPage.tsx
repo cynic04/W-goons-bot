@@ -6,7 +6,7 @@ import { truncateTags } from "../services/truncateTags.ts";
 import '../css/TagPills.css'
 import { NavLink } from "react-router-dom";
 
-function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null, loadFailed: boolean, reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
+function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null, loadFailed: boolean, reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>>, selectedUser: number }) {
      return (
         <>
             <Container className="center-items">
@@ -33,7 +33,7 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
                 <p style={{ margin: '10px 0', color: '#D3D3D3' }}>Please note that these results only display the top 40,020 tags on Rule 34.</p>
                 <p style={{ margin: '2px 0', color: '#D3D3D3', fontSize: "12px" }}>{"which took 1,001 API calls to gather..."}</p>
                 <p style={{ margin: '10px 0', color: '#D3D3D3' }}>Click on a tag suggestion to have it automatically fill the text box.</p>
-                <TagInputForm reportChange={props.reportChange} setReportChange={props.setReportChange} />
+                <TagInputForm reportChange={props.reportChange} setReportChange={props.setReportChange} selectedUser={props.selectedUser} />
             </Paper>
             <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
                 <h2>Current Tags Stored</h2>

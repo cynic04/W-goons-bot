@@ -25,7 +25,7 @@ function App() {
 
   // Grab tags from the database when the app loads - avoids having to fetch them repeatedly in individual components
   async function fetchTags() {
-      const response = await getTags();
+      const response = await getTags(selectedUser);
       if (!response) {
           console.error('Failed to fetch tags from the backend');
           setReportChange(false);
@@ -63,7 +63,7 @@ function App() {
   // Also triggers when reportChange is updated, refreshes tag list on all components that depend on it
   useEffect(() => {
       fetchTags();
-  }, [reportChange]);
+  }, [reportChange, selectedUser]);
 
   // Creates a color theme that can be used in the ThemeProvider wrapper for the app
   const theme = createTheme({
@@ -154,9 +154,9 @@ function App() {
         </Dialog>
 
         <Routes>
-          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} />} />
-          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase}  />} />
-          <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} />} />
+          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} selectedUser={selectedUser} />} />
+          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} selectedUser={selectedUser}  />} />
+          <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} selectedUser={selectedUser} />} />
         </Routes>
       </ThemeProvider>
     </>

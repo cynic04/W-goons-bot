@@ -88,7 +88,6 @@ async def root():
 )
 async def get_tags(userID = 3):
     get_tags = get_tags_from_db(userID)
-    print('Get tags response:', get_tags)
     if get_tags.data:
         tags = get_tags.data[0]["tag_listing"]["tags"]
         return {
