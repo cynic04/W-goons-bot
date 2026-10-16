@@ -10,14 +10,14 @@ import { Button, Drawer, createTheme, ThemeProvider, DialogContent, Dialog } fro
 
 function App() {
   const users: { [key: number]: string } = {
-    0: 'None (default user)',
     1: 'Gray',
     2: 'Tyler',
+    3: 'None (default user)',
   }
   const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
   const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags"];
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(0);
+  const [selectedUser, setSelectedUser] = useState(localStorage.getItem('selectedUser') ? parseInt(localStorage.getItem('selectedUser')!) : 3);
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [quote, setQuote] = useState(null)
   const [loadFailed, setLoadFailed] = useState(false);
@@ -127,7 +127,11 @@ function App() {
               <div style={{ display: 'flex', justifyContent: 'center', margin: '0 auto', gap: '20px' }}>
                 <Button
                   variant="contained"
-                  onClick={() => {setSelectedUser(1); setOpenUserMenu(false)}}
+                  onClick={() => {
+                    setSelectedUser(1); 
+                    setOpenUserMenu(false); 
+                    localStorage.setItem('selectedUser', '1');
+                  }}
                   sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
                   style={{ color: 'white' }}
                 >
@@ -135,7 +139,11 @@ function App() {
                 </Button>
                 <Button
                   variant="contained"
-                  onClick={() => {setSelectedUser(2); setOpenUserMenu(false)}}
+                  onClick={() => {
+                    setSelectedUser(2); 
+                    setOpenUserMenu(false); 
+                    localStorage.setItem('selectedUser', '2');
+                  }}
                   sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
                   style={{ color: 'white' }}
                 >
