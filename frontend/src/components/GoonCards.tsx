@@ -1,17 +1,13 @@
 import {
     Card,
     CardActionArea,
-    CardContent,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Button
+    CardContent
 } from '@mui/material';
 import { useState } from 'react'
 import Grid from '@mui/material/Grid';
 import '../css/GoonCards.css';
 import '../css/CenterItems.css';
+import GoonModal from './GoonModal.tsx';
 
 function GoonCards(props: { goons: any[] }) {
     // Uses Material UIs Grid and Card components to display cards in a responsive layout (xs, s and md control what happens at certain screen sizes)
@@ -43,39 +39,15 @@ function GoonCards(props: { goons: any[] }) {
                     </Grid>
                 ))}
             </Grid>
-            {/* Goon card modal - opens when a card is clicked on the page */}
-            <Dialog open={open} onClose={() => {setOpen(false)}}>
-                <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold'  }}>
-                    {`Artist: ${goonInformation["tag_info"].length > 0 ? goonInformation["tag_info"][0]["tag"] : "no artist attached to post"}`}
-                </DialogTitle>
-                <DialogContent style={{ overflow: 'hidden' }}>
-                    <a href={goonInformation["file_url"]} target="_blank" rel="noopener noreferrer">
-                        <img className="goon-modal-img" src={goonInformation["file_url"]} alt={`Goon ${indexSelected + 1}`} />
-                    </a>
-                </DialogContent>
-                    <DialogActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button
-                            variant='contained'
-                            sx={{  backgroundColor: '#313030', marginBottom: '20px' }}
-                            style={{ color: 'white' }}
-                            disabled={indexSelected <= 0}
-                            onClick={() => {
-                                setIndexSelected(indexSelected - 1);
-                                setGoonInformation(props.goons[indexSelected - 1]);
-                                }}
-                            >Previous Goon</Button>
-                        <Button
-                            variant='contained'
-                            sx={{ backgroundColor: '#313030', marginBottom: '20px' }}
-                            style={{ color: 'white' }}
-                            disabled={indexSelected >= 14}
-                            onClick={() => {
-                                setIndexSelected(indexSelected + 1);
-                                setGoonInformation(props.goons[indexSelected + 1]);
-                                }}
-                            >Next Goon</Button>
-                    </DialogActions>
-            </Dialog>
+            <GoonModal
+                open={open}
+                setOpen={setOpen}
+                indexSelected={indexSelected}
+                setIndexSelected={setIndexSelected}
+                goonInformation={goonInformation}
+                setGoonInformation={setGoonInformation}
+                goons={props.goons}
+            />
         </>
     );
 }

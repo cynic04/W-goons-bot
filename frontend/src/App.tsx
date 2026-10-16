@@ -6,19 +6,27 @@ import ViewGoons from './pages/ViewGoonsPage.tsx'
 import { getTags, initialGetRequest } from './services/FastAPI-backend.ts';
 import './css/NavBar.css'
 import './css/Buttons.css'
-import { Button, Drawer, createTheme, ThemeProvider } from '@mui/material'
+import { Button, Drawer, createTheme, ThemeProvider, DialogContent, Dialog } from '@mui/material'
 
 function App() {
+  const users: { [key: number]: string } = {
+    1: 'Gray',
+    2: 'Tyler',
+    3: 'None (default user)',
+  }
   const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
   const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags"];
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(localStorage.getItem('selectedUser') ? parseInt(localStorage.getItem('selectedUser')!) : 3);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
   const [quote, setQuote] = useState(null)
   const [loadFailed, setLoadFailed] = useState(false);
   const [reportChange, setReportChange] = useState(false);
 
   // Grab tags from the database when the app loads - avoids having to fetch them repeatedly in individual components
   async function fetchTags() {
-      const response = await getTags();
+    console.log("Fetch tags activated")
+      const response = await getTags(selectedUser);
       if (!response) {
           console.error('Failed to fetch tags from the backend');
           setReportChange(false);
@@ -29,6 +37,9 @@ function App() {
       if (tags.length > 0) {
           setTagsInDatabase(tags);
           setReportChange(false);
+      } else {
+          setTagsInDatabase(['None'])
+          setReportChange(false)
       }
   }
 
@@ -54,7 +65,7 @@ function App() {
   // Also triggers when reportChange is updated, refreshes tag list on all components that depend on it
   useEffect(() => {
       fetchTags();
-  }, [reportChange]);
+  }, [reportChange, selectedUser]);
 
   // Creates a color theme that can be used in the ThemeProvider wrapper for the app
   const theme = createTheme({
@@ -69,16 +80,25 @@ function App() {
     <>
      {/* Wrap theme provider over the app to apply the theme to every Material UI component*/}
       <ThemeProvider theme={theme}>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', margin: "0 auto", gap: "40px", maxWidth: "20rem" }}>
           <Button
             variant="contained"
             onClick={() => setDrawerOpen(true)}
-            sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '35px' }}
+            sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
             style={{ color: 'white' }}
           >
             Menu
           </Button>
+          <Button
+            variant="contained"
+            onClick={() => setOpenUserMenu(true)}
+            sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
+            style={{ color: 'white' }}
+          >
+            Select User (temporary)
+          </Button>
         </div>
+        <p style={{ textAlign: 'center', fontSize: '18px' }}>Gooner selected: <b>{users[selectedUser]}</b></p>
         <Drawer 
           anchor="top"
           open={drawerOpen}
@@ -99,11 +119,46 @@ function App() {
             </NavLink>
           ))}
         </Drawer>
+        
+        <Dialog 
+          open={openUserMenu} 
+          onClose={() => setOpenUserMenu(false)}
+          >
+          <DialogContent style={{ overflow: 'hidden' }}>
+            <p style={{ textAlign: 'center'}}>Each person has their own database entries.</p>
+              <div style={{ display: 'flex', justifyContent: 'center', margin: '0 auto', gap: '20px' }}>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setSelectedUser(1); 
+                    setOpenUserMenu(false); 
+                    localStorage.setItem('selectedUser', '1');
+                  }}
+                  sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
+                  style={{ color: 'white' }}
+                >
+                  Gray
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setSelectedUser(2); 
+                    setOpenUserMenu(false); 
+                    localStorage.setItem('selectedUser', '2');
+                  }}
+                  sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
+                  style={{ color: 'white' }}
+                >
+                  Tyler
+                </Button>
+              </div>
+          </DialogContent>
+        </Dialog>
 
         <Routes>
-          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} />} />
-          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase}  />} />
-          <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} />} />
+          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} selectedUser={selectedUser} />} />
+          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} selectedUser={selectedUser}  />} />
+          <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} selectedUser={selectedUser} />} />
         </Routes>
       </ThemeProvider>
     </>

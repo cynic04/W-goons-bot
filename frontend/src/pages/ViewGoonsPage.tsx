@@ -16,7 +16,7 @@ import GoonCards from '../components/GoonCards.tsx';
 import { NavLink } from 'react-router-dom';
 
 
-function ViewGoons(props: { tagsInDatabase: string[] }) {
+function ViewGoons(props: { tagsInDatabase: string[], selectedUser: number }) {
     // Same pattern as HomePage, but this time we fetch data from the get_goons endpoint
     // Eventually this will display images, I just need it to be a JSON for now
     const [goonsData, setGoonsData] = useState<any[]>([]);
@@ -28,7 +28,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
 
     async function fetchGoons() {
         setLoading(true);
-        const response = await getGoons(tagCombo);
+        const response = await getGoons(tagCombo, props.selectedUser);
         if (!response) {
             console.error('Failed to fetch goons from the backend');
             setLoadFailed(true);

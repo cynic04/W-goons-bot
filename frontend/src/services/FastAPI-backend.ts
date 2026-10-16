@@ -1,6 +1,5 @@
 // File for all API calls to the FastAPI backend
 const API_URL = import.meta.env.VITE_ENV === 'development' ? import.meta.env.VITE_BACKEND_API_URL_LOCALHOST: import.meta.env.VITE_BACKEND_API_URL_PRODUCTION;
-
 // Test API call just to see if the backend is returning a response and the frontend can handle it
 export async function initialGetRequest() {
     try {
@@ -35,9 +34,9 @@ export async function addTag(tagInfo: string) {
 }
 
 // Grabs 10 random goons based on a single randomly selected tag from the database
-export async function getGoons(tagCombo: boolean) {
+export async function getGoons(tagCombo: boolean, userID: number) {
     try {
-        const response = await fetch(`${API_URL}/api/get-goons?tag_combo=${tagCombo}`, {
+        const response = await fetch(`${API_URL}/api/get-goons?tag_combo=${tagCombo}&userID=${userID}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -51,9 +50,9 @@ export async function getGoons(tagCombo: boolean) {
 }
 
 // Gets a listing of all tags currently stored in the database
-export async function getTags() {
+export async function getTags(userID: number) {
     try {
-        const response = await fetch(`${API_URL}/api/get-tags`, {
+        const response = await fetch(`${API_URL}/api/get-tags?userID=${userID}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

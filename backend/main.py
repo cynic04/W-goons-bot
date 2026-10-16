@@ -41,6 +41,7 @@ app.add_middleware(
 # Frontend also expects this from the response body when the response is returned
 class TagRequest(BaseModel):
     tag: str
+    userID: int
 
 class MessageOnlyResponse(BaseModel):
     message: str
@@ -81,12 +82,12 @@ async def root():
 @app.get(
     "/api/get-tags", 
     status_code=status.HTTP_200_OK,
-    description="Retrieve all tags stored in the database under the global user.",
+    description="Retrieve all tags stored in the database under a selected user (defaults to 3 for now)",
     response_description="Returns a list of tags.",
     response_model=TagsResponse
 )
-async def get_tags():
-    get_tags = get_tags_from_db()
+async def get_tags(userID = 3):
+    get_tags = get_tags_from_db(userID)
     if get_tags.data:
         tags = get_tags.data[0]["tag_listing"]["tags"]
         return {
@@ -106,9 +107,9 @@ async def get_tags():
     response_description="Returns the JSON formatted response from R34 and the tag(s) that was used to fetch the posts.",
     response_model=GoonsResponse
 )
-async def get_goons(tag_combo: bool = False):
+async def get_goons(userID = 3, tag_combo: bool = False):
     API_URL = os.getenv("API_LINK_POSTS_R34") 
-    get_tags = get_tags_from_db()
+    get_tags = get_tags_from_db(userID)
     # If data is returned from the database, get the list of tags
     if get_tags.data:
         tags = get_tags.data[0]["tag_listing"]["tags"]
@@ -133,15 +134,15 @@ async def get_goons(tag_combo: bool = False):
                 # filter the tag_info listing returned by the API so that it only returns artists to the frontend
                 # TODO: add functionality that takes this entire tag_info listing and does something with it
                 # The above will be the basis for our algorithmic tag parsing
-                index = 0
-                for item in data_json:
-                    new_tag_info_list = []
-                    tag_info = item["tag_info"]
-                    for tag in tag_info:
-                        if tag["type"] == 'artist':
-                            new_tag_info_list.append(tag)
-                    data_json[index]["tag_info"] = new_tag_info_list
-                    index += 1
+                # index = 0
+                # for item in data_json:
+                #     new_tag_info_list = []
+                #     tag_info = item["tag_info"]
+                #     for tag in tag_info:
+                #         if tag["type"] == 'artist':
+                #             new_tag_info_list.append(tag)
+                #     data_json[index]["tag_info"] = new_tag_info_list
+                #     index += 1
                 return {
                     "message": f"Goons with tag {random_tag} retrieved successfully!",
                     "tags": random_tag,
@@ -158,20 +159,21 @@ async def get_goons(tag_combo: bool = False):
 @app.post(
     "/api/add-tag",
     status_code=status.HTTP_201_CREATED,
-    description="Add a new tag to the database under the global user.",
+    description="Add a new tag to the database under a selected user (defaults to 3 for now).",
     response_description="Returns a message indicating whether the tag was added successfully.",
     response_model=MessageOnlyResponse
 )
 async def add_tag(request: TagRequest):
     tag = request.tag
+    userID = request.userID
     # Ensure the tag is formatted correctly for R34 API requests
     tag = tag.replace(" ", "_")
-    get_tags = get_tags_from_db()
+    get_tags = get_tags_from_db(userID)
     if get_tags.data:
         # get the listing of tags from this row, append the new tag, and update the database
         tags = get_tags.data[0]["tag_listing"]["tags"]
         tags.append(tag)
-        add_tag_to_db({"tag_listing": {"tags": tags}})
+        add_tag_to_db({"tag_listing": {"tags": tags}}, userID)
         return {
             "message": "Tags set successfully!",
         }
@@ -183,16 +185,17 @@ async def add_tag(request: TagRequest):
 @app.delete(
     "/api/delete-tag",
     status_code=status.HTTP_200_OK,
-    description="Delete a single tag from the database under the global user.",
+    description="Delete a single tag from the database under a selected user (defaults to 3 for now).",
     response_description="Returns a message indicating whether the tag was deleted successfully + the remaining tags in the database.",
     response_model=MessageWithTagsResponse
 )
 async def delete_tag(request: TagRequest):
     tag = request.tag
-    get_tags = get_tags_from_db()
+    userID = request.userID
+    get_tags = get_tags_from_db(userID)
     tags = get_tags.data[0]["tag_listing"]["tags"]
     tags.remove(tag)
-    add_tag_to_db({"tag_listing": {"tags": tags}})
+    add_tag_to_db({"tag_listing": {"tags": tags}}, userID)
     return {
         "message": f"Tag '{tag}' deleted successfully!",
         "tags": tags

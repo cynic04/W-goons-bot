@@ -10,11 +10,11 @@ import DeleteTagsTable from '../components/DeleteTagsTable'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 
-function CustomizeTagsPage(props: { tagsInDatabase: string[], setTagsInDatabase: React.Dispatch<React.SetStateAction<string[]>>, reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
+function CustomizeTagsPage(props: { tagsInDatabase: string[], setTagsInDatabase: React.Dispatch<React.SetStateAction<string[]>>, reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>>, selectedUser: number }) {
 
     // Function that handles the deletion of a tag and updates the state
     async function handleDeleteTag(tag: string) {
-        const tagInfo: TagsType = { "tag": tag };
+        const tagInfo: TagsType = { "tag": tag, userID: props.selectedUser };
         const response = await deleteTag(JSON.stringify(tagInfo));
         if (response) {
             const data = await response.json();
