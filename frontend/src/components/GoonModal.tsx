@@ -44,7 +44,7 @@ function GoonModal(props: {
                 onClick={() => {
                     setShowExtraTags(!showExtraTags);
                 }}
-            >Show extra tags</Button>
+            >Show tags</Button>
 
             {showExtraTags && (
                 <Dialog open={showExtraTags} onClose={() => {setShowExtraTags(false)}} style={{ textAlign: 'center', fontWeight: 'bold'  }}>
