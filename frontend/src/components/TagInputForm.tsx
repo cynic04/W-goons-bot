@@ -12,7 +12,8 @@ import type TagJson from '../types/TagJson';
 
 function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
     const [formData, setFormData] = useState<TagsType>({ 
-        tag: '' 
+        tag: '',
+        user: localStorage.getItem('selectedUser') ? parseInt(localStorage.getItem('selectedUser')!) : 3
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [buttonText, setButtonText] = useState('Submit');
@@ -40,7 +41,7 @@ function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dis
             return;
         } else {
             toast.success(`Tag "${formData.tag}" submitted successfully.`);
-            setFormData({ tag: '' });
+            setFormData({ tag: '', user: localStorage.getItem('selectedUser') ? parseInt(localStorage.getItem('selectedUser')!) : 3 });
             props.setReportChange(true);
         }
     }
@@ -65,7 +66,7 @@ function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dis
                 placeholder="Enter a tag here"
                 name="tag"
                 value={formData.tag}
-                onChange={inputEvent => setFormData({ ...formData, tag: inputEvent.target.value })}
+                onChange={inputEvent => setFormData({ ...formData, tag: inputEvent.target.value, user: localStorage.getItem('selectedUser') ? parseInt(localStorage.getItem('selectedUser')!) : 3 })}
                 disabled={isSubmitting}
                 /* Submits the form when Enter is pressed */
                 /* Prevent default behavior prevents the page from reloading when this happens*/
