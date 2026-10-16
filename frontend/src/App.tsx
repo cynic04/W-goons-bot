@@ -25,6 +25,7 @@ function App() {
 
   // Grab tags from the database when the app loads - avoids having to fetch them repeatedly in individual components
   async function fetchTags() {
+    console.log("Fetch tags activated")
       const response = await getTags(selectedUser);
       if (!response) {
           console.error('Failed to fetch tags from the backend');
@@ -38,6 +39,7 @@ function App() {
           setReportChange(false);
       } else {
           setTagsInDatabase(['None'])
+          setReportChange(false)
       }
   }
 
