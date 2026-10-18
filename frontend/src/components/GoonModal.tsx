@@ -29,29 +29,29 @@ function GoonModal(props: {
     const user = useUserContext()
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    // when the form is submitted, determine what to do with the input value
-        async function handleSubmit(tag: string, userID: number) {
-            const formData = {
-                tag: tag,
-                userID: userID
-            }
-            // handle form submission here - disable submit button and make API call
-            setIsSubmitting(true)
-            const dataString = JSON.stringify(formData);
-            const apiResponse = await addTag(dataString);
-    
-            // unsuccessful API response returns an error toast
-            // successful API response returns a success toast and resets form data
-            if (!apiResponse) {
-                toast.error('Failed to submit tag to the backend. Please try again.');
-                setIsSubmitting(false)
-                return;
-            } else {
-                toast.success(`Tag "${formData.tag}" submitted successfully.`);
-                setIsSubmitting(false)
-                props.setReportChange(true);
-            }
+// when the form is submitted, determine what to do with the input value
+    async function handleSubmit(tag: string, userID: number) {
+        const formData = {
+            tag: tag,
+            userID: userID
         }
+        // handle form submission here - disable submit button and make API call
+        setIsSubmitting(true)
+        const dataString = JSON.stringify(formData);
+        const apiResponse = await addTag(dataString);
+
+        // unsuccessful API response returns an error toast
+        // successful API response returns a success toast and resets form data
+        if (!apiResponse) {
+            toast.error('Failed to submit tag to the backend. Please try again.');
+            setIsSubmitting(false)
+            return;
+        } else {
+            toast.success(`Tag "${formData.tag}" submitted successfully.`);
+            setIsSubmitting(false)
+            props.setReportChange(true);
+        }
+    }
 
     function findArtist(goonInformation: any) {
         const artistTags = goonInformation["tag_info"].filter((tag: any) => tag.type === 'artist');
