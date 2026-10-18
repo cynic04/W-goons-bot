@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import '../css/TagPills.css'
+import type TagsType from '../types/TagsType'
 
 function GoonModal(props: { 
     open: boolean, 
@@ -19,6 +20,11 @@ function GoonModal(props: {
     setGoonInformation: React.Dispatch<React.SetStateAction<any>>,
     goons: any[]
 }) {
+
+    const [tagToSubmit, setTagToSubmit] = useState<TagsType>({
+        'tag': 'none',
+        'userID': 0
+    })
 
     function findArtist(goonInformation: any) {
         const artistTags = goonInformation["tag_info"].filter((tag: any) => tag.type === 'artist');
@@ -50,20 +56,28 @@ function GoonModal(props: {
                 <Dialog open={showExtraTags} onClose={() => {setShowExtraTags(false)}} style={{ textAlign: 'center', fontWeight: 'bold'  }}>
                     <DialogContent style={{ textAlign: 'center', fontWeight: 'bold'  }}>
                         <div className="tag-pills">
+                            <p style={{ margin: '3px 0' }}>This will only display tags that are not currently stored under your name</p>
+                            <p style={{ margin: '3px 0' }}>Tap on a tag to add it to your currently stored tags list!</p>
+                            <p style={{ margin: '3px 0' }}>Tap anywhere outside of this screen to close it.</p>
                             {props.goonInformation["tag_info"].map((tag: any, index: number) => (
-                                <Stack key={index} 
-                                    spacing={1} 
-                                    sx={{ display: 'flex', justifyContent: 'center', marginBottom: '4px', 
-                                        '& .MuiChip-label': {
-                                        fontSize: '22px'
-                                    } 
-                                    }}>
-                                    <Chip 
-                                        key={index} 
-                                        label={tag.tag}
-                                        color="primary" 
-                                        variant="outlined" />
-                                </Stack>
+                                <>
+                                    <Stack key={index} 
+                                        spacing={1} 
+                                        sx={{ display: 'flex', justifyContent: 'center', marginBottom: '4px', 
+                                            '& .MuiChip-label': {
+                                            fontSize: '22px'
+                                        } 
+                                        }}>
+                                        <Chip 
+                                            key={index}
+                                            onClick={() => {
+                                                setTagToSubmit({...tagToSubmit, tag: tag.tag, userID: 0})
+                                            }} 
+                                            label={tag.tag}
+                                            color="primary" 
+                                            variant="filled" />
+                                    </Stack>
+                                </>
                         ))}
                         </div>
                     </DialogContent>

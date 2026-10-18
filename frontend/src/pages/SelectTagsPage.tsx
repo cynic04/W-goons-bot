@@ -6,7 +6,7 @@ import { truncateTags } from "../services/truncateTags.ts";
 import '../css/TagPills.css'
 import { NavLink } from "react-router-dom";
 
-function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null, loadFailed: boolean, reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>>, selectedUser: number }) {
+function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null, loadFailed: boolean, reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
      return (
         <>
             <Container className="center-items">
@@ -31,7 +31,7 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
                 </h2>
                 <p style={{ margin: '10px 0', color: '#D3D3D3' }}>Type in the box below to see some relevant tag results.</p>
                 <p style={{ margin: '3px 0', color: '#D3D3D3' }}>Hit submit to add the tag to your current tags stored.</p>
-                <TagInputForm reportChange={props.reportChange} setReportChange={props.setReportChange} selectedUser={props.selectedUser} />
+                <TagInputForm reportChange={props.reportChange} setReportChange={props.setReportChange} />
             </Paper>
             <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
                 <h2>Current Tags Stored</h2>

@@ -13,25 +13,22 @@ interface UserProviderProps {
 const UserContext = createContext<UserType | null>(null)
 
 export function UserContextProvider({children}: UserProviderProps ) {
-    const [userID, setUserID] = useState(3);
-
+    const [userID, setUserID] = useState(localStorage.getItem('userID') ? parseInt(localStorage.getItem('userID')!) : 3);
     const updateUserID = (newID: number) => {
-        setUserID(newID)
+        setUserID(newID);
+        localStorage.setItem('userID', String(newID))
     }
-
     return (
-        <UserContext.Provider value={{ userID, updateUserID }}>
+        <UserContext value={{ userID, updateUserID }}>
             {children}
-        </UserContext.Provider>
+        </UserContext>
     )
 }
 
 export function useUserContext() {
     const context = useContext(UserContext);
-
     if (!context) {
         throw new Error("useUserContext must be used within a UserContext provider")
     }
-
     return context
 }

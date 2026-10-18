@@ -8,12 +8,14 @@ import '../css/TagInputForm.css';
 import '../css/Buttons.css';
 import tagsData from '../tags.json';
 import type TagJson from '../types/TagJson';
+import { useUserContext } from '../services/UserContext';
 
 
-function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>>, selectedUser: number }) {
+function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
+    const user = useUserContext()
     const [formData, setFormData] = useState<TagsType>({ 
         tag: '',
-        userID: props.selectedUser
+        userID: user.userID
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [buttonText, setButtonText] = useState('Submit');
@@ -41,7 +43,7 @@ function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dis
             return;
         } else {
             toast.success(`Tag "${formData.tag}" submitted successfully.`);
-            setFormData({ tag: '', userID: props.selectedUser });
+            setFormData({ tag: '', userID: user.userID });
             props.setReportChange(true);
         }
     }
@@ -66,7 +68,7 @@ function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dis
                 placeholder="Enter a tag here"
                 name="tag"
                 value={formData.tag}
-                onChange={inputEvent => setFormData({ ...formData, tag: inputEvent.target.value, userID: props.selectedUser })}
+                onChange={inputEvent => setFormData({ ...formData, tag: inputEvent.target.value, userID: user.userID })}
                 disabled={isSubmitting}
                 /* Submits the form when Enter is pressed */
                 /* Prevent default behavior prevents the page from reloading when this happens*/
