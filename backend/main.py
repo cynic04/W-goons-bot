@@ -144,7 +144,6 @@ async def get_goons(userID = 3, tag_combo: bool = False):
                         if tag["tag"] not in random_tag:
                             new_tag_info_list.append(tag)
                     data_json[index]["tag_info"] = new_tag_info_list
-                    print(json.dumps(data_json[index]["tag_info"], indent=4))
                     index += 1
                 return {
                     "message": f"Goons with tag {random_tag} retrieved successfully!",
