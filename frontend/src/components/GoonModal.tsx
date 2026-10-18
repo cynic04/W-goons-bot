@@ -51,7 +51,6 @@ function GoonModal(props: {
                     <DialogContent style={{ textAlign: 'center', fontWeight: 'bold'  }}>
                         <div className="tag-pills">
                             {props.goonInformation["tag_info"].map((tag: any, index: number) => (
-                            // <p style={{ display: "inline" }}key={index}>{tag.tag}{index === props.goonInformation["tag_info"].length - 1 ? '' : ', '}</p>
                                 <Stack key={index} 
                                     spacing={1} 
                                     sx={{ display: 'flex', justifyContent: 'center', marginBottom: '4px', 
