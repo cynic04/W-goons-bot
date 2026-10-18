@@ -7,6 +7,7 @@ import { getTags, initialGetRequest } from './services/FastAPI-backend.ts';
 import './css/NavBar.css'
 import './css/Buttons.css'
 import { Button, Drawer, createTheme, ThemeProvider, DialogContent, Dialog } from '@mui/material'
+import { useUserContext } from './services/UserContext.tsx'
 
 function App() {
   const users: { [key: number]: string } = {
@@ -14,10 +15,10 @@ function App() {
     2: 'Tyler',
     3: 'None (default user)',
   }
+  const user = useUserContext()
   const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
   const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags"];
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(localStorage.getItem('selectedUser') ? parseInt(localStorage.getItem('selectedUser')!) : 3);
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [quote, setQuote] = useState(null)
   const [loadFailed, setLoadFailed] = useState(false);
@@ -25,8 +26,7 @@ function App() {
 
   // Grab tags from the database when the app loads - avoids having to fetch them repeatedly in individual components
   async function fetchTags() {
-    console.log("Fetch tags activated")
-      const response = await getTags(selectedUser);
+      const response = await getTags(user.userID);
       if (!response) {
           console.error('Failed to fetch tags from the backend');
           setReportChange(false);
@@ -65,7 +65,7 @@ function App() {
   // Also triggers when reportChange is updated, refreshes tag list on all components that depend on it
   useEffect(() => {
       fetchTags();
-  }, [reportChange, selectedUser]);
+  }, [reportChange, user.userID]);
 
   // Creates a color theme that can be used in the ThemeProvider wrapper for the app
   const theme = createTheme({
@@ -78,7 +78,7 @@ function App() {
 
   return (
     <>
-     {/* Wrap theme provider over the app to apply the theme to every Material UI component*/}
+    {/* Wrap theme provider over the app to apply the theme to every Material UI component*/}
       <ThemeProvider theme={theme}>
         <div style={{ display: 'flex', justifyContent: 'center', margin: "0 auto", gap: "40px", maxWidth: "20rem" }}>
           <Button
@@ -98,7 +98,7 @@ function App() {
             Select User (temporary)
           </Button>
         </div>
-        <p style={{ textAlign: 'center', fontSize: '18px' }}>Gooner selected: <b>{users[selectedUser]}</b></p>
+        <p style={{ textAlign: 'center', fontSize: '18px' }}>Gooner selected: <b>{users[user.userID]}</b></p>
         <Drawer 
           anchor="top"
           open={drawerOpen}
@@ -130,9 +130,8 @@ function App() {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    setSelectedUser(1); 
+                    user.updateUserID(1);
                     setOpenUserMenu(false); 
-                    localStorage.setItem('selectedUser', '1');
                   }}
                   sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
                   style={{ color: 'white' }}
@@ -142,9 +141,8 @@ function App() {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    setSelectedUser(2); 
+                    user.updateUserID(2);
                     setOpenUserMenu(false); 
-                    localStorage.setItem('selectedUser', '2');
                   }}
                   sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
                   style={{ color: 'white' }}
@@ -156,9 +154,9 @@ function App() {
         </Dialog>
 
         <Routes>
-          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} selectedUser={selectedUser} />} />
-          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} selectedUser={selectedUser}  />} />
-          <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} selectedUser={selectedUser} />} />
+          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} />} />
+          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} />} />
+          <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} />} />
         </Routes>
       </ThemeProvider>
     </>

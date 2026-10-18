@@ -14,9 +14,10 @@ import '../css/GoonCards.css';
 import '../css/CenterItems.css';
 import GoonCards from '../components/GoonCards.tsx';
 import { NavLink } from 'react-router-dom';
+import { useUserContext } from '../services/UserContext.tsx';
 
 
-function ViewGoons(props: { tagsInDatabase: string[], selectedUser: number }) {
+function ViewGoons(props: { tagsInDatabase: string[], reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
     // Same pattern as HomePage, but this time we fetch data from the get_goons endpoint
     // Eventually this will display images, I just need it to be a JSON for now
     const [goonsData, setGoonsData] = useState<any[]>([]);
@@ -25,10 +26,11 @@ function ViewGoons(props: { tagsInDatabase: string[], selectedUser: number }) {
     const [loadFailed, setLoadFailed] = useState<boolean>(false);
     const [noGoonsFound, setNoGoonsFound] = useState<boolean>(false);
     const [tagCombo, setTagCombo] = useState<boolean>(false);
+    const user = useUserContext()
 
     async function fetchGoons() {
         setLoading(true);
-        const response = await getGoons(tagCombo, props.selectedUser);
+        const response = await getGoons(tagCombo, user.userID);
         if (!response) {
             console.error('Failed to fetch goons from the backend');
             setLoadFailed(true);
@@ -50,7 +52,7 @@ function ViewGoons(props: { tagsInDatabase: string[], selectedUser: number }) {
     useEffect(() => {
         if (loadFailed) setLoadFailed(false);
         fetchGoons();
-    }, [tagCombo]);
+    }, [tagCombo, user.userID]);
     
     return (
         <>
@@ -115,7 +117,7 @@ function ViewGoons(props: { tagsInDatabase: string[], selectedUser: number }) {
                                 View/Customize Tags
                             </Button>
                         </NavLink>
-                        <GoonCards goons={goonsData} />
+                        <GoonCards goons={goonsData} reportChange={props.reportChange} setReportChange={props.setReportChange} />
                     </div>
                     </>
                 // Error handling - if the load fails, if there are no goons, and if loading is in progress, display something
