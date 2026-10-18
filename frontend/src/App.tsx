@@ -156,7 +156,7 @@ function App() {
 
         <Routes>
           <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} />} />
-          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} />} />
+          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} />} />
           <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} />} />
         </Routes>
       </ThemeProvider>

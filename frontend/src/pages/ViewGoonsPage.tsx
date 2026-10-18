@@ -17,7 +17,7 @@ import { NavLink } from 'react-router-dom';
 import { useUserContext } from '../services/UserContext.tsx';
 
 
-function ViewGoons(props: { tagsInDatabase: string[] }) {
+function ViewGoons(props: { tagsInDatabase: string[], reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
     // Same pattern as HomePage, but this time we fetch data from the get_goons endpoint
     // Eventually this will display images, I just need it to be a JSON for now
     const [goonsData, setGoonsData] = useState<any[]>([]);
@@ -117,7 +117,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                 View/Customize Tags
                             </Button>
                         </NavLink>
-                        <GoonCards goons={goonsData} />
+                        <GoonCards goons={goonsData} reportChange={props.reportChange} setReportChange={props.setReportChange} />
                     </div>
                     </>
                 // Error handling - if the load fails, if there are no goons, and if loading is in progress, display something
