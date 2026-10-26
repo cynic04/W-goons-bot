@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import '../css/TagPills.css'
 import { useUserContext } from '../services/UserContext';
+import { useReportChange } from '../services/ReportChange';
 import { addTag } from '../services/FastAPI-backend';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -22,10 +23,9 @@ function GoonModal(props: {
     goonInformation: any, 
     setGoonInformation: React.Dispatch<React.SetStateAction<any>>,
     goons: any[]
-    reportChange: boolean,
-    setReportChange: React.Dispatch<React.SetStateAction<boolean>>
 }) {
 
+    const report = useReportChange()
     const user = useUserContext()
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -49,7 +49,7 @@ function GoonModal(props: {
         } else {
             toast.success(`Tag "${formData.tag}" submitted successfully.`);
             setIsSubmitting(false)
-            props.setReportChange(true);
+            report.setReportChanged(true);
         }
     }
 

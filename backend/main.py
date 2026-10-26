@@ -131,7 +131,6 @@ async def get_goons(userID = 3, tag_combo: bool = False):
                     "data": []
                 }
             else:
-                print(random_tag)
                 index = 0
                 for item in data_json:
                     new_tag_info_list = []

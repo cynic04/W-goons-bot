@@ -10,10 +10,12 @@ import DeleteTagsTable from '../components/DeleteTagsTable'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { useUserContext } from '../services/UserContext'
+import { useReportChange } from '../services/ReportChange'
 
-function CustomizeTagsPage(props: { tagsInDatabase: string[], setTagsInDatabase: React.Dispatch<React.SetStateAction<string[]>>, reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
+function CustomizeTagsPage(props: { tagsInDatabase: string[], setTagsInDatabase: React.Dispatch<React.SetStateAction<string[]>> }) {
 
     const user = useUserContext()
+    const report = useReportChange()
     // Function that handles the deletion of a tag and updates the state
     async function handleDeleteTag(tag: string) {
         const tagInfo: TagsType = { "tag": tag, userID: user.userID };
@@ -26,7 +28,7 @@ function CustomizeTagsPage(props: { tagsInDatabase: string[], setTagsInDatabase:
                 props.setTagsInDatabase(['None']);
             }
             toast.success(`Tag "${tag}" deleted successfully!`);
-            props.setReportChange(true);
+            report.setReportChanged(true);
         }
     }
 

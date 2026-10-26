@@ -9,7 +9,7 @@ import '../css/GoonCards.css';
 import '../css/CenterItems.css';
 import GoonModal from './GoonModal.tsx';
 
-function GoonCards(props: { goons: any[], reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
+function GoonCards(props: { goons: any[] }) {
     // Uses Material UIs Grid and Card components to display cards in a responsive layout (xs, s and md control what happens at certain screen sizes)
     // xs: extra small screens
     // sm: small screens
@@ -47,8 +47,6 @@ function GoonCards(props: { goons: any[], reportChange: boolean, setReportChange
                 goonInformation={goonInformation}
                 setGoonInformation={setGoonInformation}
                 goons={props.goons}
-                reportChange={props.reportChange}
-                setReportChange={props.setReportChange}
             />
         </>
     );
