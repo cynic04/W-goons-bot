@@ -19,6 +19,8 @@ function GoonCards(props: { goons: any[] }) {
     const [goonInformation, setGoonInformation] = useState({"file_url": "not set yet", "tag_info": [{"tag": "not set yet"}]})
     return (
         <>
+        {/* add wrap=nowrap to this grid to make it expand horizontally */}
+        {/* add overflowX: "auto" to make it scrollable horizontally */}
         <Grid container spacing={2}>
             {/* Easiest way to read this: for each goon in the returned goons array, create a figure element with an image and caption */}
             {/* "goon: any[]" is each individual goon in the goons array, and index is the iterator (which position in the array are we at rn) */}

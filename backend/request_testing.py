@@ -7,7 +7,7 @@ from time import sleep
 load_dotenv()
 API_URL = getenv("API_LINK_TAGS_R34")
 pid_less_than_limit = False
-pid = 0
+pid = 2000
 
 # # Regular request testing
 # response = requests.get(API_URL + f"&limit=1000&order=count&direction=desc")
@@ -29,11 +29,11 @@ while not pid_less_than_limit:
     
     # Intention: Stops after 2000 PIDs (which corresponds to 40,000 tags)
     # Increment actually hits 2001, so 40020 tags in total
-    elif pid > 2000:
+    elif pid > 4000:
         pid_less_than_limit = True
     else:
         # Write tags to a file
-        with open("backend/tags.json", "a") as file:
+        with open("backend/tags_2.json", "a") as file:
             file.write(json.dumps(data_xml["tags"]["tag"], indent=4) + "\n")
     # To avoid API rate limiting
     pid += 1
