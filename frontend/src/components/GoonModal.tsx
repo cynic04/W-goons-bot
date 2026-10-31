@@ -114,7 +114,7 @@ function GoonModal(props: {
                 </Dialog>
             )}
 
-            <DialogContent style={{ overflow: 'hidden' }}>
+            <DialogContent style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
                 <a href={props.goonInformation["file_url"]} target="_blank" rel="noopener noreferrer">
                     <img className="goon-modal-img" src={props.goonInformation["file_url"]} alt={`Goon ${props.indexSelected + 1}`} />
                 </a>
