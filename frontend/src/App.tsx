@@ -8,6 +8,7 @@ import './css/NavBar.css'
 import './css/Buttons.css'
 import { Button, Drawer, createTheme, ThemeProvider, DialogContent, Dialog } from '@mui/material'
 import { useUserContext } from './services/UserContext.tsx'
+import { useReportChange } from './services/ReportChange.tsx'
 
 function App() {
   const users: { [key: number]: string } = {
@@ -16,30 +17,30 @@ function App() {
     3: 'None (default user)',
   }
   const user = useUserContext()
+  const report = useReportChange()
   const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
   const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags"];
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [quote, setQuote] = useState(null)
   const [loadFailed, setLoadFailed] = useState(false);
-  const [reportChange, setReportChange] = useState(false);
 
   // Grab tags from the database when the app loads - avoids having to fetch them repeatedly in individual components
   async function fetchTags() {
       const response = await getTags(user.userID);
       if (!response) {
           console.error('Failed to fetch tags from the backend');
-          setReportChange(false);
+          report.setReportChanged(false);
           return;
       }
       const jsonData = await response.json();
       const tags = jsonData.tags;
       if (tags.length > 0) {
           setTagsInDatabase(tags);
-          setReportChange(false);
+          report.setReportChanged(false);
       } else {
           setTagsInDatabase(['None'])
-          setReportChange(false)
+          report.setReportChanged(false)
       }
   }
 
@@ -65,7 +66,7 @@ function App() {
   // Also triggers when reportChange is updated, refreshes tag list on all components that depend on it
   useEffect(() => {
       fetchTags();
-  }, [reportChange, user.userID]);
+  }, [report.reportChanged, user.userID]);
 
   // Creates a color theme that can be used in the ThemeProvider wrapper for the app
   const theme = createTheme({
@@ -154,9 +155,9 @@ function App() {
         </Dialog>
 
         <Routes>
-          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} reportChange={reportChange} setReportChange={setReportChange} />} />
-          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} />} />
-          <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} reportChange={reportChange} setReportChange={setReportChange} />} />
+          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} />} />
+          <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} />} />
+          <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} />} />
         </Routes>
       </ThemeProvider>
     </>

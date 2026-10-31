@@ -1,3 +1,6 @@
+// User Context custom React hook
+// Context is wrapped around the entire application so that user info is accessible everywhere
+// Avoids prop drilling this ID value through components
 import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react'
 

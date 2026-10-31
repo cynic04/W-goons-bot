@@ -81,3 +81,9 @@ In our FlexContainer.css file, we define the display as flex, so it now becomes 
 So, combining ```align-items: center``` and ```justify-content: center``` effectively centers flex children in both directions.
 
 ```justify-content: space-between``` is your go-to option if you need to place buttons on both ends of your current element. If your placement needs to be more specific, use ```margin-left: auto```, ```margin-right: auto```, etc.
+
+Moving this comment to the dev notes so that it's here and a little easier to find - the ```flex [x] [x] [0px]``` option
+Flex properties used here: grow=1, shrink=1, basis=0
+    Grow=1: the item can grow to use extra space
+    Shrink=1: the item can shrink if necessary
+    Basis=0: the initial size of the item before growing or shrinking

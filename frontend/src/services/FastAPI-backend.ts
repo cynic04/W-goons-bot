@@ -65,6 +65,21 @@ export async function getTags(userID: number) {
     }
 }
 
+export async function getJaneGoons() {
+    try {
+        const response = await fetch(`${API_URL}/api/get-jane-goons`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making GET request to get Jane goons:', error);
+        return null;
+    }
+}
+
 // Deletes a single tag from the database based on the provided tag
 export async function deleteTag(tagInfo: string) {
     try {

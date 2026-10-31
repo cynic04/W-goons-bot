@@ -1,6 +1,7 @@
 import { 
     Paper, 
     Container,
+    Button,
 } from '@mui/material'
 import '../css/CenterItems.css'
 import '../css/PaperCustomCss.css'
@@ -10,10 +11,13 @@ import DeleteTagsTable from '../components/DeleteTagsTable'
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { useUserContext } from '../services/UserContext'
+import { useReportChange } from '../services/ReportChange'
+import { NavLink } from 'react-router-dom'
 
-function CustomizeTagsPage(props: { tagsInDatabase: string[], setTagsInDatabase: React.Dispatch<React.SetStateAction<string[]>>, reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
+function CustomizeTagsPage(props: { tagsInDatabase: string[], setTagsInDatabase: React.Dispatch<React.SetStateAction<string[]>> }) {
 
     const user = useUserContext()
+    const report = useReportChange()
     // Function that handles the deletion of a tag and updates the state
     async function handleDeleteTag(tag: string) {
         const tagInfo: TagsType = { "tag": tag, userID: user.userID };
@@ -26,7 +30,7 @@ function CustomizeTagsPage(props: { tagsInDatabase: string[], setTagsInDatabase:
                 props.setTagsInDatabase(['None']);
             }
             toast.success(`Tag "${tag}" deleted successfully!`);
-            props.setReportChange(true);
+            report.setReportChanged(true);
         }
     }
 
@@ -38,6 +42,14 @@ function CustomizeTagsPage(props: { tagsInDatabase: string[], setTagsInDatabase:
                         <h1>Customize Tags</h1>
                     </Paper>
                 <p>For now, all you can do is delete tags from here... future features TBD!</p>
+                <NavLink
+                    to='/view-goons'
+                    style={{ color: 'white', textDecoration: 'none' }}
+                >
+                    <Button variant='contained' size="large" sx={{ textTransform: 'none'}}>
+                        Back to View Goons
+                    </Button>
+                </NavLink>
                 </Container>
                 <DeleteTagsTable tags={props.tagsInDatabase} handleDeleteTag={handleDeleteTag} />
                 <ToastContainer

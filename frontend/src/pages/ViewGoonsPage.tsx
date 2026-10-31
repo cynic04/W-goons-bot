@@ -4,52 +4,73 @@ import {
     CircularProgress,
     FormControlLabel,
     Checkbox,
-    Button,
-    Stack,
-    Chip
+    Button
 } from '@mui/material'; 
-import { getGoons } from '../services/FastAPI-backend.ts';
+import { getGoons, getJaneGoons } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
 import '../css/GoonCards.css';
 import '../css/CenterItems.css';
 import GoonCards from '../components/GoonCards.tsx';
 import { NavLink } from 'react-router-dom';
 import { useUserContext } from '../services/UserContext.tsx';
+import TagsSelectedModal from '../components/TagsSelectedModal.tsx';
 
 
-function ViewGoons(props: { tagsInDatabase: string[], reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
+function ViewGoons(props: { tagsInDatabase: string[] }) {
     // Same pattern as HomePage, but this time we fetch data from the get_goons endpoint
     // Eventually this will display images, I just need it to be a JSON for now
+    const user = useUserContext();
     const [goonsData, setGoonsData] = useState<any[]>([]);
     const [tagSelected, setTagSelected] = useState<string[]>([]);
+    const [tagsToDisplay, setTagsToDisplay] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [reloadGoons, setReloadGoons] = useState(false);
     const [loadFailed, setLoadFailed] = useState<boolean>(false);
     const [noGoonsFound, setNoGoonsFound] = useState<boolean>(false);
     const [tagCombo, setTagCombo] = useState<boolean>(false);
-    const user = useUserContext()
+    const [openTagDisplay, setOpenTagDisplay] = useState(false);
+    const [janeGoons, setJaneGoons] = useState<any[]>([]);
+    const [janeButtonText, setJaneButtonText] = useState('Click for Jane Goons')
+    const [loadingJaneGoons, setLoadingJaneGoons] = useState(false);
+    const [dontSetLoading, setDontSetLoading] = useState(false);
+    
 
     async function fetchGoons() {
-        setLoading(true);
+        setReloadGoons(true);
         const response = await getGoons(tagCombo, user.userID);
         if (!response) {
             console.error('Failed to fetch goons from the backend');
             setLoadFailed(true);
+            setReloadGoons(false);
             setLoading(false);
             return;
         }
         const jsonData = await response.json();
         if (jsonData.data.length <= 0) {
             setNoGoonsFound(true);
+            setReloadGoons(false);
             setLoading(false);
             return;
         }
         const goons = jsonData.data;
         setGoonsData(goons);
         setTagSelected(jsonData.tags);
+        setReloadGoons(false);
         setLoading(false);
     }
 
+    async function fetchJaneGoons() {
+        setLoadingJaneGoons(true);
+        const response = await getJaneGoons();
+        if (!response) return;
+
+        const jsonData = await response.json();
+        setJaneGoons(jsonData.data);
+        setLoadingJaneGoons(false);
+    }
+
     useEffect(() => {
+        if (!dontSetLoading) setLoading(true);
         if (loadFailed) setLoadFailed(false);
         fetchGoons();
     }, [tagCombo, user.userID]);
@@ -60,6 +81,7 @@ function ViewGoons(props: { tagsInDatabase: string[], reportChange: boolean, set
                 <Container maxWidth="md">
                     <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
                         <h1>View Goons</h1>
+                        <p style={{ fontSize: '15px' }}>Click on a card to enlarge the image</p>
                     </Paper>
                 </Container>
                 {/* If goons load properly, display:
@@ -69,57 +91,96 @@ function ViewGoons(props: { tagsInDatabase: string[], reportChange: boolean, set
                 - Options to reload the posts, view/delete tags in the database, and enable tag randomization (if 2 or more tags are in the database)
                 */}
                 {goonsData.length > 0 && !loading ? (
-                    <>  
-                    <div style={{ lineHeight: "40px" }}>
-                        <h2>Displaying 15 random posts with the following tag(s) selected:</h2>
-                        <Stack 
-                            direction="row" 
-                            spacing={2}
-                            sx={{ justifyContent: 'center', 
-                                '& .MuiChip-label': {
-                                    fontSize: '22px'
-                                }
-                            }} >
-                        {tagSelected.map((tag) => (
-                            <Chip label={tag} key={tag} color="primary" variant="outlined" />
-                        ))}
-                        </Stack>
-                        <h2>Click on a card to enlarge the image and see who the artist is.</h2>
-                        {props.tagsInDatabase.length >= 2 ? (
-                            <FormControlLabel
-                            sx={{ color: 'white', margin: '20px' }}
-                            label="Enable Randomized Tag Combination"
-                            control={
-                                <Checkbox
-                                    checked={tagCombo}
-                                    onChange={(e) => setTagCombo(e.target.checked)}
-                                    color="primary"
-                                    size="large"
-                                    sx={{ color: 'white' }} />
-                            } />
-                        ) : null}
-                        <br />
-                        <Button
-                            variant="contained"
-                            size="large"
-                            onClick={fetchGoons}
-                            disabled={loading}
-                            sx={{ backgroundColor: '#313030', textTransform: 'none', marginBottom: '20px' }}
-                            style={{ color: 'white'}}>
-                            Reload Goons
-                        </Button>
-                        <br />
+                    <>
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: '30px', paddingTop: '20px' }}>
+                        
                         <NavLink
                             to='/customize-tags'
                             style={{ color: 'white', textDecoration: 'none' }}
                         >
-                            <Button variant='contained' sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
+                            <Button variant='contained' size="large" sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
                                 View/Customize Tags
                             </Button>
                         </NavLink>
-                        <GoonCards goons={goonsData} reportChange={props.reportChange} setReportChange={props.setReportChange} />
                     </div>
+
+                    {props.tagsInDatabase.length >= 2 && (
+                            <FormControlLabel
+                                sx={{ color: 'white' }}
+                                label="Enable Randomized Tag Combination"
+                                control={
+                                    <Checkbox
+                                        checked={tagCombo}
+                                        onChange={(e) => {
+                                            setTagCombo(e.target.checked)
+                                            setDontSetLoading(true);
+                                        }}
+                                        color="primary"
+                                        size="large"
+                                        sx={{ color: 'white' }} 
+                                    />
+                            } />
+                        )}
+
+                        <div style={{ display: "flex", flexDirection: "row", gap: '40px', alignItems: 'center' }}>
+                            <h2>30 random posts</h2>
+                            <Button
+                                variant="contained"
+                                size='medium'
+                                onClick={fetchGoons}
+                                disabled={loading}
+                                sx={{ textTransform: 'none' }}
+                                style={{ color: 'white' }}>
+                                Reload Goons
+                            </Button>
+                            <Button 
+                                onClick={() => {
+                                    setTagsToDisplay(tagSelected); 
+                                    setOpenTagDisplay(true);
+                                }}
+                                size='small'
+                                >Show Tags Used</Button>
+                            <TagsSelectedModal tags={tagSelected} openTagDisplay={openTagDisplay} setOpenTagDisplay={setOpenTagDisplay} />
+                        </div>
+                        {reloadGoons && (
+                            <>
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
+                                    <CircularProgress size={100} sx={{ color: 'white', padding: '20px'}} aria-label="Loading goons" />
+                                </div>
+                            </>
+                        )}
+                        {!reloadGoons && <GoonCards goons={goonsData} />}
+
+                        <div style={{ display: "flex", flexDirection: "row", gap: '40px', alignItems: 'center' }}>
+                            <h2>Jane Doe Exclusives</h2>
+                            <Button
+                                size='medium'
+                                style={{ textTransform: 'none' }}
+                                variant='contained'
+                                onClick={() => {
+                                    setJaneButtonText('Refresh Jane Goons');
+                                    fetchJaneGoons()}}
+                                disabled={loadingJaneGoons}
+                            >{janeButtonText}</Button>
+                            <Button 
+                                onClick={() => {
+                                    setTagsToDisplay(['jane_doe_(zenless_zone_zero)']); 
+                                    setOpenTagDisplay(true);
+                                }}
+                                size='small'
+                            >Show Tags Used</Button>
+                            <TagsSelectedModal tags={tagsToDisplay} openTagDisplay={openTagDisplay} setOpenTagDisplay={setOpenTagDisplay} />
+                        </div>
+                        {loadingJaneGoons && (
+                            <>
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
+                                    <CircularProgress size={100} sx={{ color: 'white', padding: '20px'}} aria-label="Loading goons" />
+                                </div>
+                            </>
+                        )}
+                        {!loadingJaneGoons && <GoonCards goons={janeGoons} />}
                     </>
+                    
                 // Error handling - if the load fails, if there are no goons, and if loading is in progress, display something
                 ) : loadFailed ? (
                     <p style={{ color: 'red' }}>Failed to load goons. Please try again later.</p>

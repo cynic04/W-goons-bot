@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import '../css/TagPills.css'
 import { useUserContext } from '../services/UserContext';
+import { useReportChange } from '../services/ReportChange';
 import { addTag } from '../services/FastAPI-backend';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -22,10 +23,9 @@ function GoonModal(props: {
     goonInformation: any, 
     setGoonInformation: React.Dispatch<React.SetStateAction<any>>,
     goons: any[]
-    reportChange: boolean,
-    setReportChange: React.Dispatch<React.SetStateAction<boolean>>
 }) {
 
+    const report = useReportChange()
     const user = useUserContext()
     const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -49,7 +49,7 @@ function GoonModal(props: {
         } else {
             toast.success(`Tag "${formData.tag}" submitted successfully.`);
             setIsSubmitting(false)
-            props.setReportChange(true);
+            report.setReportChanged(true);
         }
     }
 
@@ -114,7 +114,7 @@ function GoonModal(props: {
                 </Dialog>
             )}
 
-            <DialogContent style={{ overflow: 'hidden' }}>
+            <DialogContent style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
                 <a href={props.goonInformation["file_url"]} target="_blank" rel="noopener noreferrer">
                     <img className="goon-modal-img" src={props.goonInformation["file_url"]} alt={`Goon ${props.indexSelected + 1}`} />
                 </a>
@@ -134,7 +134,7 @@ function GoonModal(props: {
                         variant='contained'
                         sx={{ backgroundColor: '#313030', marginBottom: '20px' }}
                         style={{ color: 'white' }}
-                        disabled={props.indexSelected >= 14}
+                        disabled={props.indexSelected >= 29}
                         onClick={() => {
                             props.setIndexSelected(props.indexSelected + 1);
                             props.setGoonInformation(props.goons[props.indexSelected + 1]);

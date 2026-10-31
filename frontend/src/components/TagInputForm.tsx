@@ -9,9 +9,10 @@ import '../css/Buttons.css';
 import tagsData from '../tags.json';
 import type TagJson from '../types/TagJson';
 import { useUserContext } from '../services/UserContext';
+import { useReportChange } from '../services/ReportChange';
 
-
-function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dispatch<React.SetStateAction<boolean>> }) {
+function TagInputForm() {
+    const report = useReportChange();
     const user = useUserContext()
     const [formData, setFormData] = useState<TagsType>({ 
         tag: '',
@@ -44,7 +45,7 @@ function TagInputForm(props: { reportChange: boolean, setReportChange: React.Dis
         } else {
             toast.success(`Tag "${formData.tag}" submitted successfully.`);
             setFormData({ tag: '', userID: user.userID });
-            props.setReportChange(true);
+            report.setReportChanged(true);
         }
     }
 
