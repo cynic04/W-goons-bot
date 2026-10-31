@@ -23,7 +23,7 @@ function GoonCards(props: { goons: any[] }) {
                 {/* Easiest way to read this: for each goon in the returned goons array, create a figure element with an image and caption */}
                 {/* "goon: any[]" is each individual goon in the goons array, and index is the iterator (which position in the array are we at rn) */}
                     {props.goons.map((goon: any, index: number) => (
-                        <Grid key={index} sx={{ flex: '0 0 auto', width: '350px' }}>
+                        <Grid key={index} sx={{ flex: '0 0 auto', width: '250px' }}>
                             <Card className="goon-card" sx={{ backgroundColor: '#313030' }}>
                                 <CardActionArea 
                                     onClick={() => {
@@ -32,7 +32,7 @@ function GoonCards(props: { goons: any[] }) {
                                         setGoonInformation(props.goons[index])}}
                                     >
                                     <CardContent>
-                                        <img src={goon["file_url"]} alt={`Goon ${index + 1}`}/>
+                                        <img src={goon["sample_url"]} alt={`Goon ${index + 1}`}/>
                                     </CardContent>
                                 </CardActionArea>
                             </Card>

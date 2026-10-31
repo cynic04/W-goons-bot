@@ -116,7 +116,7 @@ function GoonModal(props: {
 
             <DialogContent style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
                 <a href={props.goonInformation["file_url"]} target="_blank" rel="noopener noreferrer">
-                    <img className="goon-modal-img" src={props.goonInformation["file_url"]} alt={`Goon ${props.indexSelected + 1}`} />
+                    <img className="goon-modal-img" src={props.goonInformation["sample_url"]} alt={`Goon ${props.indexSelected + 1}`} />
                 </a>
             </DialogContent>
                 <DialogActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -128,7 +128,7 @@ function GoonModal(props: {
                         onClick={() => {
                             props.setIndexSelected(props.indexSelected - 1);
                             props.setGoonInformation(props.goons[props.indexSelected - 1]);
-                            }}
+                        }}
                         >Previous Goon</Button>
                     <Button
                         variant='contained'
@@ -138,7 +138,7 @@ function GoonModal(props: {
                         onClick={() => {
                             props.setIndexSelected(props.indexSelected + 1);
                             props.setGoonInformation(props.goons[props.indexSelected + 1]);
-                            }}
+                        }}
                         >Next Goon</Button>
                 </DialogActions>
         </Dialog>
