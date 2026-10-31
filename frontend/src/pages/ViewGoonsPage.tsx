@@ -4,9 +4,7 @@ import {
     CircularProgress,
     FormControlLabel,
     Checkbox,
-    Button,
-    Stack,
-    Chip
+    Button
 } from '@mui/material'; 
 import { getGoons } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
@@ -15,6 +13,7 @@ import '../css/CenterItems.css';
 import GoonCards from '../components/GoonCards.tsx';
 import { NavLink } from 'react-router-dom';
 import { useUserContext } from '../services/UserContext.tsx';
+import TagsSelectedModal from '../components/TagsSelectedModal.tsx';
 
 
 function ViewGoons(props: { tagsInDatabase: string[] }) {
@@ -27,6 +26,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
     const [loadFailed, setLoadFailed] = useState<boolean>(false);
     const [noGoonsFound, setNoGoonsFound] = useState<boolean>(false);
     const [tagCombo, setTagCombo] = useState<boolean>(false);
+    const [openTagDisplay, setOpenTagDisplay] = useState(false);
 
     async function fetchGoons() {
         setLoading(true);
@@ -106,20 +106,10 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                             } />
                         ) : null}
 
-                        <div style={{ display: "flex", flexDirection: "column", alignItems: "start", padding: '15px' }}>
-                            <h2>15 random posts, tag(s) selected:</h2>
-                            <Stack 
-                                direction="row" 
-                                spacing={2}
-                                sx={{ justifyContent: 'center', 
-                                    '& .MuiChip-label': {
-                                        fontSize: '22px'
-                                    }
-                                }} >
-                            {tagSelected.map((tag) => (
-                                <Chip label={tag} key={tag} color="primary" variant="outlined" />
-                            ))}
-                            </Stack>
+                        <div style={{ display: "flex", flexDirection: "row", gap: '40px' }}>
+                            <h2>15 random posts</h2>
+                            <Button onClick={() => setOpenTagDisplay(true)}>Show Tags Used</Button>
+                            <TagsSelectedModal tags={tagSelected} openTagDisplay={openTagDisplay} setOpenTagDisplay={setOpenTagDisplay} />
                         </div>
                         <GoonCards goons={goonsData} />
                     </>
