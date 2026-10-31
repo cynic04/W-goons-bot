@@ -1,3 +1,7 @@
+// Report Change custom React hook
+// Any time some user data changes (i.e. adding a tag, deleting a tag) - this effect triggers
+// Notifies the entire app that something changed - API calls are then made to refresh data
+// This used to be prop drilled - now it's via context
 import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react'
 

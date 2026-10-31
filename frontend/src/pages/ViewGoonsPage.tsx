@@ -60,6 +60,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                 <Container maxWidth="md">
                     <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
                         <h1>View Goons</h1>
+                        <p style={{ fontSize: '15px' }}>Click on a card to enlarge the image</p>
                     </Paper>
                 </Container>
                 {/* If goons load properly, display:
@@ -69,57 +70,60 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                 - Options to reload the posts, view/delete tags in the database, and enable tag randomization (if 2 or more tags are in the database)
                 */}
                 {goonsData.length > 0 && !loading ? (
-                    <>  
-                    <div style={{ lineHeight: "40px" }}>
-                        <h2>Displaying 15 random posts with the following tag(s) selected:</h2>
-                        <Stack 
-                            direction="row" 
-                            spacing={2}
-                            sx={{ justifyContent: 'center', 
-                                '& .MuiChip-label': {
-                                    fontSize: '22px'
-                                }
-                            }} >
-                        {tagSelected.map((tag) => (
-                            <Chip label={tag} key={tag} color="primary" variant="outlined" />
-                        ))}
-                        </Stack>
-                        <h2>Click on a card to enlarge the image and see who the artist is.</h2>
-                        {props.tagsInDatabase.length >= 2 ? (
-                            <FormControlLabel
-                            sx={{ color: 'white', margin: '20px' }}
-                            label="Enable Randomized Tag Combination"
-                            control={
-                                <Checkbox
-                                    checked={tagCombo}
-                                    onChange={(e) => setTagCombo(e.target.checked)}
-                                    color="primary"
-                                    size="large"
-                                    sx={{ color: 'white' }} />
-                            } />
-                        ) : null}
-                        <br />
+                    <>
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: '30px', paddingTop: '20px' }}>
                         <Button
                             variant="contained"
                             size="large"
                             onClick={fetchGoons}
                             disabled={loading}
                             sx={{ backgroundColor: '#313030', textTransform: 'none', marginBottom: '20px' }}
-                            style={{ color: 'white'}}>
+                            style={{ color: 'white' }}>
                             Reload Goons
                         </Button>
-                        <br />
+                        
                         <NavLink
                             to='/customize-tags'
                             style={{ color: 'white', textDecoration: 'none' }}
                         >
-                            <Button variant='contained' sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
+                            <Button variant='contained' size="large" sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
                                 View/Customize Tags
                             </Button>
                         </NavLink>
-                        <GoonCards goons={goonsData} />
                     </div>
+
+                    {props.tagsInDatabase.length >= 2 ? (
+                            <FormControlLabel
+                                sx={{ color: 'white' }}
+                                label="Enable Randomized Tag Combination"
+                                control={
+                                    <Checkbox
+                                        checked={tagCombo}
+                                        onChange={(e) => setTagCombo(e.target.checked)}
+                                        color="primary"
+                                        size="large"
+                                        sx={{ color: 'white' }} />
+                            } />
+                        ) : null}
+
+                        <div style={{ display: "flex", flexDirection: "column", alignItems: "start", padding: '15px' }}>
+                            <h2>15 random posts, tag(s) selected:</h2>
+                            <Stack 
+                                direction="row" 
+                                spacing={2}
+                                sx={{ justifyContent: 'center', 
+                                    '& .MuiChip-label': {
+                                        fontSize: '22px'
+                                    }
+                                }} >
+                            {tagSelected.map((tag) => (
+                                <Chip label={tag} key={tag} color="primary" variant="outlined" />
+                            ))}
+                            </Stack>
+                        </div>
+                        <GoonCards goons={goonsData} />
                     </>
+                    
                 // Error handling - if the load fails, if there are no goons, and if loading is in progress, display something
                 ) : loadFailed ? (
                     <p style={{ color: 'red' }}>Failed to load goons. Please try again later.</p>
