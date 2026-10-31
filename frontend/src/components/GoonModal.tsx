@@ -134,7 +134,7 @@ function GoonModal(props: {
                         variant='contained'
                         sx={{ backgroundColor: '#313030', marginBottom: '20px' }}
                         style={{ color: 'white' }}
-                        disabled={props.indexSelected >= 29}
+                        disabled={props.indexSelected >= props.goons.length - 1}
                         onClick={() => {
                             props.setIndexSelected(props.indexSelected + 1);
                             props.setGoonInformation(props.goons[props.indexSelected + 1]);
