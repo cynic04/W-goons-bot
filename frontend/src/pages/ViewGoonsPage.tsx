@@ -139,7 +139,6 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                 }}
                                 size='small'
                                 >Show Tags Used</Button>
-                            <TagsSelectedModal tags={tagSelected} openTagDisplay={openTagDisplay} setOpenTagDisplay={setOpenTagDisplay} />
                         </div>
                         {reloadGoons && (
                             <>
