@@ -121,7 +121,7 @@ async def get_goons(userID = 3, tag_combo: bool = False):
                 random_tag = " ".join(random.sample(tags, num_tags_to_combo))
             else:
                 random_tag = random.choice(tags)
-            r34_response = requests.get(API_URL + f"&limit=15&tags={random_tag} -ai_generated -video sort:random")
+            r34_response = requests.get(API_URL + f"&limit=30&tags={random_tag} -ai_generated -video sort:random")
             data_json = json.loads(r34_response.text)
             random_tag = random_tag.split(" ")
             if len(data_json) <= 0:
@@ -156,6 +156,17 @@ async def get_goons(userID = 3, tag_combo: bool = False):
                 "tags": [],
                 "data": []
             }
+
+@app.get("/api/get-jane-goons")
+async def get_jane_goons():
+    API_URL = os.getenv("API_LINK_POSTS_R34")
+    r34_response = requests.get(API_URL + "&limit=50&tags=jane_doe_(zenless_zone_zero) -ai_generated -video sort:random")
+    data_json = json.loads(r34_response.text)
+    return {
+        "message": "Jane goons retrieved.",
+        "tags": ["jane_doe_(zenless_zone_zero)"],
+        "data": data_json
+    }
 
 @app.post(
     "/api/add-tag",
