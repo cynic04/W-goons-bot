@@ -6,7 +6,7 @@ import {
     Checkbox,
     Button
 } from '@mui/material'; 
-import { getGoons } from '../services/FastAPI-backend.ts';
+import { getGoons, getJaneGoons } from '../services/FastAPI-backend.ts';
 import { useState, useEffect } from 'react';
 import '../css/GoonCards.css';
 import '../css/CenterItems.css';
@@ -22,11 +22,15 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
     const user = useUserContext();
     const [goonsData, setGoonsData] = useState<any[]>([]);
     const [tagSelected, setTagSelected] = useState<string[]>([]);
+    const [tagsToDisplay, setTagsToDisplay] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [loadFailed, setLoadFailed] = useState<boolean>(false);
     const [noGoonsFound, setNoGoonsFound] = useState<boolean>(false);
     const [tagCombo, setTagCombo] = useState<boolean>(false);
     const [openTagDisplay, setOpenTagDisplay] = useState(false);
+    const [janeGoonsEnabled, setJaneGoonsEnabled] = useState(false)
+    const [janeGoons, setJaneGoons] = useState<any[]>([]);
+    const [janeButtonText, setJaneButtonText] = useState('Click for Jane Goons')
 
     async function fetchGoons() {
         setLoading(true);
@@ -47,6 +51,15 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
         setGoonsData(goons);
         setTagSelected(jsonData.tags);
         setLoading(false);
+    }
+
+    async function fetchJaneGoons() {
+        setJaneGoonsEnabled(true);
+        const response = await getJaneGoons();
+        if (!response) return;
+
+        const jsonData = await response.json();
+        setJaneGoons(jsonData.data);
     }
 
     useEffect(() => {
@@ -102,16 +115,45 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                         onChange={(e) => setTagCombo(e.target.checked)}
                                         color="primary"
                                         size="large"
-                                        sx={{ color: 'white' }} />
+                                        sx={{ color: 'white' }} 
+                                    />
                             } />
                         ) : null}
 
-                        <div style={{ display: "flex", flexDirection: "row", gap: '40px' }}>
-                            <h2>15 random posts</h2>
-                            <Button onClick={() => setOpenTagDisplay(true)}>Show Tags Used</Button>
+                        <div style={{ display: "flex", flexDirection: "row", gap: '40px', alignItems: 'center' }}>
+                            <h2>30 random posts</h2>
+                            <Button 
+                                onClick={() => {
+                                    setTagsToDisplay(tagSelected); 
+                                    setOpenTagDisplay(true);
+                                }}
+                                size='small'
+                                >Show Tags Used</Button>
                             <TagsSelectedModal tags={tagSelected} openTagDisplay={openTagDisplay} setOpenTagDisplay={setOpenTagDisplay} />
                         </div>
                         <GoonCards goons={goonsData} />
+
+                        <div style={{ display: "flex", flexDirection: "row", gap: '40px', alignItems: 'center' }}>
+                            <h2>Jane Doe Exclusives</h2>
+                            <Button
+                                size='small'
+                                style={{ textTransform: 'none' }}
+                                variant='contained'
+                                onClick={() => {
+                                    setJaneGoonsEnabled(true);
+                                    setJaneButtonText('Refresh Jane Goons');
+                                    fetchJaneGoons()}}
+                            >{janeButtonText}</Button>
+                            <Button 
+                                onClick={() => {
+                                    setTagsToDisplay(['jane_doe_(zenless_zone_zero)']); 
+                                    setOpenTagDisplay(true);
+                                }}
+                                size='small'
+                                >Show Tags Used</Button>
+                            <TagsSelectedModal tags={tagsToDisplay} openTagDisplay={openTagDisplay} setOpenTagDisplay={setOpenTagDisplay} />
+                        </div>
+                        <GoonCards goons={janeGoons} />
                     </>
                     
                 // Error handling - if the load fails, if there are no goons, and if loading is in progress, display something

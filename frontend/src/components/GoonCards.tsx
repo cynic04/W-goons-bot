@@ -18,7 +18,7 @@ function GoonCards(props: { goons: any[] }) {
     const [emblaRef] = useEmblaCarousel({ dragFree: true })
     return (
         <>
-        <div ref={emblaRef} style={{ overflow: 'hidden' }}>
+        <div ref={emblaRef} style={{ overflow: 'hidden', marginBottom: '20px' }}>
             <Grid container spacing={2} sx={{ flexWrap: 'nowrap'}}>
                 {/* Easiest way to read this: for each goon in the returned goons array, create a figure element with an image and caption */}
                 {/* "goon: any[]" is each individual goon in the goons array, and index is the iterator (which position in the array are we at rn) */}
