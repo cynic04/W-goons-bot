@@ -3,7 +3,7 @@
 
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
-from db_operations import get_tags_from_db, add_tag_to_db
+from db_operations import get_favorite_posts, get_tags_from_db, add_tag_to_db, add_favorites_to_db
 import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
@@ -200,10 +200,13 @@ async def add_tag(request: TagRequest):
 
 @app.post("/api/add-favorite")
 async def add_favorite(request: FavoriteRequest):
+    userID = request.userID
+    goonToFavorite = request.goonInformation
+    favorite_posts = get_favorite_posts(userID) or []
+    favorite_posts.append(goonToFavorite)
+    add_favorites_to_db(favorite_posts, userID)
     return {
-        "message": "Favorite added.",
-        "data": request.goonInformation,
-        "userID": request.userID
+        "message": "Favorite added."
     }
 
 @app.delete(
