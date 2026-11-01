@@ -61,9 +61,10 @@ function GoonModal(props: {
     }
 
     async function handleFavorite(checked: boolean) {
+        const goonInformationWithDate = { ...props.goonInformation, date_favorited: new Date().toISOString() };
         const formData = {
             userID: user.userID,
-            goonInformation: props.goonInformation
+            goonInformation: goonInformationWithDate
         }
         if (checked) {
             setIsSubmitting(true)
