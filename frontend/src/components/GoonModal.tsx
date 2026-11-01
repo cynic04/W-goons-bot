@@ -5,8 +5,12 @@ import {
     DialogActions, 
     Button, 
     Stack, 
-    Chip 
+    Chip,
+    Checkbox,
+    FormControlLabel
 } from '@mui/material';
+import FavoriteBorder from '@mui/icons-material/Favorite';
+import Favorite from '@mui/icons-material/Favorite';
 import { useState } from 'react';
 import '../css/TagPills.css'
 import { useUserContext } from '../services/UserContext';
@@ -28,6 +32,7 @@ function GoonModal(props: {
     const report = useReportChange()
     const user = useUserContext()
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [showExtraTags, setShowExtraTags] = useState(false);
 
 // when the form is submitted, determine what to do with the input value
     async function handleSubmit(tag: string, userID: number) {
@@ -62,15 +67,31 @@ function GoonModal(props: {
         }
     }
 
-    const [showExtraTags, setShowExtraTags] = useState(false);
     return (
         <>
         <Dialog open={props.open} onClose={() => {props.setOpen(false)}}>
-            <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold'  }}>
-                {`Artist: ${
-                    findArtist(props.goonInformation)}`
-                }
-            </DialogTitle>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr' }}>
+                <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold', gridColumn: '2' }}>
+                    {`Artist: ${
+                        findArtist(props.goonInformation)}`
+                    }
+                </DialogTitle>
+                <FormControlLabel 
+                    label="Favorite"
+                    labelPlacement='bottom'
+                    sx={{ gridColumn: '3', alignItems: 'end'}}
+                    control={
+                        <Checkbox 
+                            size="large"
+                            icon={<FavoriteBorder sx={{ backgroundColor: 'transparent' }} />}
+                            checkedIcon={<Favorite />}
+                            onChange={(e) => {
+                                console.log(e.target.checked)
+                            }} 
+                        />
+                    } 
+                />
+            </div>
             <Button
                 variant='contained'
                 sx={{ backgroundColor: '#313030', margin: '0 auto' }}
