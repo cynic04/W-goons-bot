@@ -11,13 +11,14 @@ import {
 } from '@mui/material';
 import FavoriteBorder from '@mui/icons-material/Favorite';
 import Favorite from '@mui/icons-material/Favorite';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../css/TagPills.css'
 import { useUserContext } from '../services/UserContext';
 import { useReportChange } from '../services/ReportChange';
 import { addFavorite, addTag } from '../services/FastAPI-backend';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import { getFavoritePostIds } from '../services/FastAPI-backend';
 
 function GoonModal(props: { 
     open: boolean, 
@@ -33,6 +34,7 @@ function GoonModal(props: {
     const user = useUserContext()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [showExtraTags, setShowExtraTags] = useState(false);
+    const [favoritePostIds, setFavoritePostIds] = useState<number[]>([])
 
 // when the form is submitted, determine what to do with the input value
     async function handleSubmit(tag: string, userID: number) {
@@ -65,6 +67,7 @@ function GoonModal(props: {
         }
         if (checked) {
             setIsSubmitting(true)
+            setFavoritePostIds([...favoritePostIds, props.goonInformation.id])
             const apiResponse = await addFavorite(JSON.stringify(formData))
             if (!apiResponse) {
                 toast.error('Failed to add favorite.');
@@ -75,9 +78,18 @@ function GoonModal(props: {
                 toast.success('Favorite added.');
                 setIsSubmitting(false)
             }
+        } else if (!checked) {
+            setFavoritePostIds(favoritePostIds.filter(id => id !== props.goonInformation.id))
         }
     }
 
+    async function fetchFavoritePostIds() {
+        const response = await getFavoritePostIds(user.userID);
+        if (!response) return;
+        const jsonData = await response.json();
+        setFavoritePostIds(jsonData);
+    }
+    
     function findArtist(goonInformation: any) {
         const artistTags = goonInformation["tag_info"].filter((tag: any) => tag.type === 'artist');
         if (artistTags.length > 0) {
@@ -86,6 +98,10 @@ function GoonModal(props: {
             return 'no artist attached to this post';
         }
     }
+
+    useEffect(() => {
+        fetchFavoritePostIds()
+    }, [])
 
     return (
         <>
@@ -96,21 +112,25 @@ function GoonModal(props: {
                         findArtist(props.goonInformation)}`
                     }
                 </DialogTitle>
-                <FormControlLabel 
+                {favoritePostIds.length > 0 && (
+                    <FormControlLabel 
                     label="Favorite"
                     labelPlacement='bottom'
                     sx={{ gridColumn: '3', alignItems: 'end'}}
-                    control={
+                    control={ 
                         <Checkbox 
                             size="large"
                             icon={<FavoriteBorder sx={{ backgroundColor: 'transparent' }} />}
+                            disabled={isSubmitting}
                             checkedIcon={<Favorite />}
+                            checked={favoritePostIds.includes(props.goonInformation.id)}
                             onChange={(e) => {
                                 handleFavorite(e.target.checked)
                             }} 
                         />
                     } 
                 />
+                )}
             </div>
             <Button
                 variant='contained'
