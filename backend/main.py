@@ -104,6 +104,10 @@ async def get_tags(userID = 3):
             "tags": []
         }
 
+@app.get("/api/get-favorite-post-ids")
+async def get_favorites(userID = 3):
+    return get_favorite_posts(userID, True)
+
 @app.get(
     "/api/get-goons",
     status_code=status.HTTP_200_OK,
@@ -164,7 +168,7 @@ async def get_goons(userID = 3, tag_combo: bool = False):
 @app.get("/api/get-jane-goons")
 async def get_jane_goons():
     API_URL = os.getenv("API_LINK_POSTS_R34")
-    r34_response = requests.get(API_URL + "&limit=50&tags=jane_doe_(zenless_zone_zero) -ai_generated -video sort:random")
+    r34_response = requests.get(API_URL + "&limit=50&tags=jane_doe_(zenless_zone_zero) qiandaiyiyu -ai_generated -video sort:score")
     data_json = json.loads(r34_response.text)
     return {
         "message": "Jane goons retrieved.",
@@ -202,9 +206,15 @@ async def add_tag(request: TagRequest):
 async def add_favorite(request: FavoriteRequest):
     userID = request.userID
     goonToFavorite = request.goonInformation
-    favorite_posts = get_favorite_posts(userID) or []
+    goonID = goonToFavorite["id"]
+    favorite_posts_info = get_favorite_posts(userID) or []
+
+    favorite_posts = favorite_posts_info["favorite_posts"] if favorite_posts_info else []
+    favorite_post_ids = favorite_posts_info["favorite_post_ids"] if favorite_posts_info else []
+
     favorite_posts.append(goonToFavorite)
-    add_favorites_to_db(favorite_posts, userID)
+    favorite_post_ids.append(goonID)
+    add_favorites_to_db(favorite_posts, userID, favorite_post_ids)
     return {
         "message": "Favorite added."
     }
