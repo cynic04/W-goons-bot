@@ -237,4 +237,20 @@ async def delete_tag(request: TagRequest):
         "message": f"Tag '{tag}' deleted successfully!",
         "tags": tags
     }
+
+@app.delete("/api/delete-favorite")
+async def delete_favorite(request: FavoriteRequest):
+    userID = request.userID
+    goonID = request.goonInformation["id"]
+    favorite_posts_info = get_favorite_posts(userID) or []
+    favorite_posts = favorite_posts_info["favorite_posts"] if favorite_posts_info else []
+    favorite_post_ids = favorite_posts_info["favorite_post_ids"] if favorite_posts_info else []
+    
+    if favorite_posts == [] or favorite_post_ids == []:
+        return {"message": "No favorite to delete."}
+    
+    favorite_posts = [goon for goon in favorite_posts if goon["id"] != goonID]
+    favorite_post_ids = [id for id in favorite_post_ids if id!= goonID]
+    add_favorites_to_db(favorite_posts, userID, favorite_post_ids)
+    return {"message": "Favorite deleted."}
                 

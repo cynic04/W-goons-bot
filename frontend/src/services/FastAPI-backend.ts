@@ -128,3 +128,18 @@ export async function deleteTag(tagInfo: string) {
     }
 }
 
+export async function deleteFavorite(favoriteInfo: string) {
+    try {
+        const response = await fetch(`${API_URL}/api/delete-favorite`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: favoriteInfo,
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making DELETE request:', error);
+        return null;
+    }
+}

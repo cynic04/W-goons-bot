@@ -15,7 +15,7 @@ import { useState, useEffect } from 'react';
 import '../css/TagPills.css'
 import { useUserContext } from '../services/UserContext';
 import { useReportChange } from '../services/ReportChange';
-import { addFavorite, addTag } from '../services/FastAPI-backend';
+import { addFavorite, addTag, deleteFavorite } from '../services/FastAPI-backend';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { getFavoritePostIds } from '../services/FastAPI-backend';
@@ -75,11 +75,21 @@ function GoonModal(props: {
             } else {
                 const jsonData = await apiResponse.json()
                 console.log(jsonData)
-                toast.success('Favorite added.');
+                toast.success('Favorite added!');
                 setIsSubmitting(false)
             }
+        
         } else if (!checked) {
+            setIsSubmitting(true)
             setFavoritePostIds(favoritePostIds.filter(id => id !== props.goonInformation.id))
+            const response = await deleteFavorite(JSON.stringify(formData))
+            if (!response) {
+                toast.error('Failed to add favorite.');
+                setIsSubmitting(false)
+            } else {
+                toast.success('Favorite deleted.');
+                setIsSubmitting(false)
+            }
         }
     }
 
@@ -114,7 +124,7 @@ function GoonModal(props: {
                 </DialogTitle>
                 {favoritePostIds.length > 0 && (
                     <FormControlLabel 
-                    label="Favorite"
+                    label={favoritePostIds.includes(props.goonInformation.id) ? "Favorited" : "Favorite"}
                     labelPlacement='bottom'
                     sx={{ gridColumn: '3', alignItems: 'end'}}
                     control={ 
