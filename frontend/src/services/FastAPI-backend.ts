@@ -16,23 +16,6 @@ export async function initialGetRequest() {
     }
 }
 
-// Adds a single tag to the database. The tagInfo parameter is a JSON string containing the tag information.
-export async function addTag(tagInfo: string) {
-    try {
-        const response = await fetch(`${API_URL}/api/add-tag`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: tagInfo,
-        });
-        return response;
-    } catch (error) {
-        console.error('Error making POST request:', error);
-        return null;
-    }
-}
-
 // Grabs 10 random goons based on a single randomly selected tag from the database
 export async function getGoons(tagCombo: boolean, userID: number) {
     try {
@@ -80,6 +63,54 @@ export async function getJaneGoons() {
     }
 }
 
+export async function getFavoritePostIds(userID: number) {
+    try {
+        const response = await fetch(`${API_URL}/api/get-favorite-post-ids?userID=${userID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making GET request to get favorite post ids:', error);
+        return null;
+    }
+}
+
+// Adds a single tag to the database. The tagInfo parameter is a JSON string containing the tag information.
+export async function addTag(tagInfo: string) {
+    try {
+        const response = await fetch(`${API_URL}/api/add-tag`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: tagInfo,
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making POST request:', error);
+        return null;
+    }
+}
+
+export async function addFavorite(favoriteInfo: string) {
+    try {
+        const response = await fetch(`${API_URL}/api/add-favorite`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: favoriteInfo,
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making POST request:', error);
+        return null;
+    }
+}
+
 // Deletes a single tag from the database based on the provided tag
 export async function deleteTag(tagInfo: string) {
     try {
@@ -97,3 +128,18 @@ export async function deleteTag(tagInfo: string) {
     }
 }
 
+export async function deleteFavorite(favoriteInfo: string) {
+    try {
+        const response = await fetch(`${API_URL}/api/delete-favorite`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: favoriteInfo,
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making DELETE request:', error);
+        return null;
+    }
+}

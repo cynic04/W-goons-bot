@@ -34,7 +34,6 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
     const [loadingJaneGoons, setLoadingJaneGoons] = useState(false);
     const [dontSetLoading, setDontSetLoading] = useState(false);
     
-
     async function fetchGoons() {
         setReloadGoons(true);
         const response = await getGoons(tagCombo, user.userID);
@@ -126,7 +125,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                             <h2>30 random posts</h2>
                             <Button
                                 variant="contained"
-                                size='medium'
+                                size='small'
                                 onClick={fetchGoons}
                                 disabled={loading}
                                 sx={{ textTransform: 'none' }}
@@ -140,7 +139,6 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                 }}
                                 size='small'
                                 >Show Tags Used</Button>
-                            <TagsSelectedModal tags={tagSelected} openTagDisplay={openTagDisplay} setOpenTagDisplay={setOpenTagDisplay} />
                         </div>
                         {reloadGoons && (
                             <>
@@ -154,7 +152,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                         <div style={{ display: "flex", flexDirection: "row", gap: '40px', alignItems: 'center' }}>
                             <h2>Jane Doe Exclusives</h2>
                             <Button
-                                size='medium'
+                                size='small'
                                 style={{ textTransform: 'none' }}
                                 variant='contained'
                                 onClick={() => {

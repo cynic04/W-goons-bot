@@ -5,15 +5,20 @@ import {
     DialogActions, 
     Button, 
     Stack, 
-    Chip 
+    Chip,
+    Checkbox,
+    FormControlLabel
 } from '@mui/material';
-import { useState } from 'react';
+import FavoriteBorder from '@mui/icons-material/Favorite';
+import Favorite from '@mui/icons-material/Favorite';
+import { useState, useEffect } from 'react';
 import '../css/TagPills.css'
 import { useUserContext } from '../services/UserContext';
 import { useReportChange } from '../services/ReportChange';
-import { addTag } from '../services/FastAPI-backend';
+import { addFavorite, addTag, deleteFavorite } from '../services/FastAPI-backend';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import { getFavoritePostIds } from '../services/FastAPI-backend';
 
 function GoonModal(props: { 
     open: boolean, 
@@ -28,6 +33,8 @@ function GoonModal(props: {
     const report = useReportChange()
     const user = useUserContext()
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [showExtraTags, setShowExtraTags] = useState(false);
+    const [favoritePostIds, setFavoritePostIds] = useState<number[]>([])
 
 // when the form is submitted, determine what to do with the input value
     async function handleSubmit(tag: string, userID: number) {
@@ -53,6 +60,46 @@ function GoonModal(props: {
         }
     }
 
+    async function handleFavorite(checked: boolean) {
+        const formData = {
+            userID: user.userID,
+            goonInformation: props.goonInformation
+        }
+        if (checked) {
+            setIsSubmitting(true)
+            setFavoritePostIds([...favoritePostIds, props.goonInformation.id])
+            const apiResponse = await addFavorite(JSON.stringify(formData))
+            if (!apiResponse) {
+                toast.error('Failed to add favorite.');
+                setIsSubmitting(false)
+            } else {
+                const jsonData = await apiResponse.json()
+                console.log(jsonData)
+                toast.success('Favorite added!');
+                setIsSubmitting(false)
+            }
+        
+        } else if (!checked) {
+            setIsSubmitting(true)
+            setFavoritePostIds(favoritePostIds.filter(id => id !== props.goonInformation.id))
+            const response = await deleteFavorite(JSON.stringify(formData))
+            if (!response) {
+                toast.error('Failed to add favorite.');
+                setIsSubmitting(false)
+            } else {
+                toast.success('Favorite deleted.');
+                setIsSubmitting(false)
+            }
+        }
+    }
+
+    async function fetchFavoritePostIds() {
+        const response = await getFavoritePostIds(user.userID);
+        if (!response) return;
+        const jsonData = await response.json();
+        setFavoritePostIds(jsonData);
+    }
+    
     function findArtist(goonInformation: any) {
         const artistTags = goonInformation["tag_info"].filter((tag: any) => tag.type === 'artist');
         if (artistTags.length > 0) {
@@ -62,15 +109,39 @@ function GoonModal(props: {
         }
     }
 
-    const [showExtraTags, setShowExtraTags] = useState(false);
+    useEffect(() => {
+        fetchFavoritePostIds()
+    }, [])
+
     return (
         <>
         <Dialog open={props.open} onClose={() => {props.setOpen(false)}}>
-            <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold'  }}>
-                {`Artist: ${
-                    findArtist(props.goonInformation)}`
-                }
-            </DialogTitle>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr' }}>
+                <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold', gridColumn: '2' }}>
+                    {`Artist: ${
+                        findArtist(props.goonInformation)}`
+                    }
+                </DialogTitle>
+                {favoritePostIds.length > 0 && (
+                    <FormControlLabel 
+                    label={favoritePostIds.includes(props.goonInformation.id) ? "Favorited" : "Favorite"}
+                    labelPlacement='bottom'
+                    sx={{ gridColumn: '3', alignItems: 'end'}}
+                    control={ 
+                        <Checkbox 
+                            size="large"
+                            icon={<FavoriteBorder sx={{ backgroundColor: 'transparent' }} />}
+                            disabled={isSubmitting}
+                            checkedIcon={<Favorite />}
+                            checked={favoritePostIds.includes(props.goonInformation.id)}
+                            onChange={(e) => {
+                                handleFavorite(e.target.checked)
+                            }} 
+                        />
+                    } 
+                />
+                )}
+            </div>
             <Button
                 variant='contained'
                 sx={{ backgroundColor: '#313030', margin: '0 auto' }}
@@ -100,12 +171,12 @@ function GoonModal(props: {
                                             key={index}
                                             disabled={isSubmitting}
                                             onClick={() => {
-                                                // setTagToSubmit({...tagToSubmit, tag: tag.tag, userID: user.userID})
                                                 handleSubmit(tag.tag, user.userID)
                                             }} 
                                             label={tag.tag}
                                             color="primary" 
-                                            variant="filled" />
+                                            variant="filled" 
+                                        />
                                     </Stack>
                                 </>
                         ))}
@@ -116,7 +187,7 @@ function GoonModal(props: {
 
             <DialogContent style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
                 <a href={props.goonInformation["file_url"]} target="_blank" rel="noopener noreferrer">
-                    <img className="goon-modal-img" src={props.goonInformation["file_url"]} alt={`Goon ${props.indexSelected + 1}`} />
+                    <img className="goon-modal-img" src={props.goonInformation["sample_url"]} alt={`Goon ${props.indexSelected + 1}`} />
                 </a>
             </DialogContent>
                 <DialogActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -128,7 +199,7 @@ function GoonModal(props: {
                         onClick={() => {
                             props.setIndexSelected(props.indexSelected - 1);
                             props.setGoonInformation(props.goons[props.indexSelected - 1]);
-                            }}
+                        }}
                         >Previous Goon</Button>
                     <Button
                         variant='contained'
@@ -138,7 +209,7 @@ function GoonModal(props: {
                         onClick={() => {
                             props.setIndexSelected(props.indexSelected + 1);
                             props.setGoonInformation(props.goons[props.indexSelected + 1]);
-                            }}
+                        }}
                         >Next Goon</Button>
                 </DialogActions>
         </Dialog>

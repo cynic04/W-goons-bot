@@ -3,7 +3,7 @@
 
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
-from db_operations import get_tags_from_db, add_tag_to_db
+from db_operations import get_favorite_posts, get_tags_from_db, add_tag_to_db, add_favorites_to_db
 import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
@@ -42,6 +42,10 @@ app.add_middleware(
 class TagRequest(BaseModel):
     tag: str
     userID: int
+
+class FavoriteRequest(BaseModel):
+    userID: int
+    goonInformation: dict
 
 class MessageOnlyResponse(BaseModel):
     message: str
@@ -99,6 +103,10 @@ async def get_tags(userID = 3):
             "message": "No tags found in the database.",
             "tags": []
         }
+
+@app.get("/api/get-favorite-post-ids")
+async def get_favorites(userID = 3):
+    return get_favorite_posts(userID, True)
 
 @app.get(
     "/api/get-goons",
@@ -160,7 +168,7 @@ async def get_goons(userID = 3, tag_combo: bool = False):
 @app.get("/api/get-jane-goons")
 async def get_jane_goons():
     API_URL = os.getenv("API_LINK_POSTS_R34")
-    r34_response = requests.get(API_URL + "&limit=50&tags=jane_doe_(zenless_zone_zero) -ai_generated -video sort:random")
+    r34_response = requests.get(API_URL + "&limit=50&tags=jane_doe_(zenless_zone_zero) qiandaiyiyu -ai_generated -video sort:score")
     data_json = json.loads(r34_response.text)
     return {
         "message": "Jane goons retrieved.",
@@ -194,6 +202,23 @@ async def add_tag(request: TagRequest):
             "message": "Failed to add tag to the database.",
         }
 
+@app.post("/api/add-favorite")
+async def add_favorite(request: FavoriteRequest):
+    userID = request.userID
+    goonToFavorite = request.goonInformation
+    goonID = goonToFavorite["id"]
+    favorite_posts_info = get_favorite_posts(userID) or []
+
+    favorite_posts = favorite_posts_info["favorite_posts"] if favorite_posts_info else []
+    favorite_post_ids = favorite_posts_info["favorite_post_ids"] if favorite_posts_info else []
+
+    favorite_posts.append(goonToFavorite)
+    favorite_post_ids.append(goonID)
+    add_favorites_to_db(favorite_posts, userID, favorite_post_ids)
+    return {
+        "message": "Favorite added."
+    }
+
 @app.delete(
     "/api/delete-tag",
     status_code=status.HTTP_200_OK,
@@ -212,4 +237,20 @@ async def delete_tag(request: TagRequest):
         "message": f"Tag '{tag}' deleted successfully!",
         "tags": tags
     }
+
+@app.delete("/api/delete-favorite")
+async def delete_favorite(request: FavoriteRequest):
+    userID = request.userID
+    goonID = request.goonInformation["id"]
+    favorite_posts_info = get_favorite_posts(userID) or []
+    favorite_posts = favorite_posts_info["favorite_posts"] if favorite_posts_info else []
+    favorite_post_ids = favorite_posts_info["favorite_post_ids"] if favorite_posts_info else []
+    
+    if favorite_posts == [] or favorite_post_ids == []:
+        return {"message": "No favorite to delete."}
+    
+    favorite_posts = [goon for goon in favorite_posts if goon["id"] != goonID]
+    favorite_post_ids = [id for id in favorite_post_ids if id!= goonID]
+    add_favorites_to_db(favorite_posts, userID, favorite_post_ids)
+    return {"message": "Favorite deleted."}
                 

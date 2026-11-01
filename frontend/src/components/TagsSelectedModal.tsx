@@ -4,6 +4,7 @@ import {
     Stack,
     Chip
 } from '@mui/material';
+import '../css/TagPills.css'
 
 function TagsSelected(props: { tags: string[], openTagDisplay: boolean, setOpenTagDisplay: (open: boolean) => void }) {
  return (
@@ -16,6 +17,7 @@ function TagsSelected(props: { tags: string[], openTagDisplay: boolean, setOpenT
                 <Stack 
                 direction="row" 
                 spacing={2}
+                className="tag-pills"
                 sx={{ justifyContent: 'center', 
                     '& .MuiChip-label': {
                         fontSize: '22px'
