@@ -168,7 +168,7 @@ async def get_goons(userID = 3, tag_combo: bool = False):
 @app.get("/api/get-jane-goons")
 async def get_jane_goons():
     API_URL = os.getenv("API_LINK_POSTS_R34")
-    r34_response = requests.get(API_URL + "&limit=50&tags=jane_doe_(zenless_zone_zero) qiandaiyiyu -ai_generated -video sort:score")
+    r34_response = requests.get(API_URL + "&limit=50&tags=jane_doe_(zenless_zone_zero) -ai_generated -video")
     data_json = json.loads(r34_response.text)
     return {
         "message": "Jane goons retrieved.",

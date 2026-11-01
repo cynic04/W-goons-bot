@@ -73,8 +73,7 @@ function GoonModal(props: {
                 toast.error('Failed to add favorite.');
                 setIsSubmitting(false)
             } else {
-                const jsonData = await apiResponse.json()
-                console.log(jsonData)
+                await apiResponse.json()
                 toast.success('Favorite added!');
                 setIsSubmitting(false)
             }
@@ -82,6 +81,7 @@ function GoonModal(props: {
         } else if (!checked) {
             setIsSubmitting(true)
             setFavoritePostIds(favoritePostIds.filter(id => id !== props.goonInformation.id))
+            if (favoritePostIds.length === 0) setFavoritePostIds([-1])
             const response = await deleteFavorite(JSON.stringify(formData))
             if (!response) {
                 toast.error('Failed to add favorite.');
@@ -96,7 +96,8 @@ function GoonModal(props: {
     async function fetchFavoritePostIds() {
         const response = await getFavoritePostIds(user.userID);
         if (!response) return;
-        const jsonData = await response.json();
+        let jsonData = await response.json();
+        if (jsonData.length === 0) jsonData = [-1]
         setFavoritePostIds(jsonData);
     }
     
