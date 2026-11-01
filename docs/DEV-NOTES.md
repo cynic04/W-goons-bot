@@ -16,6 +16,10 @@ ENSURE THAT YOU RUN THESE COMMANDS TO AVOID ISSUES AS WELL:
 # We are using uv for Python instead of pip, which is claimed to be like 1000x faster than pip in terms of installation
 Documentation for installation: https://docs.astral.sh/uv/getting-started/installation/
 
+# Domain related details
+We're going to start working under the domain `wgoons.bot`
+Vercel's information about domains: https://vercel.com/docs/domains/working-with-domains
+
 # Supabase related details:
 1. Database URL can be found on the homepage of the app
 2. Go to project settings --> API keys --> Legacy anon, service_role API keys
