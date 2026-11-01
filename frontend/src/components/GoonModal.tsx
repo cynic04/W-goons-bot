@@ -15,7 +15,7 @@ import { useState } from 'react';
 import '../css/TagPills.css'
 import { useUserContext } from '../services/UserContext';
 import { useReportChange } from '../services/ReportChange';
-import { addTag } from '../services/FastAPI-backend';
+import { addFavorite, addTag } from '../services/FastAPI-backend';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -58,6 +58,26 @@ function GoonModal(props: {
         }
     }
 
+    async function handleFavorite(checked: boolean) {
+        const formData = {
+            userID: user.userID,
+            goonInformation: props.goonInformation
+        }
+        if (checked) {
+            setIsSubmitting(true)
+            const apiResponse = await addFavorite(JSON.stringify(formData))
+            if (!apiResponse) {
+                toast.error('Failed to add favorite.');
+                setIsSubmitting(false)
+            } else {
+                const jsonData = await apiResponse.json()
+                console.log(jsonData)
+                toast.success('Favorite added.');
+                setIsSubmitting(false)
+            }
+        }
+    }
+
     function findArtist(goonInformation: any) {
         const artistTags = goonInformation["tag_info"].filter((tag: any) => tag.type === 'artist');
         if (artistTags.length > 0) {
@@ -86,7 +106,7 @@ function GoonModal(props: {
                             icon={<FavoriteBorder sx={{ backgroundColor: 'transparent' }} />}
                             checkedIcon={<Favorite />}
                             onChange={(e) => {
-                                console.log(e.target.checked)
+                                handleFavorite(e.target.checked)
                             }} 
                         />
                     } 
@@ -121,12 +141,12 @@ function GoonModal(props: {
                                             key={index}
                                             disabled={isSubmitting}
                                             onClick={() => {
-                                                // setTagToSubmit({...tagToSubmit, tag: tag.tag, userID: user.userID})
                                                 handleSubmit(tag.tag, user.userID)
                                             }} 
                                             label={tag.tag}
                                             color="primary" 
-                                            variant="filled" />
+                                            variant="filled" 
+                                        />
                                     </Stack>
                                 </>
                         ))}

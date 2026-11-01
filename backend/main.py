@@ -43,6 +43,10 @@ class TagRequest(BaseModel):
     tag: str
     userID: int
 
+class FavoriteRequest(BaseModel):
+    userID: int
+    goonInformation: dict
+
 class MessageOnlyResponse(BaseModel):
     message: str
 
@@ -193,6 +197,14 @@ async def add_tag(request: TagRequest):
         return {
             "message": "Failed to add tag to the database.",
         }
+
+@app.post("/api/add-favorite")
+async def add_favorite(request: FavoriteRequest):
+    return {
+        "message": "Favorite added.",
+        "data": request.goonInformation,
+        "userID": request.userID
+    }
 
 @app.delete(
     "/api/delete-tag",

@@ -33,6 +33,22 @@ export async function addTag(tagInfo: string) {
     }
 }
 
+export async function addFavorite(favoriteInfo: string) {
+    try {
+        const response = await fetch(`${API_URL}/api/add-favorite`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: favoriteInfo,
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making POST request:', error);
+        return null;
+    }
+}
+
 // Grabs 10 random goons based on a single randomly selected tag from the database
 export async function getGoons(tagCombo: boolean, userID: number) {
     try {
