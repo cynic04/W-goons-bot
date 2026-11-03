@@ -38,7 +38,7 @@ function FavoritesPage() {
                 <p>Loading...</p>
             ) : (
                 <div style={{ display: 'flex', flexWrap: 'wrap', padding: '16px' }}>
-                    <GoonCards goons={favorites} />
+                    <GoonCards goons={favorites} noHorizontalScroll={true} />
                 </div>
             )}
         </div>

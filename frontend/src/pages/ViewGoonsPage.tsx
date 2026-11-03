@@ -147,7 +147,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                 </div>
                             </>
                         )}
-                        {!reloadGoons && <GoonCards goons={goonsData} />}
+                        {!reloadGoons && <GoonCards goons={goonsData} noHorizontalScroll={false} />}
 
                         <div style={{ display: "flex", flexDirection: "row", gap: '40px', alignItems: 'center' }}>
                             <h2>Jane Doe Exclusives</h2>
@@ -176,7 +176,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                 </div>
                             </>
                         )}
-                        {!loadingJaneGoons && <GoonCards goons={janeGoons} />}
+                        {!loadingJaneGoons && <GoonCards goons={janeGoons} noHorizontalScroll={false} />}
                     </>
                     
                 // Error handling - if the load fails, if there are no goons, and if loading is in progress, display something
