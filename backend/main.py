@@ -165,6 +165,15 @@ async def get_goons(userID = 3, tag_combo: bool = False):
                 "data": []
             }
 
+@app.get("/api/get-favorites")
+async def get_favorites(userID: int):
+    favorite_posts_info = get_favorite_posts(userID) or []
+    print(favorite_posts_info["favorite_posts"])
+    return {
+        "message": "Favorites retrieved.",
+        "data": favorite_posts_info.get("favorite_posts", [])
+    }
+
 @app.get("/api/get-jane-goons")
 async def get_jane_goons():
     API_URL = os.getenv("API_LINK_POSTS_R34")

@@ -63,6 +63,21 @@ export async function getJaneGoons() {
     }
 }
 
+export async function getFavorites(userID: number) {
+    try {
+        const response = await fetch(`${API_URL}/api/get-favorites?userID=${userID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response;
+    } catch (error) {
+        console.error('Error making GET request to get favorites:', error);
+        return null;
+    }
+}
+
 export async function getFavoritePostIds(userID: number) {
     try {
         const response = await fetch(`${API_URL}/api/get-favorite-post-ids?userID=${userID}`, {
