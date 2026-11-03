@@ -2,6 +2,7 @@ import { NavLink,Routes, Route } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import SelectTagsPage from './pages/SelectTagsPage.tsx'
 import CustomizeTagsPage from './pages/CustomizeTagsPage.tsx'
+import FavoritesPage from './pages/FavoritesPage.tsx'
 import ViewGoons from './pages/ViewGoonsPage.tsx'
 import { getTags, initialGetRequest } from './services/FastAPI-backend.ts';
 import './css/NavBar.css'
@@ -19,7 +20,7 @@ function App() {
   const user = useUserContext()
   const report = useReportChange()
   const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
-  const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags"];
+  const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags", "Favorites"];
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [quote, setQuote] = useState(null)
@@ -158,6 +159,7 @@ function App() {
           <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} />} />
           <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} />} />
           <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
         </Routes>
       </ThemeProvider>
     </>

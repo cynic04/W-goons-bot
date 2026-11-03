@@ -15,5 +15,5 @@ createRoot(document.getElementById('root')!).render(
         </BrowserRouter>
       </ReportChangeProvider>
     </UserContextProvider>
-  </StrictMode>,
+  </StrictMode>
 )
