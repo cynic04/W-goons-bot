@@ -2,8 +2,9 @@ import { NavLink,Routes, Route } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import SelectTagsPage from './pages/SelectTagsPage.tsx'
 import CustomizeTagsPage from './pages/CustomizeTagsPage.tsx'
+import FavoritesPage from './pages/FavoritesPage.tsx'
 import ViewGoons from './pages/ViewGoonsPage.tsx'
-import { getTags, initialGetRequest } from './services/FastAPI-backend.ts';
+import { getTags, initialGetRequest, getFavorites } from './services/FastAPI-backend.ts';
 import './css/NavBar.css'
 import './css/Buttons.css'
 import { Button, Drawer, createTheme, ThemeProvider, DialogContent, Dialog } from '@mui/material'
@@ -19,11 +20,12 @@ function App() {
   const user = useUserContext()
   const report = useReportChange()
   const [tagsInDatabase, setTagsInDatabase] = useState<string[]>([]);
-  const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags"];
+  const buttonText: string[] = ["Select Tags", "View Goons", "Customize Tags", "Favorites"];
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
   const [quote, setQuote] = useState(null)
   const [loadFailed, setLoadFailed] = useState(false);
+  const [favorites, setFavorites] = useState<string[]>([]);
 
   // Grab tags from the database when the app loads - avoids having to fetch them repeatedly in individual components
   async function fetchTags() {
@@ -42,6 +44,21 @@ function App() {
           setTagsInDatabase(['None'])
           report.setReportChanged(false)
       }
+  }
+
+  async function fetchFavorites() {
+    const response = await getFavorites(user.userID);
+    if (!response) {
+      console.error('Failed to fetch favorites');
+      report.setReportChanged(false);
+      return;
+    }
+    const jsonData = await response.json();
+    if (jsonData.data.length === 0) {
+      setFavorites(['None']);
+    } else {
+      setFavorites(jsonData.data);
+    }
   }
 
    // Quote API fetch - moved to App.tsx to avoid redundant calls in individual components
@@ -66,6 +83,7 @@ function App() {
   // Also triggers when reportChange is updated, refreshes tag list on all components that depend on it
   useEffect(() => {
       fetchTags();
+      fetchFavorites();
   }, [report.reportChanged, user.userID]);
 
   // Creates a color theme that can be used in the ThemeProvider wrapper for the app
@@ -158,6 +176,7 @@ function App() {
           <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} />} />
           <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} />} />
           <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} />} />
+          <Route path="/favorites" element={<FavoritesPage favorites={favorites} />} />
         </Routes>
       </ThemeProvider>
     </>

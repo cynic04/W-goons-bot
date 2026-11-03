@@ -61,12 +61,14 @@ function GoonModal(props: {
     }
 
     async function handleFavorite(checked: boolean) {
+        const goonInformationWithDate = { ...props.goonInformation, date_favorited: new Date().toISOString() };
         const formData = {
             userID: user.userID,
-            goonInformation: props.goonInformation
+            goonInformation: goonInformationWithDate
         }
         if (checked) {
             setIsSubmitting(true)
+            report.setReportChanged(true)
             setFavoritePostIds([...favoritePostIds, props.goonInformation.id])
             const apiResponse = await addFavorite(JSON.stringify(formData))
             if (!apiResponse) {
@@ -80,6 +82,7 @@ function GoonModal(props: {
         
         } else if (!checked) {
             setIsSubmitting(true)
+            report.setReportChanged(true)
             setFavoritePostIds(favoritePostIds.filter(id => id !== props.goonInformation.id))
             if (favoritePostIds.length === 0) setFavoritePostIds([-1])
             const response = await deleteFavorite(JSON.stringify(formData))

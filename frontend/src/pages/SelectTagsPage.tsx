@@ -11,7 +11,7 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
         <>
             <Container className="center-items">
                 <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
-                    <h1 style={{ fontSize: '3.5rem' }}>WGoonsBot</h1>
+                    <h1 style={{ fontSize: '3.5rem' }}>wgoons.bot</h1>
                     <p style={{ fontWeight: 'bold' }}>
                         "{props.loadFailed ? 'Quote failed to load D:' 
                         : props.quote ? props.quote :
