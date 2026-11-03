@@ -1,15 +1,17 @@
-# FastAPI backend
-# Will be used to handle API requests from the frontend and interact with the database
+# Endpoint expects this structure from the request body when it is received
+# Frontend also expects this from the response body when the response is returned
 
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
-from db_operations import get_favorite_posts, get_tags_from_db, add_tag_to_db, add_favorites_to_db
+from services.favorite_service import add_favorite_service, remove_favorite_service
+from services.tag_service import fetch_tags_service, add_tag_service, delete_tag_service
+from services.goons_service import fetch_goons_service, temporary_fetch_jane_goons
+from services.favorite_service import get_favorites_service
+from db_operations import get_favorite_posts
 import os
 from dotenv import load_dotenv
 from pydantic import BaseModel
 import random
-import json
-import requests
 # Define the origins that are allowed to make requests to the backend
 load_dotenv()  
 origins = [
@@ -91,9 +93,8 @@ async def root():
     response_model=TagsResponse
 )
 async def get_tags(userID = 3):
-    get_tags = get_tags_from_db(userID)
-    if get_tags.data:
-        tags = get_tags.data[0]["tag_listing"]["tags"]
+    tags = fetch_tags_service(userID)
+    if tags:    
         return {
             "message": "Tags retrieved successfully!",
             "tags": tags
@@ -106,7 +107,11 @@ async def get_tags(userID = 3):
 
 @app.get("/api/get-favorite-post-ids")
 async def get_favorites(userID = 3):
-    return get_favorite_posts(userID, True)
+    favorite_posts = get_favorites_service(userID, True)
+    return {
+        "message": "Favorites retrieved",
+        "data": favorite_posts
+    }
 
 @app.get(
     "/api/get-goons",
@@ -116,72 +121,18 @@ async def get_favorites(userID = 3):
     response_model=GoonsResponse
 )
 async def get_goons(userID = 3, tag_combo: bool = False):
-    API_URL = os.getenv("API_LINK_POSTS_R34") 
-    get_tags = get_tags_from_db(userID)
-    # If data is returned from the database, get the list of tags
-    if get_tags.data:
-        tags = get_tags.data[0]["tag_listing"]["tags"]
-        # Check the tag_combo flag - if false, return one random tag
-        # If true, check to make sure there are at least 2 tags, and then determine how many of those tags to combo
-        if tags:
-            if tag_combo and len(tags) > 1:
-                num_tags_to_combo = random.randint(2, 6)
-                random_tag = " ".join(random.sample(tags, num_tags_to_combo))
-            else:
-                random_tag = random.choice(tags)
-            r34_response = requests.get(API_URL + f"&limit=30&tags={random_tag} -ai_generated -video sort:random")
-            data_json = json.loads(r34_response.text) if r34_response.text else []
-            random_tag = random_tag.split(" ")
-            if len(data_json) <= 0:
-                return {
-                    "message": "No goons found.",
-                    "tags": random_tag,
-                    "data": []
-                }
-            else:
-                index = 0
-                for item in data_json:
-                    new_tag_info_list = []
-                    tag_info = item["tag_info"]
-                    # For each tag in the post, check it against the stored tags
-                    # If the tag is the same as the stored tag, don't append it to the newly created list - otherwise, append it
-                    # TODO: Inefficient(?) solution
-                    # Might be better to not include the tag on the frontend to increase backend performance if it takes a hit
-                    for tag in tag_info:
-                        if tag["tag"] not in random_tag:
-                            new_tag_info_list.append(tag)
-                    data_json[index]["tag_info"] = new_tag_info_list
-                    index += 1
-                return {
-                    "message": f"Goons with tag {random_tag} retrieved successfully!",
-                    "tags": random_tag,
-                    "data": data_json
-                }
-        # If no tags are found in the database, return this reponse
-        else:
-            return {
-                "message": "No goons found.",
-                "tags": [],
-                "data": []
-            }
-
-@app.get("/api/get-favorites")
-async def get_favorites(userID: int):
-    favorite_posts_info = get_favorite_posts(userID) or []
-    return {
-        "message": "Favorites retrieved.",
-        "data": favorite_posts_info.get("favorite_posts", [])
-    }
+    return fetch_goons_service(userID, tag_combo)
 
 @app.get("/api/get-jane-goons")
 async def get_jane_goons():
-    API_URL = os.getenv("API_LINK_POSTS_R34")
-    r34_response = requests.get(API_URL + "&limit=50&tags=jane_doe_(zenless_zone_zero) -ai_generated -video sort:random")
-    data_json = json.loads(r34_response.text)
+    return temporary_fetch_jane_goons()
+
+@app.get("/api/get-favorites")
+async def get_favorites(userID: int):
+    favorite_posts_info = get_favorites_service(userID, False)
     return {
-        "message": "Jane goons retrieved.",
-        "tags": ["jane_doe_(zenless_zone_zero)"],
-        "data": data_json
+        "message": "Favorites retrieved.",
+        "data": favorite_posts_info.get("favorite_posts", [])
     }
 
 @app.post(
@@ -195,13 +146,8 @@ async def add_tag(request: TagRequest):
     tag = request.tag
     userID = request.userID
     # Ensure the tag is formatted correctly for R34 API requests
-    tag = tag.replace(" ", "_")
-    get_tags = get_tags_from_db(userID)
-    if get_tags.data:
-        # get the listing of tags from this row, append the new tag, and update the database
-        tags = get_tags.data[0]["tag_listing"]["tags"]
-        tags.append(tag)
-        add_tag_to_db({"tag_listing": {"tags": tags}}, userID)
+    response = add_tag_service(userID, tag)
+    if response == True:
         return {
             "message": "Tags set successfully!",
         }
@@ -215,14 +161,7 @@ async def add_favorite(request: FavoriteRequest):
     userID = request.userID
     goonToFavorite = request.goonInformation
     goonID = goonToFavorite["id"]
-    favorite_posts_info = get_favorite_posts(userID) or []
-
-    favorite_posts = favorite_posts_info["favorite_posts"] if favorite_posts_info else []
-    favorite_post_ids = favorite_posts_info["favorite_post_ids"] if favorite_posts_info else []
-
-    favorite_posts.append(goonToFavorite)
-    favorite_post_ids.append(goonID)
-    add_favorites_to_db(favorite_posts, userID, favorite_post_ids)
+    add_favorite_service(userID, goonToFavorite, goonID)
     return {
         "message": "Favorite added."
     }
@@ -237,10 +176,8 @@ async def add_favorite(request: FavoriteRequest):
 async def delete_tag(request: TagRequest):
     tag = request.tag
     userID = request.userID
-    get_tags = get_tags_from_db(userID)
-    tags = get_tags.data[0]["tag_listing"]["tags"]
-    tags.remove(tag)
-    add_tag_to_db({"tag_listing": {"tags": tags}}, userID)
+    delete_tag_service(userID, tag)
+    tags = fetch_tags_service(userID)
     return {
         "message": f"Tag '{tag}' deleted successfully!",
         "tags": tags
@@ -250,15 +187,6 @@ async def delete_tag(request: TagRequest):
 async def delete_favorite(request: FavoriteRequest):
     userID = request.userID
     goonID = request.goonInformation["id"]
-    favorite_posts_info = get_favorite_posts(userID) or []
-    favorite_posts = favorite_posts_info["favorite_posts"] if favorite_posts_info else []
-    favorite_post_ids = favorite_posts_info["favorite_post_ids"] if favorite_posts_info else []
-    
-    if favorite_posts == [] or favorite_post_ids == []:
-        return {"message": "No favorite to delete."}
-    
-    favorite_posts = [goon for goon in favorite_posts if goon["id"] != goonID]
-    favorite_post_ids = [id for id in favorite_post_ids if id!= goonID]
-    add_favorites_to_db(favorite_posts, userID, favorite_post_ids)
+    remove_favorite_service(userID, goonID)
     return {"message": "Favorite deleted."}
                 
