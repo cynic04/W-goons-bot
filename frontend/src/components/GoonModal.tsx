@@ -81,6 +81,7 @@ function GoonModal(props: {
         
         } else if (!checked) {
             setIsSubmitting(true)
+            report.setReportChanged(true)
             setFavoritePostIds(favoritePostIds.filter(id => id !== props.goonInformation.id))
             if (favoritePostIds.length === 0) setFavoritePostIds([-1])
             const response = await deleteFavorite(JSON.stringify(formData))
