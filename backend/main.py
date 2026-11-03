@@ -125,12 +125,12 @@ async def get_goons(userID = 3, tag_combo: bool = False):
         # If true, check to make sure there are at least 2 tags, and then determine how many of those tags to combo
         if tags:
             if tag_combo and len(tags) > 1:
-                num_tags_to_combo = random.randint(2, len(tags))
+                num_tags_to_combo = random.randint(2, 6)
                 random_tag = " ".join(random.sample(tags, num_tags_to_combo))
             else:
                 random_tag = random.choice(tags)
             r34_response = requests.get(API_URL + f"&limit=30&tags={random_tag} -ai_generated -video sort:random")
-            data_json = json.loads(r34_response.text)
+            data_json = json.loads(r34_response.text) if r34_response.text else []
             random_tag = random_tag.split(" ")
             if len(data_json) <= 0:
                 return {
