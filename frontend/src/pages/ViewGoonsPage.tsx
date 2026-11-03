@@ -101,6 +101,14 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                 View/Customize Tags
                             </Button>
                         </NavLink>
+                        <NavLink
+                            to='/favorites'
+                            style={{ color: 'white', textDecoration: 'none' }}
+                        >
+                            <Button variant='contained' size="large" sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
+                                View Favorites
+                            </Button>
+                        </NavLink>
                     </div>
 
                     {props.tagsInDatabase.length >= 2 && (

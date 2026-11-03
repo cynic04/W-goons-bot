@@ -68,6 +68,7 @@ function GoonModal(props: {
         }
         if (checked) {
             setIsSubmitting(true)
+            report.setReportChanged(true)
             setFavoritePostIds([...favoritePostIds, props.goonInformation.id])
             const apiResponse = await addFavorite(JSON.stringify(formData))
             if (!apiResponse) {
