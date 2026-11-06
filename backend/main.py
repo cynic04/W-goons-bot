@@ -116,13 +116,16 @@ async def get_favorites(userID = 3):
 @app.get(
     "/api/get-goons",
     status_code=status.HTTP_200_OK,
-    description="Get 15 random R34 posts with a tag/combo of tags from the database.",
+    description="Get 30 random R34 posts with a tag/combo of tags from the database.",
     response_description="Returns the JSON formatted response from R34 and the tag(s) that was used to fetch the posts.",
     response_model=GoonsResponse
 )
 async def get_goons(userID = 3, tag_combo: bool = False):
+    # Service structures the response to match the GoonsResponse model
     return fetch_goons_service(userID, tag_combo)
 
+# A test API call just to work on different displays for the frontend
+# May or may not be removed in the future
 @app.get("/api/get-jane-goons")
 async def get_jane_goons():
     return temporary_fetch_jane_goons()
