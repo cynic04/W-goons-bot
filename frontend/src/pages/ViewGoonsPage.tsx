@@ -14,6 +14,7 @@ import GoonCards from '../components/GoonCards.tsx';
 import { NavLink } from 'react-router-dom';
 import { useUserContext } from '../services/UserContext.tsx';
 import TagsSelectedModal from '../components/TagsSelectedModal.tsx';
+import { ToastContainer } from 'react-toastify';
 
 
 function ViewGoons(props: { tagsInDatabase: string[] }) {
@@ -214,6 +215,16 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                     </>
                 )}
             </div>
+            <ToastContainer 
+                position="top-center" 
+                autoClose={5000}
+                containerId="favorite-post-toast"
+            />
+            <ToastContainer 
+                position="top-center" 
+                autoClose={5000}
+                containerId="add-tag-toast"
+            />
         </>
     );
 

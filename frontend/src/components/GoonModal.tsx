@@ -17,7 +17,7 @@ import { useUserContext } from '../services/UserContext';
 import { useReportChange } from '../services/ReportChange';
 import { addFavorite, addTag, deleteFavorite } from '../services/FastAPI-backend';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { getFavoritePostIds } from '../services/FastAPI-backend';
 
 function GoonModal(props: { 
@@ -50,11 +50,11 @@ function GoonModal(props: {
         // unsuccessful API response returns an error toast
         // successful API response returns a success toast and resets form data
         if (!apiResponse) {
-            toast.error('Failed to submit tag to the backend. Please try again.');
+            toast.error('Failed to submit tag to the backend. Please try again.', { containerId: 'add-tag-toast'});
             setIsSubmitting(false)
             return;
         } else {
-            toast.success(`Tag "${formData.tag}" submitted successfully.`);
+            toast.success(`Tag "${formData.tag}" submitted successfully.`, { containerId: 'add-tag-toast'});
             setIsSubmitting(false)
             report.setReportChanged(true);
         }
@@ -72,11 +72,11 @@ function GoonModal(props: {
             setFavoritePostIds([...favoritePostIds, props.goonInformation.id])
             const apiResponse = await addFavorite(JSON.stringify(formData))
             if (!apiResponse) {
-                toast.error('Failed to add favorite.');
+                toast.error('Failed to add favorite.', { containerId: 'favorite-post-toast'});
                 setIsSubmitting(false)
             } else {
                 await apiResponse.json()
-                toast.success('Favorite added!');
+                toast.success('Favorite added!', { containerId: 'favorite-post-toast'});
                 setIsSubmitting(false)
             }
         
@@ -87,10 +87,10 @@ function GoonModal(props: {
             if (favoritePostIds.length === 0) setFavoritePostIds([-1])
             const response = await deleteFavorite(JSON.stringify(formData))
             if (!response) {
-                toast.error('Failed to add favorite.');
+                toast.error('Failed to add favorite.', { containerId: 'favorite-post-toast'});
                 setIsSubmitting(false)
             } else {
-                toast.success('Favorite deleted.');
+                toast.success('Favorite deleted.', { containerId: 'favorite-post-toast'});
                 setIsSubmitting(false)
             }
         }
@@ -100,8 +100,9 @@ function GoonModal(props: {
         const response = await getFavoritePostIds(user.userID);
         if (!response) return;
         let jsonData = await response.json();
-        if (jsonData.length === 0) jsonData = [-1]
-        setFavoritePostIds(jsonData);
+        let favoriteIdArray = jsonData.data
+        if (favoriteIdArray.length === 0) favoriteIdArray = [-1]
+        setFavoritePostIds(favoriteIdArray);
     }
     
     function findArtist(goonInformation: any) {
@@ -217,10 +218,6 @@ function GoonModal(props: {
                         >Next Goon</Button>
                 </DialogActions>
         </Dialog>
-        <ToastContainer 
-            position="top-center" 
-            autoClose={5000}
-        />
         </>
     );
 }
