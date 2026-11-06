@@ -1,12 +1,42 @@
 import { Container, Paper, CircularProgress, Stack, Chip } from "@mui/material";
+import { useState } from "react";
 import TagInputForm from "../components/TagInputForm.tsx";
 import "../css/CenterItems.css";
 import "../css/FlexContainer.css";
 import { truncateTags } from "../services/truncateTags.ts";
 import '../css/TagPills.css'
 import { NavLink } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import { deleteTag } from "../services/FastAPI-backend.ts";
+import type TagsType from "../types/TagsType.ts";
+import { useUserContext } from "../services/UserContext.tsx";
+import { useReportChange } from "../services/ReportChange.tsx";
 
-function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null, loadFailed: boolean }) {
+
+function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null, loadFailed: boolean, setTagsInDatabase: (tags: string[]) => void }) {
+    const user = useUserContext();
+    const report = useReportChange();
+    const [disabled, setDisabled] = useState(false);
+
+    // Function that handles the deletion of a tag and updates the state
+    async function handleDeleteTag(tag: string) {
+        setDisabled(true);
+        const tagInfo: TagsType = { "tag": tag, userID: user.userID };
+        const response = await deleteTag(JSON.stringify(tagInfo));
+        if (response) {
+            const data = await response.json();
+                if (data.tags && data.tags.length > 0) {
+                props.setTagsInDatabase(data.tags);
+            } else {
+                props.setTagsInDatabase(['None']);
+            }
+            toast.success(`Tag "${tag}" deleted successfully!`, { containerId: "delete-tag-toast" });
+            report.setReportChanged(true);
+        }
+        setDisabled(false);
+    }
+
      return (
         <>
             <Container className="center-items">
@@ -34,7 +64,10 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
                 <TagInputForm />
             </Paper>
             <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
-                <h2>Current Tags Stored</h2>
+                <h2 style={{ margin: '16px 0 16px' }}>Current Tags Stored</h2>
+                {props.tagsInDatabase[0] !== 'None' && (
+                    <p style={{ margin: '10px 0', color: '#D3D3D3' }}>Click on a tag to remove it from this list.</p>
+                )}
                 <div className="tag-pills">
                 {props.tagsInDatabase.length === 0 && !props.loadFailed && props.tagsInDatabase[0] !== 'None' && (
                     <CircularProgress size={20} />
@@ -54,13 +87,25 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
                                     '& .MuiChip-label': {
                                     fontSize: '22px'
                                 } }}>
-                                <Chip key={index} label={tag} color="primary" variant="outlined" />
+                                <Chip 
+                                    key={index} 
+                                    label={tag} 
+                                    disabled={disabled}
+                                    onClick={() => handleDeleteTag(tag)} 
+                                    color="primary" 
+                                    variant="outlined" 
+                                />
                             </Stack>
                         </>
                     ))
                 )}
                 </div>
             </Paper>
+            <ToastContainer
+                containerId="delete-tag-toast" 
+                position="bottom-center" 
+                autoClose={5000}
+            />
         </>
     )
 }

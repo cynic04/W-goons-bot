@@ -173,7 +173,7 @@ function App() {
         </Dialog>
 
         <Routes>
-          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} />} />
+          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} quote={quote} loadFailed={loadFailed} />} />
           <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} />} />
           <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} />} />
           <Route path="/favorites" element={<FavoritesPage favorites={favorites} />} />
