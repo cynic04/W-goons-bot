@@ -31,7 +31,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
     const [tagCombo, setTagCombo] = useState<boolean>(false);
     const [openTagDisplay, setOpenTagDisplay] = useState(false);
     const [janeGoons, setJaneGoons] = useState<any[]>([]);
-    const [janeButtonText, setJaneButtonText] = useState('Click for Jane Goons')
+    const [janeButtonText, setJaneButtonText] = useState('Load')
     const [loadingJaneGoons, setLoadingJaneGoons] = useState(false);
     const [dontSetLoading, setDontSetLoading] = useState(false);
     
@@ -130,11 +130,11 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                             } />
                         )}
 
-                        <div style={{ display: "flex", flexDirection: "row", gap: '40px', justifyContent: 'space-between' }}>
+                        <div style={{ display: "flex", flexDirection: "row", gap: '40px', alignItems: 'center' }}>
                             <h2>30 posts</h2>
                             <Button
                                 variant="contained"
-                                size='small'
+                                size='medium'
                                 onClick={fetchGoons}
                                 disabled={loading}
                                 sx={{ textTransform: 'none', alignSelf: 'center' }}
@@ -161,11 +161,11 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                         <div style={{ display: "flex", flexDirection: "row", gap: '40px', alignItems: 'center' }}>
                             <h2>Jane Doe Exclusives</h2>
                             <Button
-                                size='small'
-                                style={{ textTransform: 'none' }}
+                                size='medium'
+                                style={{ textTransform: 'none', alignSelf: 'center' }}
                                 variant='contained'
                                 onClick={() => {
-                                    setJaneButtonText('Refresh Jane Goons');
+                                    setJaneButtonText('Reload');
                                     fetchJaneGoons()}}
                                 disabled={loadingJaneGoons}
                             >{janeButtonText}</Button>
@@ -175,7 +175,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                     setOpenTagDisplay(true);
                                 }}
                                 size='small'
-                            >Show Tags Used</Button>
+                            >Tags Used</Button>
                             <TagsSelectedModal tags={tagsToDisplay} openTagDisplay={openTagDisplay} setOpenTagDisplay={setOpenTagDisplay} />
                         </div>
                         {loadingJaneGoons && (

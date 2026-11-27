@@ -7,7 +7,8 @@ import {
     TableRow, 
     Paper,
     CircularProgress,
-    Container
+    Container,
+    Button
 } from '@mui/material';
 import '../css/CenterItems.css'
 import { useState } from 'react';
@@ -45,7 +46,8 @@ function DeleteTagsTable(props: {tags: string[], handleDeleteTag: (tag: string) 
                                 <TableRow key={index}>
                                     <TableCell align="center" sx={{ color: 'white' }}>{tag}</TableCell>
                                     <TableCell align="center" sx={{ color: 'white' }}>
-                                        <button 
+                                        <Button 
+                                            variant="contained"
                                             onClick={() => {
                                                 setDeletingTag(tag);
                                                 props.handleDeleteTag(tag).finally(() => {
@@ -53,10 +55,10 @@ function DeleteTagsTable(props: {tags: string[], handleDeleteTag: (tag: string) 
                                                 });
                                             }} 
                                             disabled={deletingTag !== null}
+                                            sx={{ textTransform: 'none', backgroundColor: 'black' }}
                                         >   
-                                            { /* Show 'Deleting...' if this tag is being deleted, otherwise show 'Delete' */ }
                                             {deletingTag === tag ? 'Deleting...' : 'Delete'}
-                                        </button>
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}

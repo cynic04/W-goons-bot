@@ -120,42 +120,45 @@ function GoonModal(props: {
 
     return (
         <>
-        <Dialog open={props.open} onClose={() => {props.setOpen(false)}}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr' }}>
-                <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold', gridColumn: '2' }}>
-                    {`Artist: ${
-                        findArtist(props.goonInformation)}`
-                    }
-                </DialogTitle>
-                {favoritePostIds.length > 0 && (
-                    <FormControlLabel 
-                    label={favoritePostIds.includes(props.goonInformation.id) ? "Favorited" : "Favorite"}
-                    labelPlacement='bottom'
-                    sx={{ gridColumn: '3', alignItems: 'end'}}
-                    control={ 
-                        <Checkbox 
-                            size="large"
-                            icon={<FavoriteBorder sx={{ backgroundColor: 'transparent' }} />}
-                            disabled={isSubmitting}
-                            checkedIcon={<Favorite />}
-                            checked={favoritePostIds.includes(props.goonInformation.id)}
-                            onChange={(e) => {
-                                handleFavorite(e.target.checked)
-                            }} 
-                        />
-                    } 
-                />
-                )}
-            </div>
-            <Button
-                variant='contained'
-                sx={{ backgroundColor: '#313030', margin: '0 auto' }}
-                style={{ color: 'white' }}
-                onClick={() => {
-                    setShowExtraTags(!showExtraTags);
-                }}
-            >Show tags</Button>
-
+            <Dialog 
+                open={props.open} 
+                onClose={() => {props.setOpen(false)}}
+            >
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr' }}>
+                    <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold', gridColumn: '2', fontSize: '1rem' }}>
+                        {`Artist: ${
+                            findArtist(props.goonInformation)}`
+                        }
+                    </DialogTitle>
+                    {favoritePostIds.length > 0 && (
+                        <FormControlLabel 
+                        label={favoritePostIds.includes(props.goonInformation.id) ? "Favorited" : "Favorite"}
+                        labelPlacement='bottom'
+                        sx={{ gridColumn: '3', alignItems: 'end'}}
+                        control={ 
+                            <Checkbox 
+                                size="large"
+                                icon={<FavoriteBorder sx={{ backgroundColor: 'transparent' }} />}
+                                disabled={isSubmitting}
+                                checkedIcon={<Favorite />}
+                                checked={favoritePostIds.includes(props.goonInformation.id)}
+                                onChange={(e) => {
+                                    handleFavorite(e.target.checked)
+                                }} 
+                            />
+                        } 
+                    />
+                    )}
+                </div>
+                <Button
+                    variant='contained'
+                    sx={{ backgroundColor: '#313030', margin: '0 auto', marginBottom: '10px' }}
+                    style={{ color: 'white' }}
+                    size='small'
+                    onClick={() => {
+                        setShowExtraTags(!showExtraTags);
+                    }}
+                >Show tags</Button>
             {showExtraTags && (
                 <Dialog open={showExtraTags} onClose={() => {setShowExtraTags(false)}} style={{ textAlign: 'center', fontWeight: 'bold'  }}>
                     <DialogContent style={{ textAlign: 'center', fontWeight: 'bold'  }}>
@@ -184,17 +187,17 @@ function GoonModal(props: {
                                         />
                                     </Stack>
                                 </>
-                        ))}
+                            ))}
                         </div>
                     </DialogContent>
                 </Dialog>
             )}
 
-            <DialogContent style={{ overflowY: 'scroll', overflowX: 'hidden' }}>
+            <DialogContent dividers={true}>
                 <a href={props.goonInformation["file_url"]} target="_blank" rel="noopener noreferrer">
-                    <img className="goon-modal-img" src={props.goonInformation["sample_url"]} alt={`Goon ${props.indexSelected + 1}`} />
+                    <img className="goon-modal-img" src={props.goonInformation["sample_url"]} alt={`Goon ${props.indexSelected + 1}`}/>
                 </a>
-            </DialogContent>
+            </DialogContent >
                 <DialogActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Button
                         variant='contained'
@@ -217,7 +220,7 @@ function GoonModal(props: {
                         }}
                         >Next Goon</Button>
                 </DialogActions>
-        </Dialog>
+            </Dialog>
         </>
     );
 }

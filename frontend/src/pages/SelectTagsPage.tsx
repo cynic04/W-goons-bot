@@ -59,8 +59,6 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
                 <h2 style={{ margin: '16px 0 16px' }}>
                     Submit Tags
                 </h2>
-                <p style={{ margin: '10px 0', color: '#D3D3D3' }}>Type in the box below to see some relevant tag results.</p>
-                <p style={{ margin: '3px 0', color: '#D3D3D3' }}>Hit submit to add the tag to your current tags stored.</p>
                 <TagInputForm />
             </Paper>
             <Paper className="row" elevation={6} sx={{ backgroundColor: '#313030', color: 'white' }}>
