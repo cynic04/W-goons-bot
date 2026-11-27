@@ -98,7 +98,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                             to='/customize-tags'
                             style={{ color: 'white', textDecoration: 'none' }}
                         >
-                            <Button variant='contained' size="large" sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
+                            <Button variant='contained' size="medium" sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
                                 View/Customize Tags
                             </Button>
                         </NavLink>
@@ -106,7 +106,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                             to='/favorites'
                             style={{ color: 'white', textDecoration: 'none' }}
                         >
-                            <Button variant='contained' size="large" sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
+                            <Button variant='contained' size="medium" sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
                                 View Favorites
                             </Button>
                         </NavLink>
@@ -130,16 +130,16 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                             } />
                         )}
 
-                        <div style={{ display: "flex", flexDirection: "row", gap: '40px', alignItems: 'center' }}>
-                            <h2>30 random posts</h2>
+                        <div style={{ display: "flex", flexDirection: "row", gap: '40px', justifyContent: 'space-between' }}>
+                            <h2>30 posts</h2>
                             <Button
                                 variant="contained"
                                 size='small'
                                 onClick={fetchGoons}
                                 disabled={loading}
-                                sx={{ textTransform: 'none' }}
+                                sx={{ textTransform: 'none', alignSelf: 'center' }}
                                 style={{ color: 'white' }}>
-                                Reload Goons
+                                Reload
                             </Button>
                             <Button 
                                 onClick={() => {
@@ -147,7 +147,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                     setOpenTagDisplay(true);
                                 }}
                                 size='small'
-                                >Show Tags Used</Button>
+                                >Tags Used</Button>
                         </div>
                         {reloadGoons && (
                             <>
@@ -210,7 +210,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                             disabled={loading}
                             sx={{ backgroundColor: '#313030', textTransform: 'none', marginBottom: '20px' }}
                             style={{ color: 'white'}}>
-                            Reload Goons
+                            Reload
                         </Button>
                     </>
                 )}
