@@ -14,6 +14,7 @@ import GoonCards from '../components/GoonCards.tsx';
 import { NavLink } from 'react-router-dom';
 import { useUserContext } from '../services/UserContext.tsx';
 import TagsSelectedModal from '../components/TagsSelectedModal.tsx';
+import { ToastContainer } from 'react-toastify';
 
 
 function ViewGoons(props: { tagsInDatabase: string[] }) {
@@ -30,7 +31,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
     const [tagCombo, setTagCombo] = useState<boolean>(false);
     const [openTagDisplay, setOpenTagDisplay] = useState(false);
     const [janeGoons, setJaneGoons] = useState<any[]>([]);
-    const [janeButtonText, setJaneButtonText] = useState('Click for Jane Goons')
+    const [janeButtonText, setJaneButtonText] = useState('Load')
     const [loadingJaneGoons, setLoadingJaneGoons] = useState(false);
     const [dontSetLoading, setDontSetLoading] = useState(false);
     
@@ -97,7 +98,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                             to='/customize-tags'
                             style={{ color: 'white', textDecoration: 'none' }}
                         >
-                            <Button variant='contained' size="large" sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
+                            <Button variant='contained' size="medium" sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
                                 View/Customize Tags
                             </Button>
                         </NavLink>
@@ -105,7 +106,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                             to='/favorites'
                             style={{ color: 'white', textDecoration: 'none' }}
                         >
-                            <Button variant='contained' size="large" sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
+                            <Button variant='contained' size="medium" sx={{ backgroundColor: 'black', textTransform: 'none', marginBottom: '20px' }}>
                                 View Favorites
                             </Button>
                         </NavLink>
@@ -130,15 +131,15 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                         )}
 
                         <div style={{ display: "flex", flexDirection: "row", gap: '40px', alignItems: 'center' }}>
-                            <h2>30 random posts</h2>
+                            <h2>30 posts</h2>
                             <Button
                                 variant="contained"
-                                size='small'
+                                size='medium'
                                 onClick={fetchGoons}
                                 disabled={loading}
-                                sx={{ textTransform: 'none' }}
+                                sx={{ textTransform: 'none', alignSelf: 'center' }}
                                 style={{ color: 'white' }}>
-                                Reload Goons
+                                Reload
                             </Button>
                             <Button 
                                 onClick={() => {
@@ -146,7 +147,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                     setOpenTagDisplay(true);
                                 }}
                                 size='small'
-                                >Show Tags Used</Button>
+                                >Tags Used</Button>
                         </div>
                         {reloadGoons && (
                             <>
@@ -160,11 +161,11 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                         <div style={{ display: "flex", flexDirection: "row", gap: '40px', alignItems: 'center' }}>
                             <h2>Jane Doe Exclusives</h2>
                             <Button
-                                size='small'
-                                style={{ textTransform: 'none' }}
+                                size='medium'
+                                style={{ textTransform: 'none', alignSelf: 'center' }}
                                 variant='contained'
                                 onClick={() => {
-                                    setJaneButtonText('Refresh Jane Goons');
+                                    setJaneButtonText('Reload');
                                     fetchJaneGoons()}}
                                 disabled={loadingJaneGoons}
                             >{janeButtonText}</Button>
@@ -174,7 +175,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                     setOpenTagDisplay(true);
                                 }}
                                 size='small'
-                            >Show Tags Used</Button>
+                            >Tags Used</Button>
                             <TagsSelectedModal tags={tagsToDisplay} openTagDisplay={openTagDisplay} setOpenTagDisplay={setOpenTagDisplay} />
                         </div>
                         {loadingJaneGoons && (
@@ -209,11 +210,21 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                             disabled={loading}
                             sx={{ backgroundColor: '#313030', textTransform: 'none', marginBottom: '20px' }}
                             style={{ color: 'white'}}>
-                            Reload Goons
+                            Reload
                         </Button>
                     </>
                 )}
             </div>
+            <ToastContainer 
+                position="top-center" 
+                autoClose={5000}
+                containerId="favorite-post-toast"
+            />
+            <ToastContainer 
+                position="top-center" 
+                autoClose={5000}
+                containerId="add-tag-toast"
+            />
         </>
     );
 

@@ -114,7 +114,7 @@ function App() {
             sx={{ backgroundColor: 'black', textTransform: 'none', fontSize: '20px' }}
             style={{ color: 'white' }}
           >
-            Select User (temporary)
+            Select User
           </Button>
         </div>
         <p style={{ textAlign: 'center', fontSize: '18px' }}>Gooner selected: <b>{users[user.userID]}</b></p>
@@ -133,9 +133,11 @@ function App() {
               to={currentText === "Select Tags" ? '/' : currentText.toLowerCase().replace(/\s+/g, "-")}
               className={({ isActive }) => isActive ? 'nav-button active-page' : 'nav-button'}
               style={{ textAlign: 'center' }}
+              onClick={() => setDrawerOpen(false)}
             >
               <p>{currentText}</p>
             </NavLink>
+            
           ))}
         </Drawer>
         
@@ -173,7 +175,7 @@ function App() {
         </Dialog>
 
         <Routes>
-          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} quote={quote} loadFailed={loadFailed} />} />
+          <Route path="/" element={<SelectTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} quote={quote} loadFailed={loadFailed} />} />
           <Route path="/view-goons" element={<ViewGoons tagsInDatabase={tagsInDatabase} />} />
           <Route path="/customize-tags" element={<CustomizeTagsPage tagsInDatabase={tagsInDatabase} setTagsInDatabase={setTagsInDatabase} />} />
           <Route path="/favorites" element={<FavoritesPage favorites={favorites} />} />

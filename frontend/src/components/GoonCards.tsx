@@ -44,8 +44,6 @@ function GoonCards(props: { goons: any[], noHorizontalScroll: boolean }) {
         {!props.noHorizontalScroll && (
             <div ref={emblaRef} style={{ overflow: 'hidden', marginBottom: '20px' }}>
             <Grid container spacing={2} sx={{ flexWrap: 'nowrap' }}>
-                {/* Easiest way to read this: for each goon in the returned goons array, create a figure element with an image and caption */}
-                {/* "goon: any[]" is each individual goon in the goons array, and index is the iterator (which position in the array are we at rn) */}
                     {props.goons.map((goon: any, index: number) => (
                         <Grid key={index} sx={{ flex: '0 0 auto', width: '250px' }}>
                             <Card className="goon-card" sx={{ backgroundColor: '#313030' }}>

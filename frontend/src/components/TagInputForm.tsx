@@ -43,7 +43,7 @@ function TagInputForm() {
             toast.error('Failed to submit tag to the backend. Please try again.');
             return;
         } else {
-            toast.success(`Tag "${formData.tag}" submitted successfully.`);
+            toast.success(`Tag "${formData.tag}" submitted successfully.`, { containerId: "add-tag-toast" });
             setFormData({ tag: '', userID: user.userID });
             report.setReportChanged(true);
         }
@@ -91,6 +91,7 @@ function TagInputForm() {
         <ToastContainer 
             position="bottom-center" 
             autoClose={5000}
+            containerId="add-tag-toast" 
         />
         {/* As long as the input is not empty, display tag suggestions under the Submit Tags element */}
         {/* runs the filter on the full tagsData json, truncates those tags if necessary, slices it to only show 10 results, and maps all remaining entries onto the page*/}
