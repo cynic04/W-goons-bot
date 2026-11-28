@@ -29,6 +29,7 @@ GOOGLE_CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 REDIRECT_URI = "http://localhost:8000/auth/google/callback"
 FRONTEND_URL = os.getenv("FRONTEND_LOCALHOST")
 JWT_SECRET = os.getenv("JWT_SECRET")
+IS_PROD = os.getenv("IS_PROD")
 
 
 # Initialize FastAPI app, provide a description for API docs reasons
@@ -134,7 +135,17 @@ async def google_callback(code: str):
 
         # Redirect back to the app with the token
         app_token = jwt.encode(payload, JWT_SECRET, algorithm="HS256")
-        return RedirectResponse(url=f'{FRONTEND_URL}/auth/callback?token={app_token}')
+        response = RedirectResponse(url=f'{FRONTEND_URL}')
+        # HttpOnly cookie authentication
+        response.set_cookie(
+            key="access_token",
+            value=app_token,
+            httponly=True,
+            secure=IS_PROD,
+            samesite='None',
+            max_age=3600
+        )
+        return response
 
 @app.get(
     "/api/get-tags", 
