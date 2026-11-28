@@ -5,10 +5,16 @@ export async function initialGetRequest() {
     try {
         const response = await fetch(`${API_URL}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
         });
+        if (response.status === 401) {
+            console.log('Unauthorized');
+        } else {
+            console.log('Authorized');
+        }
         return response;
     } catch (error) {
         console.error('Error making GET request:', error);

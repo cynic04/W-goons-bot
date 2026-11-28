@@ -1,11 +1,9 @@
 # Endpoint expects this structure from the request body when it is received
 # Frontend also expects this from the response body when the response is returned
-
-import json
-
-from fastapi import FastAPI, status
+from fastapi import Depends, FastAPI, status, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
+import jwt
 from services.favorite_service import add_favorite_service, remove_favorite_service
 from services.tag_service import fetch_tags_service, add_tag_service, delete_tag_service
 from services.goons_service import fetch_goons_service, temporary_fetch_jane_goons
@@ -28,7 +26,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 DATABASE_KEY = os.getenv("DATABASE_KEY")
 GOOGLE_CLIENT_ID = os.getenv("CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-REDIRECT_URI = "http://localhost:8000/auth/google/callback"
+REDIRECT_URI = "http://localhost:8000/api/auth/google/callback"
 FRONTEND_URL = os.getenv("FRONTEND_LOCALHOST")
 JWT_SECRET = os.getenv("JWT_SECRET")
 IS_PROD = os.getenv("IS_PROD")
@@ -77,6 +75,13 @@ class MessageWithTagsResponse(BaseModel):
     message: str
     tags: list
 
+def get_current_user(request: Request):
+    token = request.cookies.get("access_token")
+    if not token:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+    decoded_token = jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
+    return decoded_token
+
 @app.get(
     "/",
     status_code=status.HTTP_200_OK,
@@ -84,7 +89,7 @@ class MessageWithTagsResponse(BaseModel):
     response_description="Returns a random quote from the server.",
     response_model=MessageOnlyResponse
 )
-async def root():
+async def root(user = Depends(get_current_user)):
     quotes_list = [
         "yeah... I got nothin.",
         "add 'ass' as a tag, flawless results.",
@@ -104,11 +109,11 @@ def login_with_google():
     return RedirectResponse(google_auth_url)
 
 # Callback endpoint for Google login - handles all the token exchange and login logistics
-@app.get("/auth/google/callback")
+@app.get("/api/auth/google/callback")
 async def google_callback(code: str):
     async with httpx.AsyncClient() as client:
         response = await first_time_login(code, client, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI, JWT_SECRET, FRONTEND_URL, IS_PROD)
-        print(json.dumps(response, indent=2))
+        print(response)
         return response
 
 @app.get(
