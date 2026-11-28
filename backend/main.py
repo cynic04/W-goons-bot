@@ -1,17 +1,19 @@
 # Endpoint expects this structure from the request body when it is received
 # Frontend also expects this from the response body when the response is returned
 
-from fastapi import FastAPI, status, HTTPException
+import json
+
+from fastapi import FastAPI, status
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from services.favorite_service import add_favorite_service, remove_favorite_service
 from services.tag_service import fetch_tags_service, add_tag_service, delete_tag_service
 from services.goons_service import fetch_goons_service, temporary_fetch_jane_goons
 from services.favorite_service import get_favorites_service
+from services.auth_service import first_time_login
 from db_operations import get_favorite_posts
 import os
 import httpx
-import jwt
 from dotenv import load_dotenv
 from pydantic import BaseModel
 import random
@@ -101,50 +103,12 @@ def login_with_google():
     google_auth_url = f"https://accounts.google.com/o/oauth2/v2/auth?client_id={GOOGLE_CLIENT_ID}&redirect_uri={REDIRECT_URI}&response_type=code&scope=email"
     return RedirectResponse(google_auth_url)
 
+# Callback endpoint for Google login - handles all the token exchange and login logistics
 @app.get("/auth/google/callback")
 async def google_callback(code: str):
-    # Exchange the code from the above login function for an access token
     async with httpx.AsyncClient() as client:
-        token_resp = await client.post(
-            "https://oauth2.googleapis.com/token",
-            data={
-                "code": code,
-                "client_id": GOOGLE_CLIENT_ID,
-                "client_secret": GOOGLE_CLIENT_SECRET,
-                "redirect_uri": REDIRECT_URI,
-                "grant_type": "authorization_code"
-            }
-        )
-
-        token_data = token_resp.json()
-        if "access_token" not in token_data:
-            return {"message": "Failed to get access token"}
-
-        # Once the access token is received, fetch the user info associated with it
-        user_resolution = await client.get(
-            "https://www.googleapis.com/oauth2/v2/userinfo",
-            headers={"Authorization": f"Bearer {token_data['access_token']}"}
-        )
-        user_info = user_resolution.json()
-
-        # Construct payload for resulting JWT token
-        payload = {
-            "sub": user_info['email'],
-            "name": user_info.get('name')
-        }
-
-        # Redirect back to the app with the token
-        app_token = jwt.encode(payload, JWT_SECRET, algorithm="HS256")
-        response = RedirectResponse(url=f'{FRONTEND_URL}')
-        # HttpOnly cookie authentication
-        response.set_cookie(
-            key="access_token",
-            value=app_token,
-            httponly=True,
-            secure=IS_PROD,
-            samesite='None',
-            max_age=3600
-        )
+        response = await first_time_login(code, client, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, REDIRECT_URI, JWT_SECRET, FRONTEND_URL, IS_PROD)
+        print(json.dumps(response, indent=2))
         return response
 
 @app.get(

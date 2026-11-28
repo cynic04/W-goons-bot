@@ -91,3 +91,12 @@ Flex properties used here: grow=1, shrink=1, basis=0
     Grow=1: the item can grow to use extra space
     Shrink=1: the item can shrink if necessary
     Basis=0: the initial size of the item before growing or shrinking
+
+# OAuth - understanding what we've written
+main.py now contains two endpoints - /api/auth/google/login and /auth/google/callback
+The login endpoint is the entrypoint - the callback controls:
+- Exchanging the code gathered from the entrypoint URL for an access token
+- gathering the user information based on the access token provided
+- creating a JWT based on some of the information returned from the user information payload
+- storing the JWT in an HTTPOnly cookie to avoid putting it in localStorage
+

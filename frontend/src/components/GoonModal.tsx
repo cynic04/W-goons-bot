@@ -126,7 +126,7 @@ function GoonModal(props: {
             >
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr' }}>
                     <DialogTitle style={{ textAlign: 'center', fontWeight: 'bold', gridColumn: '2', fontSize: '1rem' }}>
-                        {`Artist: ${
+                        {`Artist(s): ${
                             findArtist(props.goonInformation)}`
                         }
                     </DialogTitle>

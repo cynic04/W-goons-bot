@@ -85,13 +85,14 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                     </Paper>
                 </Container>
                 {/* If goons load properly, display:
-                - 15 random posts
+                - 30 random posts
                 - The tags used to retrieve those posts
                 - The images of those posts
                 - Options to reload the posts, view/delete tags in the database, and enable tag randomization (if 2 or more tags are in the database)
                 */}
                 {goonsData.length > 0 && !loading ? (
                     <>
+                    {/* View/Customize Tags and Favorites buttons commented out - not sure if they will return yet*/}
                     {/* <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: '30px', paddingTop: '20px' }}>
                         
                         <NavLink
