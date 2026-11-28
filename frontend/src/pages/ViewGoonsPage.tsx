@@ -11,7 +11,6 @@ import { useState, useEffect } from 'react';
 import '../css/GoonCards.css';
 import '../css/CenterItems.css';
 import GoonCards from '../components/GoonCards.tsx';
-import { NavLink } from 'react-router-dom';
 import { useUserContext } from '../services/UserContext.tsx';
 import TagsSelectedModal from '../components/TagsSelectedModal.tsx';
 import { ToastContainer } from 'react-toastify';
@@ -82,6 +81,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                     <Paper elevation={12} className="headers" sx={{ backgroundColor: '#313030', color: 'white' }}>
                         <h1>View Goons</h1>
                         <p style={{ fontSize: '15px' }}>Click on a card to enlarge the image</p>
+                        <p style={{ fontSize: '15px' }}>Swipe on the cards to scroll left or right</p>
                     </Paper>
                 </Container>
                 {/* If goons load properly, display:
@@ -92,7 +92,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                 */}
                 {goonsData.length > 0 && !loading ? (
                     <>
-                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: '30px', paddingTop: '20px' }}>
+                    {/* <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: '30px', paddingTop: '20px' }}>
                         
                         <NavLink
                             to='/customize-tags'
@@ -110,7 +110,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                                 View Favorites
                             </Button>
                         </NavLink>
-                    </div>
+                    </div> */}
 
                     {props.tagsInDatabase.length >= 2 && (
                             <FormControlLabel
@@ -152,7 +152,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                         {reloadGoons && (
                             <>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                                    <CircularProgress size={100} sx={{ color: 'white', padding: '20px'}} aria-label="Loading goons" />
+                                    <CircularProgress size={40} sx={{ color: 'white', padding: '20px'}} aria-label="Loading goons" />
                                 </div>
                             </>
                         )}
@@ -181,7 +181,7 @@ function ViewGoons(props: { tagsInDatabase: string[] }) {
                         {loadingJaneGoons && (
                             <>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                                    <CircularProgress size={100} sx={{ color: 'white', padding: '20px'}} aria-label="Loading goons" />
+                                    <CircularProgress size={40} sx={{ color: 'white', padding: '20px'}} aria-label="Loading goons" />
                                 </div>
                             </>
                         )}

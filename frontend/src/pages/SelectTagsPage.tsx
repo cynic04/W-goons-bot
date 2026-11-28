@@ -78,23 +78,20 @@ function SelectTagsPage(props: { tagsInDatabase: string[], quote: string | null,
                 {props.tagsInDatabase[0] !== 'None' && props.tagsInDatabase.length > 0 && (
                     // Calls the truncate function on the prop
                     truncateTags(props.tagsInDatabase).map((tag, index) => (
-                        <>
-                            <Stack key={index} 
-                                spacing={1} 
-                                sx={{ display: 'flex', justifyContent: 'center', marginBottom: '4px', 
-                                    '& .MuiChip-label': {
-                                    fontSize: '22px'
-                                } }}>
-                                <Chip 
-                                    key={index} 
-                                    label={tag} 
-                                    disabled={disabled}
-                                    onClick={() => handleDeleteTag(tag)} 
-                                    color="primary" 
-                                    variant="outlined" 
-                                />
-                            </Stack>
-                        </>
+                        <Stack key={index}
+                            spacing={1}
+                            sx={{ display: 'flex', justifyContent: 'center', marginBottom: '4px',
+                                '& .MuiChip-label': {
+                                fontSize: '22px'
+                            } }}>
+                            <Chip
+                                label={tag}
+                                disabled={disabled}
+                                onClick={() => handleDeleteTag(tag)}
+                                color="primary"
+                                variant="outlined"
+                            />
+                        </Stack>
                     ))
                 )}
                 </div>
